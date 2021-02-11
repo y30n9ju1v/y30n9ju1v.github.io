@@ -1,8 +1,8 @@
-title: Stack Problems
+title: AI & Embedded System
 description: My Personal Stack Problems
-author: Agus Makmun
-github: https://github.com/agusmakmun
-about: I'm Programmer for Python & Django. I've made quite a few web apps, especially on Django.
+author: y30n9ju1v
+github: https://github.com/y30n9ju1v
+about: I'm Programmer for AI and Embedded System.
 disqus_shortname: stackproblems
 google_analytics: UA-XXXXXXXX-Y
 
@@ -27,8 +27,8 @@ social:
       link: "https://github.com/agusmakmun"
 
 share:
-  twitter_username: github.io
-  fb_appid: 1749788565247320
+  twitter_username: 
+  fb_appid:
 
 urls:
     - text: About Me
@@ -38,7 +38,7 @@ urls:
     - text: XML Feed
       url: /feed.xml
 
-url: "https://agusmakmun.github.io"
+url: "https://y30n9ju1v.github.io"
 baseurl: ""
 paginate: 20
 per_page: 20
