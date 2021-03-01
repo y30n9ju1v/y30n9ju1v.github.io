@@ -1,8 +1,8 @@
-title: AI & Embedded System
+title: AI Vision on Edge
 description: My Personal Stack Problems
 author: y30n9ju1v
 github: https://github.com/y30n9ju1v
-about: I'm a Programmer for AI and Embedded System.
+about: I'm y30n9ju1v
 disqus_shortname: y30n9ju1v
 google_analytics: UA-XXXXXXXX-Y
 
@@ -31,8 +31,6 @@ share:
   fb_appid:
 
 urls:
-    - text: About Me
-      url: /about/
     - text: XML Feed
       url: /feed.xml
 
