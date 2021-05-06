@@ -2,6 +2,7 @@
 layout: post                          # (require) default post layout
 title: "What is ONNX"                 # (require) a string title
 date: 2021-05-06 18:00:00 +0900       # (require) a post date
+image: onnx_logo.png, onnx_common_ir.png, onnx_graph.png, nnef_logo.png
 ---
 
 ## What is ONNX? 
