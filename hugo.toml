@@ -2,3 +2,14 @@ baseURL = 'https://y30n9ju1v.github.io/'
 languageCode = 'en-us'
 title = "y30n9ju1v's Blog"
 theme = "PaperMod"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)']]
+[params]
+  math = true
