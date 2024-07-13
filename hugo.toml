@@ -3,6 +3,10 @@ languageCode = 'en-us'
 title = "y30n9ju1v's Blog"
 theme = "PaperMod"
 
+[[menu.main]]
+name = "Archives"
+url = "/archives/"
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.extensions]
