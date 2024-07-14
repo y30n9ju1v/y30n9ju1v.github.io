@@ -166,6 +166,8 @@ n개의 DNN \(F_{k \in 1..n} : \mathbf{x} \rightarrow \mathbf{y}\) 가 있다고
 (4) \( t \)는 각 개별 뉴런이 활성화되었는지 여부를 결정하는 임계값입니다.
 \( t \)가 증가할수록 뉴런을 활성화하는 입력을 찾는 것이 점점 더 어려워집니다.
 
+![Algorithm 1](/posts/DeepXplore/algorithm1.png)
+
 ## Implementation
 우리는 TensorFlow 1.0.1 [5]과 Keras 2.0.3 [16] DL 프레임워크를 사용하여 DeepXplore를 구현했습니다.
 우리의 구현은 약 7,086줄의 Python 코드로 구성되어 있습니다.
