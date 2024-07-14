@@ -119,7 +119,7 @@ n개의 DNN \(F_{k \in 1..n} : \mathbf{x} \rightarrow \mathbf{y}\) 가 있다고
 
 \[obj_1(\mathbf{x}) = \sum_{k \neq j} F_{k}(\mathbf{x})[c] - \lambda_{1} \cdot F_{j}(\mathbf{x})[c] \qquad\qquad(2)\]
 
-여기에서 \(\lambda_1\)은 DNN \(F_{k \neq j}\)가 이전과 동일한 클래스 출력을 유지하는 목표 항목과 DNN F_j가 다른 클래스 출력을 생성하는 목표 항목 간의 균형을 맞추기 위한 매개변수입니다.
+여기에서 \(\lambda_1\)은 DNN \(F_{k \neq j}\)가 이전과 동일한 클래스 출력을 유지하는 목표 항목과 DNN \(F_j\)가 다른 클래스 출력을 생성하는 목표 항목 간의 균형을 맞추기 위한 매개변수입니다.
 \(F_{k ∈ 1..n}\)이 모두 미분 가능하므로, 식 2는 계산된 기울기\(\frac{\partial obj_1(\mathbf{x})}{\partial \mathbf{x}}\)를 기반으로 \(x\)를 반복적으로 변경하여 (Algorithm 1의 8-14행과 COMPUTE_OBJ1 절차) 기울기 상승을 사용하여 쉽게 최대화할 수 있습니다.
 
 **Maximizing neuron coverage**
@@ -169,7 +169,7 @@ n개의 DNN \(F_{k \in 1..n} : \mathbf{x} \rightarrow \mathbf{y}\) 가 있다고
 ![Algorithm 1](/posts/DeepXplore/algorithm1.png)
 
 ## Implementation
-우리는 TensorFlow 1.0.1 [5]과 Keras 2.0.3 [16] DL 프레임워크를 사용하여 DeepXplore를 구현했습니다.
+우리는 TensorFlow 1.0.1과 Keras 2.0.3 DL 프레임워크를 사용하여 DeepXplore를 구현했습니다.
 우리의 구현은 약 7,086줄의 Python 코드로 구성되어 있습니다.
 우리의 코드는 TensorFlow/Keras를 기반으로 하지만, 이러한 프레임워크에 대한 수정은 필요하지 않습니다.
 우리는 공동 최적화 과정에서 TensorFlow의 효율적인 그래디언트 계산 구현을 활용합니다.
