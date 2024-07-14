@@ -16,4 +16,9 @@ url = "/archives/"
           block = [['\[', '\]'], ['$$', '$$']]
           inline = [['\(', '\)']]
 [params]
+  [params.homeInfoParams]
+  Title = "Hi there 👋 "
+  Content = "📧 : y30n9ju1v [at] 9mail [dot] com"
+
   math = true
+
