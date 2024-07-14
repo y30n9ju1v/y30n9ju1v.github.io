@@ -17,6 +17,7 @@ url = "/archives/"
           inline = [['\(', '\)']]
 [params]
   math = true
+  ShowToc = true
 
   [params.homeInfoParams]
   Title = "Hi there 👋 "
