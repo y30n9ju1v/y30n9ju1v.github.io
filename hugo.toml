@@ -18,6 +18,8 @@ url = "/archives/"
 [params]
   math = true
   ShowToc = true
+  ShowBreadCrumbs = true
+  ShowPostNavLinks = true
 
   [params.homeInfoParams]
   Title = "Hi there 👋 "
