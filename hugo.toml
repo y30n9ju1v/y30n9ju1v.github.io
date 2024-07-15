@@ -18,6 +18,7 @@ url = "/archives/"
 [params]
   math = true
   ShowToc = true
+  comments = true
   ShowBreadCrumbs = true
   ShowPostNavLinks = true
 
