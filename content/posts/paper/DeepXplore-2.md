@@ -16,7 +16,7 @@ DeepXplore는 라벨이 없는 테스트 입력을 시드로 받아 많은 수�
 이 두 목표는 DNN을 철저히 테스트하고 다양한 잘못된 코너 케이스 동작을 찾는 데 매우 중요합니다.
 높은 뉴런 커버리지만으로는 많은 잘못된 동작을 유발하지 못할 수 있으며, 다른 동작만 최대화하면 동일한 근본 원인의 다양한 표현을 식별하는 데 그칠 수 있습니다.
 
-![Figure 5](/posts/DeepXplore/figure5.png)
+![Figure 5](/posts/paper/DeepXplore/figure5.png)
 
 DeepXplore는 또한 공동 최적화 과정의 일환으로 사용자 정의 도메인별 제약 조건을 적용하는 것을 지원합니다.
 예를 들어, 이미지 픽셀의 값은 0과 255 사이여야 합니다.
@@ -40,7 +40,7 @@ DeepXplore는 사전 훈련된 DNN에서 작동하도록 설계되었습니다.
 또한, 시드 테스트 입력으로 빨간색 자동차 이미지를 가지고 있다고 가정해 봅시다.
 두 DNN 모두 그림 6a와 같이 이 이미지를 자동차로 식별합니다.
 
-![Figure 6](/posts/DeepXplore/figure6.png)
+![Figure 6](/posts/paper/DeepXplore/figure6.png)
 
 DeepXplore는 입력, 즉 빨간색 자동차 이미지를 수정하여 한 DNN이 이를 자동차로 분류할 확률을 최대화하면서 다른 DNN이 자동차로 분류할 확률을 최소화함으로써 차별적 동작을 찾을 가능성을 극대화하려고 합니다.
 DeepXplore는 또한 은닉층의 비활성 뉴런을 활성화(즉, 뉴런 출력이 특정 임계값보다 높아짐)하여 가능한 한 많은 뉴런을 커버하려고 합니다.
@@ -55,7 +55,7 @@ DeepXplore는 또한 은닉층의 비활성 뉴런을 활성화(즉, 뉴런 출�
 그래디언트가 목표(예: 차이 유발 입력 찾기)를 향한 대략적인 방향을 제공하지만, 가장 빠른 수렴을 보장하지는 않는다는 점을 주의하십시오.
 따라서 그림 7에 나와 있듯이, 그래디언트 상승 과정은 종종 목표에 도달하기 위한 직선 경로를 따르지 않습니다.
 
-![Figure 7](/posts/DeepXplore/figure7.png)
+![Figure 7](/posts/paper/DeepXplore/figure7.png)
 
 ## 4. Methodology
 이 섹션에서는 우리의 알고리즘에 대한 상세한 기술 설명을 제공합니다.
@@ -79,7 +79,7 @@ DeepXplore는 또한 은닉층의 비활성 뉴런을 활성화(즉, 뉴런 출�
 실제로 뉴런 커버리지가 어떻게 계산되는지 보여주기 위해, 그림 4b에 표시된 DNN을 고려해 봅시다.
 그림 4b에 나와 있는 빨간색 자동차 입력 이미지에 대한 뉴런 커버리지(임계값 0)는 5/8 = 0.625가 될 것입니다.
 
-![Figure 4](/posts/DeepXplore/figure4.png)
+![Figure 4](/posts/paper/DeepXplore/figure4.png)
 
 **Gradient**
 DNN의 뉴런 출력에 대한 입력의 그래디언트 또는 전진 도함수는 딥 러닝 문헌에서 잘 알려져 있습니다.
@@ -166,7 +166,7 @@ n개의 DNN \(F_{k \in 1..n} : \mathbf{x} \rightarrow \mathbf{y}\) 가 있다고
 (4) \( t \)는 각 개별 뉴런이 활성화되었는지 여부를 결정하는 임계값입니다.
 \( t \)가 증가할수록 뉴런을 활성화하는 입력을 찾는 것이 점점 더 어려워집니다.
 
-![Algorithm 1](/posts/DeepXplore/algorithm1.png)
+![Algorithm 1](/posts/paper/DeepXplore/algorithm1.png)
 
 ## Implementation
 우리는 TensorFlow 1.0.1과 Keras 2.0.3 DL 프레임워크를 사용하여 DeepXplore를 구현했습니다.
