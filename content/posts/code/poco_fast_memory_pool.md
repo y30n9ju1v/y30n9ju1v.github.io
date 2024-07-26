@@ -243,8 +243,8 @@ private:
 
 public:
 	FastMemoryPool() {
-        static_assert(sizeof(T) > sizeof(void*),
-                "T must be larger than pointer size");
+        static_assert(sizeof(T) >= sizeof(void*),
+                "T must be same or larger than pointer size");
 
         _blocks = new Block[N];
         _blocks[N - 1]._memory.next = nullptr;
@@ -253,7 +253,8 @@ public:
 
 	~FastMemoryPool() { delete[] _blocks; }
 
-	void* get() {
+	template <typename P>
+	P* get() {
 		Block* ret;
 		{
 			std::scoped_lock<std::mutex> l(_mutex);
@@ -263,7 +264,7 @@ public:
 			_firstBlock = _firstBlock->_memory.next;
 		}
 		--_available;
-		return ret;
+		return reinterpret_cast<P*>(ret);
 	}
 
 	template <typename P>
