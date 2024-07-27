@@ -222,7 +222,7 @@ private:
 #include <mutex>
 
 template <typename T, int N = 4>
-class FastMemoryPool
+class FastMemoryPool final
 {
 private:
 	class Block
@@ -246,12 +246,12 @@ public:
         static_assert(sizeof(T) >= sizeof(void*),
                 "T must be same or larger than pointer size");
 
-        _blocks = new Block[N];
-        _blocks[N - 1]._memory.next = nullptr;
-        _firstBlock = _blocks;
+        _blockList = new Block[N];
+        _blockList[N - 1]._memory.next = nullptr;
+        _firstBlock = _blockList;
 	}
 
-	~FastMemoryPool() { delete[] _blocks; }
+	~FastMemoryPool() { delete[] _blockList; }
 
 	template <typename P>
 	P* get() {
@@ -282,9 +282,9 @@ private:
 	FastMemoryPool(const FastMemoryPool&);
 	FastMemoryPool& operator = (const FastMemoryPool&);
 
-	Block* _blocks{nullptr};
+	mutable std::mutex _mutex;
+	Block* _blockList{nullptr};
 	Block* _firstBlock{nullptr};
     std::atomic<int> _available{N};
-	mutable std::mutex _mutex;
 };
 ~~~
