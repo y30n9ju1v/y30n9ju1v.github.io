@@ -1,7 +1,7 @@
 +++
 title = 'New Operator in C++'
 date = 2024-07-27T10:07:29+09:00
-draft = true
+draft = false
 +++
 
 문득 c++에서 operator new[]의 동작이 궁금해 졌습니다.
