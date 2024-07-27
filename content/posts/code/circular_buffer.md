@@ -1,7 +1,7 @@
 +++
 title = 'Circular Buffer'
 date = 2024-07-27T08:53:08+09:00
-draft = false
+draft = true
 +++
 
 지난번에 작성한 [FastMemoryPool]({{< ref "fast_memory_pool" >}}) 을 사용하여 센서에서 들어오는 데이터를 버퍼링하는 클래스를 작성하였습니다. 
@@ -42,3 +42,6 @@ private:
     FastMemoryPool<T, N> memoryPool;
 };
 ~~~
+
+문제가 발생했습니다.
+private 멤버 변수 memoryQueue는 std::queue 타입인데 공간을 미리 할당해 놓는 기능을 지원하지 않습니다.
