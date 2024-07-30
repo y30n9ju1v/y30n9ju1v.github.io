@@ -1,5 +1,5 @@
 +++
-title = 'Verification and Validation'
+title = 'Verification 과 Validation 차이'
 date = 2024-07-30T20:55:42+09:00
 draft = false
 +++
