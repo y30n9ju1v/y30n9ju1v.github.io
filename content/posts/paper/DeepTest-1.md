@@ -270,3 +270,23 @@ Here, λ is a configurable parameter that allows us to strike a balance between 
 위의 식은 변환된 이미지를 입력으로 사용할 때 모델이 생성하는 오류가 원래 이미지 세트에서 생성된 MSE의 λ 배 범위 내에 있어야 함을 가정합니다.
 여기서 λ는 거짓 양성과 거짓 음성 사이의 균형을 맞추기 위해 조정할 수 있는 매개변수입니다.
 
+## 4. IMPLEMENTATION
+Autonomous driving DNNs. We evaluate our techniques on three DNN models that won top positions in the Udacity self-driving challenge [15].
+We choose these three models as their implementations are based on the Keras framework [34] that our current prototype of DeepTest supports. The details of the DNN models and dataset are summarized in Table 3.
+
+자율 주행 딥러닝 네트워크(DNN). 우리는 Udacity 자율 주행 챌린지에서 상위 순위를 차지한 세 가지 DNN 모델을 대상으로 우리의 기술을 평가합니다 [15].
+이 세 가지 모델을 선택한 이유는 현재 DeepTest 프로토타입이 지원하는 Keras 프레임워크 [34]를 기반으로 구현되었기 때문입니다. DNN 모델과 데이터셋의 세부 사항은 표 3에 요약되어 있습니다.
+
+![Table 3](/posts/paper/DeepTest/table3.png)
+
+Image transformations.
+In the experiments for RQ2 and RQ3, we leverage seven different types of simple image transformations: translation, scaling, horizontal shearing, rotation, contrast adjustment, brightness adjustment, and blurring.
+We use OpenCV to implement these transformations [7].
+For RQ2 and RQ3 described in Section 5, we use 10 parameters for each transformation as shown in Table 4.
+
+이미지 변환.
+RQ2 및 RQ3 실험에서는 일곱 가지 간단한 이미지 변환을 활용합니다: 평행 이동, 스케일링, 수평 기울이기, 회전, 대비 조정, 밝기 조정 및 블러링.
+이러한 변환은 OpenCV를 사용하여 구현합니다 [7].
+섹션 5에 설명된 RQ2 및 RQ3의 경우, 각 변환에 대해 표 4에 나타난 10개의 매개변수를 사용합니다.
+
+![Table 4](/posts/paper/DeepTest/table4.png)
