@@ -1,10 +1,10 @@
 +++
-title = 'DeepTest: Automated Testing of Deep-Neural-Network-driven Autonomous Cars 2'
+title = 'DeepTest 2'
 date = 2024-07-31T17:45:38+09:00
 draft = false
 +++
 
-이 글은 https://arxiv.org/abs/1708.08559 을 번역 및 요약한 글입니다.
+이 글은 DeepTest: Automated Testing of Deep-Neural-Network-driven Autonomous Cars (https://arxiv.org/abs/1708.08559)을 번역 및 요약한 글입니다.
 [DeepTest 1]({{< ref "DeepTest-1" >}}) 에서 이어집니다.
 
 ## 5. RESULTS

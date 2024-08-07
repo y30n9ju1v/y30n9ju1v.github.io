@@ -40,7 +40,7 @@ draft = false
 결과는 서로 다른 클래스의 입력이 동일한 클래스의 입력보다 더 많은 고유 뉴런을 활성화하는 경향이 있음을 보여줍니다.
 두 가지 발견 모두 뉴런 커버리지가 입력에 의해 실행되는 DNN 규칙의 수와 유형을 잘 추정할 수 있음을 확인시켜줍니다.
 
-**Neuron coverage vs. code coverage**
+**Neuron coverage vs code coverage**
 우리는 § 6.1에서 설명한 대로 무작위로 선택된 10개의 테스트 샘플을 사용하여 테스트 DNN을 평가함으로써 동일한 수의 입력으로 달성된 코드 커버리지와 뉴런 커버리지를 비교합니다.
 DNN의 코드 커버리지는 학습 및 테스트 과정에서 사용된 파이썬 코드의 라인 커버리지 측면에서 측정합니다.
 뉴런 커버리지에서 임계값 t를 0.75로 설정하여, 뉴런이 적어도 하나의 입력에 대해 출력이 0.75를 초과하는 경우에만 해당 뉴런이 커버된 것으로 간주합니다.
@@ -56,7 +56,7 @@ DNN의 코드 커버리지는 학습 및 테스트 과정에서 사용된 파이
 
 ![Table 6](/posts/paper/DeepXplore/table6.png)
 
-**Effect of neuron coverage on the difference-inducing in- puts found by DeepXplore**
+**Effect of neuron coverage on the difference-inducing inputs found by DeepXplore**
 공동 최적화 과정에서 뉴런 커버리지를 극대화하는 주요 목표는 다양한 차이 유발 입력을 생성하는 것입니다(§ 3에서 논의됨).
 이 실험에서는 뉴런 커버리지가 이 목표를 달성하는 데 얼마나 효과적인지를 평가합니다.
 
