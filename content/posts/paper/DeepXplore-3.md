@@ -1,10 +1,10 @@
 +++
 title = 'DeepXplore 3'
-date = 2024-07-14T12:10:55+09:00
+date = 2024-08-07T12:10:55+09:00
 draft = false 
 +++
 
-이 글은 DeepXplore: Automated Whitebox Testing of Deep Learning Systems (https://arxiv.org/abs/1705.06640)을 번역한 글입니다.
+이 글은 DeepXplore: Automated Whitebox Testing of Deep Learning Systems (https://arxiv.org/abs/1705.06640)을 번역 및 요약한 글입니다.
 [DeepXplore 2]({{< ref "DeepXplore-2" >}}) 에서 이어집니다.
 
 ## 7. Results
