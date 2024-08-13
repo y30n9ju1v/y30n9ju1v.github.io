@@ -160,9 +160,9 @@ Thus, we further use a filtration criteria as defined in Equation 3 to identify 
 Table 7 shows the number of such erroneous cases by varying two thresholds: ε and λ—a higher value of λ and lower value of ε makes the system report fewer bugs and vice versa.
 For example, with a λ of 5 and ε of 0.03, we report 330 violations for simple transformations.
 
-표 7은 두 가지 임계값 \epsilon과 \lambda를 변경하여 이러한 오류 사례의 수를 보여줍니다.
-\lambda 값이 높고 \epsilon 값이 낮을수록 시스템은 더 적은 버그를 보고하며, 그 반대도 마찬가지입니다.
-예를 들어, \lambda = 5와 \epsilon = 0.03인 경우 간단한 변환에 대해 330개의 위반을 보고합니다.
+표 7은 두 가지 임계값 \(\epsilon\)과 \(\lambda\)를 변경하여 이러한 오류 사례의 수를 보여줍니다.
+\(\lambda\) 값이 높고 \(\epsilon\) 값이 낮을수록 시스템은 더 적은 버그를 보고하며, 그 반대도 마찬가지입니다.
+예를 들어, \(\lambda\) = 5와 \(\epsilon\) = 0.03인 경우 간단한 변환에 대해 330개의 위반을 보고합니다.
 
 ![Table 7](/posts/paper/DeepTest/table7.png)
 
@@ -171,7 +171,7 @@ Interestingly, some models are more prone to erroneous behaviors for some transf
 For example, Rambo produces 23 erroneous cases for shear, while the other two models do not show any such cases.
 Similarly, DeepTest finds 650 instances of erroneous behavior in Chauffeur for rain but only 64 and 27 for Epoch and Rambo respectively. 
 
-표 8은 표 7에서 강조된 \lambda = 5 및 \epsilon = 0.03에 대한 다양한 모델의 결과를 더욱 상세히 설명합니다.
+표 8은 표 7에서 강조된 \(\lambda\) = 5 및 \(\epsilon\) = 0.03에 대한 다양한 모델의 결과를 더욱 상세히 설명합니다.
 흥미롭게도, 일부 모델은 특정 변환에 대해 다른 모델보다 오류 동작을 더 많이 발생시킵니다.
 예를 들어, Rambo 모델은 기울임(shear)에 대해 23개의 오류 사례를 발생시키는 반면, 다른 두 모델은 이러한 사례를 전혀 보여주지 않습니다.
 마찬가지로, DeepTest는 비(rain)에 대해 Chauffeur 모델에서 650개의 오류 동작을 찾았지만 Epoch와 Rambo에서는 각각 64개와 27개만 찾았습니다.

@@ -52,7 +52,7 @@ Next, DNNs are fundamentally different from the models (e.g., finite state machi
 Unlike the traditional models, finding inputs that will result in high model coverage in a DNN is significantly more challenging due to the non-linearity of the functions modeled by DNNs.
 Moreover, the Satisfiability Modulo Theory (SMT) solvers that have been quite successful at generating high-coverage test inputs for traditional software are known to have trouble with formulas involving floating-point arithmetic and highly nonlinear constraints, which are commonly used in DNNs.
 
-분기/코드 커버리지를 최대화하여 프로그램 로직의 다양한 부분을 체계적으로 탐색하는 전통적인 소프트웨어 테스트 기술은 제어 흐름을 사용하여 로직이 인코딩되지 않기 때문에 DNN 기반 소프트웨어에는 그다지 유용하지 않습니다 [70].
+분기/코드 커버리지를 최대화하여 프로그램 로직의 다양한 부분을 체계적으로 탐색하는 전통적인 소프트웨어 테스트 기술은 제어 흐름을 사용하여 로직이 인코딩되지 않는 DNN 기반 소프트웨어에는 그다지 유용하지 않습니다 [70].
 다음으로, DNN은 전통적인 프로그램을 모델링하고 테스트하는 데 사용되는 모델(예: 유한 상태 기계)과 근본적으로 다릅니다.
 전통적인 모델과 달리, DNN에서 높은 모델 커버리지를 달성할 입력을 찾는 것은 DNN이 모델링하는 함수의 비선형성 때문에 훨씬 더 어렵습니다.
 게다가, 전통적인 소프트웨어에 대해 높은 커버리지 테스트 입력을 생성하는 데 성공적인 Satisfiability Modulo Theory(SMT) 솔버는 부동 소수점 산술 및 DNN에서 일반적으로 사용되는 고도의 비선형 제약 조건을 포함하는 수식에서 문제를 겪는 것으로 알려져 있습니다.
@@ -163,6 +163,8 @@ We treat each neuron in the unrolled layers as a separate individual neuron for 
 
 루프가 있는 RNN/LSTM의 경우 중간 뉴런들이 펼쳐져서 일련의 출력을 생성합니다 (그림 3.2).
 뉴런 커버리지 계산을 위해, 펼쳐진 각 층의 뉴런을 별개의 개별 뉴런으로 취급합니다.
+
+![Figure 3](/posts/paper/DeepTest/figure3.png)
 
 ### 3.2 Increasing Coverage with Synthetic Images
 Generating arbitrary inputs that maximize neuron coverage may not be very useful if the inputs are not likely to appear in the real-world even if these inputs potentially demonstrate buggy behaviors.

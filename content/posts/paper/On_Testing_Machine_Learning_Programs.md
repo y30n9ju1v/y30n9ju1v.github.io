@@ -131,12 +131,12 @@ In fact, many adversarial models that generate synthetic images often apply only
 
 ##### B: White-box testing approaches for ML models.
 
-Pei et al. proposed DeepXplore [15], the first white-box approach for systematically testing deep learning models.
+Pei et al. proposed [DeepXplore]({{< ref "DeepXplore-1" >}}) [15], the first white-box approach for systematically testing deep learning models.
 DeepXplore is capable of automatically identifying erroneous behaviors in deep learning models without the need of manual labelling.
 The technique makes use of a new metric named neuron coverage, which estimates the amount of neural network’s logic explored by a set of inputs.
 This neuron coverage metric computes the rate of activated neurons in the neural network. 
 
-Pei et al.은 딥 러닝 모델을 체계적으로 테스트하기 위한 최초의 화이트박스 접근 방식인 DeepXplore를 제안했습니다 [15].
+Pei et al.은 딥 러닝 모델을 체계적으로 테스트하기 위한 최초의 화이트박스 접근 방식인 [DeepXplore]({{< ref "DeepXplore-1" >}}) 를 제안했습니다 [15].
 DeepXplore는 수동 라벨링 없이 딥 러닝 모델의 오류 동작을 자동으로 식별할 수 있습니다.
 이 기술은 뉴런 커버리지라는 새로운 메트릭을 사용하며, 이는 입력 세트에 의해 탐색된 신경망의 논리 양을 추정합니다.
 이 뉴런 커버리지 메트릭은 신경망에서 활성화된 뉴런의 비율을 계산합니다.
@@ -153,11 +153,11 @@ Applying differential testing to deep learning with the aim of finding a large n
 DeepXplore는 동일한 문제를 해결하는 유사한 딥 뉴럴 네트워크 그룹을 활용합니다.
 뉴런 커버리지를 최대화하면서 차이 유발 입력을 많이 찾는 것을 목표로 하는 딥 러닝에 차별적 테스트를 적용하는 것은 공동 최적화 문제로 공식화될 수 있습니다.
 
-Ma et al.[17] generalized the concept of neuron coverage by proposing DeepGauge, a set of multi-granularity testing criteria for Deep Learning systems.
+Ma et al.[17] generalized the concept of neuron coverage by proposing [DeepGauge]({{< ref "DeepGauge-1" >}}), a set of multi-granularity testing criteria for Deep Learning systems.
 DeepGauge measures the testing quality of test data (whether it being genuine or synthetic) in terms of its capacity to trigger both major function regions as well as the corner-case regions of DNNs(Deep Neural Networks).
 It separates DNNs testing coverage in two different levels.
 
-Ma et al.[17]은 DeepGauge라는 딥 러닝 시스템을 위한 다중 세분화 테스트 기준 세트를 제안하여 뉴런 커버리지 개념을 일반화했습니다.
+Ma et al.[17]은 [DeepGauge]({{< ref "DeepGauge-1" >}}) 라는 딥 러닝 시스템을 위한 다중 세분화 테스트 기준 세트를 제안하여 뉴런 커버리지 개념을 일반화했습니다.
 DeepGauge는 테스트 데이터(진짜든 합성이든)의 테스트 품질을 DNN(딥 뉴럴 네트워크)의 주요 기능 영역뿐만 아니라 코너 케이스 영역을 유발하는 능력 측면에서 측정합니다.
 이는 DNN 테스트 커버리지를 두 가지 다른 수준으로 나눕니다.
 
@@ -177,13 +177,13 @@ Therefore, a higher coverage of their criteria potentially plays a substantial r
 경험적 평가에서 Ma et al.은 DeepGauge가 실용적인 크기의 DNN 모델(VGG-19, ResNet-50 등)에 잘 확장되며, 네 가지 최첨단 적대적 데이터 생성 알고리즘(Fast Gradient Sign Method (FGSM) [10], Basic Iterative Method (BIM) [18], Jacobian-based Saliency Map Attack (JSMA) [19], Carlini/Wagner attack (CW) [13])에 의해 도입된 오류 동작을 포착할 수 있음을 보여주었습니다.
 따라서 그들의 기준에 대한 더 높은 커버리지는 DNN에서 오류 감지를 개선하는 데 상당한 역할을 할 수 있습니다.
 
-Building on the pioneer work of Pei et al., Tian et al. proposed DeepTest [20], a tool for automated testing of DNN-driven autonomous cars.
+Building on the pioneer work of Pei et al., Tian et al. proposed [DeepTest]({{< ref "DeepTest-1" >}}) [20], a tool for automated testing of DNN-driven autonomous cars.
 In DeepTest, Tian et al. expanded the notion of neuron coverage proposed by Pei et al. for CNNs (Convolutional Neural Networks), to other types of neural networks, including RNNs (Recurrent Neural Networks).
 Moreover, instead of randomly injecting perturbations in input image data, DeepTest focuses on generating realistic synthetic images by applying realistic image transformations like changing brightness, contrast, translation, scaling, horizontal shearing, rotation, blurring, fog effect, and rain effect, etc.
 They also mimic different real-world phenomena like camera lens distortions, object movements, different weather conditions, etc.
 They argue that generating inputs that maximize neuron coverage cannot test the robustness of trained DNN unless the inputs are likely to appear in the real-world.
 
-Pei et al.의 선구적인 작업을 기반으로 Tian et al.은 DNN 기반 자율 주행 자동차의 자동 테스트를 위한 도구인 DeepTest를 제안했습니다 [20].
+Pei et al.의 선구적인 작업을 기반으로 Tian et al.은 DNN 기반 자율 주행 자동차의 자동 테스트를 위한 도구인 [DeepTest]({{< ref "DeepTest-1" >}}) 를 제안했습니다 [20].
 DeepTest에서 Tian et al.은 Pei et al.이 CNN(Convolutional Neural Networks)을 위해 제안한 뉴런 커버리지 개념을 RNN(Recurrent Neural Networks)을 포함한 다른 유형의 신경망으로 확장했습니다.
 또한 입력 이미지 데이터에 무작위로 변동을 주입하는 대신, DeepTest는 밝기, 대비, 이동, 스케일링, 수평 전단, 회전, 흐림, 안개 효과, 비 효과 등과 같은 현실적인 이미지 변환을 적용하여 현실적인 합성 이미지를 생성하는 데 중점을 둡니다.
 또한 카메라 렌즈 왜곡, 객체 이동, 다양한 날씨 조건 등 다양한 실제 현상을 모방합니다.
