@@ -43,7 +43,10 @@ draft = false
 
 \[{\displaystyle {\begin{aligned}{\frac {1}{n}}\sum _{i=1}^{n}R_{i}S_{i}-{\overline {R}}{\overline {S}}&={\frac {1}{n}}\sum _{i=1}^{n}{\frac {1}{2}}(R_{i}^{2}+S_{i}^{2}-d_{i}^{2})-{\overline {R}}^{2}\\&={\frac {1}{2}}{\frac {1}{n}}\sum _{i=1}^{n}R_{i}^{2}+{\frac {1}{2}}{\frac {1}{n}}\sum _{i=1}^{n}S_{i}^{2}-{\frac {1}{2n}}\sum _{i=1}^{n}d_{i}^{2}-{\overline {R}}^{2}\\&=({\frac {1}{n}}\sum _{i=1}^{n}R_{i}^{2}-{\overline {R}}^{2})-{\frac {1}{2n}}\sum _{i=1}^{n}d_{i}^{2}\\&=\sigma _{R}^{2}-{\frac {1}{2n}}\sum _{i=1}^{n}d_{i}^{2}\\&=\sigma _{R}\sigma _{S}-{\frac {1}{2n}}\sum _{i=1}^{n}d_{i}^{2}\\\end{aligned}}}\]
 
-이제 위에서 구한 식을 분자에 넣으면 전체 식은 아래와 같이 정리 될 수 있습니다.
+\(\sigma _{R}^{2}=\sigma _{S}^{2}=\mathrm {Var} (U)=\mathbb {E} [U^{2}]-\mathbb {E} [U]^{2}\) 인데
+\(\mathbb{E}[U^2] : \text{Var}(U) = \frac{(n+1)(2n+1)}{6}\) 이고 \(\mathbb{E}[U] : (\mathbb{E}[U])^2 = \left(\frac{n+1}{2}\right)^2 = \frac{(n+1)^2}{4}\)
+
+이제 위에서 구한 식을 넣으면 전체 식은 아래와 같이 정리 될 수 있습니다.
 
 \[{\displaystyle r_{s}={\frac {\sigma _{R}\sigma _{S}-{\frac {1}{2n}}\sum _{i=1}^{n}d_{i}^{2}}{\sigma _{R}\sigma _{S}}}=1-{\frac {\sum _{i=1}^{n}d_{i}^{2}}{2n\cdot {\frac {n^{2}-1}{12}}}}=1-{\frac {6\sum _{i=1}^{n}d_{i}^{2}}{n(n^{2}-1)}}}\]
 
