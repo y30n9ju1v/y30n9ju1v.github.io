@@ -4,7 +4,7 @@ date = 2024-09-10T08:44:12+09:00
 draft = false
 +++
 
-이 글은 ISTQB의 한국어 실라버스를 참고하여 정리 요약한 글입니다.
+이 글은 ISTQB의 CTFL(Certified Tester Foundaton Level) 자격증을 준비하면서 한국어 실라버스를 참고하여 정리 요약한 글입니다.
 실라버스는 아래 링크에서 다운 받을 수 있습니다.
 
 http://www.kstqb.org/board_skin/board_view.asp?idx=1902&page=1&bbs_code=4&key=0&word=&etc=
