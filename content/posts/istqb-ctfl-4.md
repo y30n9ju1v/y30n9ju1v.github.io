@@ -1,5 +1,5 @@
 +++
-title = 'Istqb Ctfl 4장'
+title = 'ISTQB CTFL 4장'
 date = 2024-09-14T11:59:30+09:00
 draft = false
 +++
