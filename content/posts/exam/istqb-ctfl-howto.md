@@ -7,13 +7,13 @@ draft = false
 ### 시험 결과
 저는 24년 9월에 ISTQB CTFL 시험을 보았고 최종적으로 합격하였습니다.
 
-![](/posts/istqb-ctfl-cert.png)
+![](/posts/exam/istqb-ctfl-cert.png)
 
 합격하면 합격증서를 우체국 등기로 보내주는데 잃어버리면 안됩니다.
 
 시험 성적은 총 40점 만점에 33점을 맞았습니다.
 
-![](/posts/istqb-ctfl-result.png)
+![](/posts/exam/istqb-ctfl-result.png)
 
 이에 기억을 남기기 위해 합격 후기 및 공부 방법을 작성합니다.
 
