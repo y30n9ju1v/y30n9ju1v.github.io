@@ -14,12 +14,10 @@ Very simple to understand, deterministic, and easy to write a test case for.
 전통적인 소프트웨어의 경우, 명세와 구현의 관계가 명확하게 정의되어 있습니다.
 예를 들어, “사용자가 올바른 사용자 이름과 비밀번호를 입력하면 성공적으로 로그인된다”는 식으로 단순하고 결정론적이며 테스트 사례를 작성하기도 쉽습니다.
 
-ML-based systems are quite different.
 Instead of clearly defined inputs and logical flows based on explicit programming statements, a ML-based system is based on potentially huge input spaces with probabilistic outcomes from largely black-box components (models).
 In this article, I take a look at metamorphic testing, which is a technique that has become increasingly popular to address some of the ML-based systems testing challenge.
 
-ML 기반 시스템은 전통적인 소프트웨어와 매우 다릅니다.
-명확한 입력과 논리적 흐름 대신, 잠재적으로 방대한 입력 공간과 블랙박스 모델에서 나오는 확률적 결과를 기반으로 합니다.
+명확한 입력과 논리적 흐름 대신, ML 기반 시스템은 잠재적으로 방대한 입력 공간과 블랙박스 모델에서 나오는 확률적 결과를 기반으로 합니다.
 이 글에서는 이러한 ML 기반 시스템 테스트 문제를 해결하기 위해 점점 더 인기를 얻고 있는 메타모픽 테스트 기법을 살펴봅니다.
 
 ![Figure 1](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig1.png)
@@ -27,15 +25,9 @@ These two images can be used to represent some metamorphic tests for a ML-system
 
 ## Metamorphic Testing
 Metamorphic Testing (MMT) was originally proposed quite a while back, at least up to (Chen1998).
-Having worked a long time with software testing research, I always viewed MMT as a curiosity with few real use cases.
-With ML-based systems, however, it seems to have found its niche nicely.
-
-메타모픽 테스트(MMT)는 원래 오래전에 제안된 기법으로, 최소한 (Chen1998) 시점까지 거슬러 올라갑니다.
-오랫동안 소프트웨어 테스트 연구를 해온 저로서는 MMT를 실제 사용 사례가 거의 없는 흥미로운 기법으로 여겼습니다.
-하지만 ML 기반 시스템에서는 MMT가 그만의 적절한 역할을 찾은 것으로 보입니다.
-
 The general idea of MMT is to describe the system functionality in terms of generic relations between inputs, the generic transformations of those inputs and their outputs, rather than as mappings of specific inputs to specific outputs.
 
+메타모픽 테스트(MMT)는 원래 오래전에 제안된 기법으로, 최소한 (Chen1998) 시점까지 거슬러 올라갑니다.
 MMT의 일반적인 아이디어는 시스템 기능을 특정 입력과 특정 출력 간의 매핑이 아닌, 입력과 입력 변환 및 출력 간의 일반적인 관계로 설명하는 것입니다.
 
 One typical example used for metamorphic testing in the past has been from testing search engines (e.g., Zhou2016).
@@ -78,11 +70,15 @@ The above is an example of what metamorphic testing refers to.
 You transform (morph) your inputs in some way, while at the same time defining a relation that should hold from the previous input (and its output) to the new morphed input (and its output).
 The key concepts / terms are:
 
-위 내용은 변형 테스트(metamorphic testing)의 예시입니다. 입력값을 어떤 방식으로 변형(변환)하고, 이전 입력(및 그 출력)과 새로운 변형된 입력(및 그 출력) 간의 관계를 정의하는 것입니다. 핵심 개념/용어는 다음과 같습니다:
+위 내용은 변형 테스트(metamorphic testing)의 예시입니다.
+입력값을 어떤 방식으로 변형(변환)하고, 이전 입력(및 그 출력)과 새로운 변형된 입력(및 그 출력) 간의 관계를 정의하는 것입니다.
+핵심 개념/용어는 다음과 같습니다:
 
 * **morph/transform**: 정의한 변형 관계가 유지되도록 시드 입력을 수정하는 것
+
 * **metamorphic relation**: 정의된 입력 변형이 출력에 대해 알려진 또는 측정 가능한 영향을 미쳐야 합니다.
 변형 후 이 관계가 유지되는지 확인하는 것이 변형 테스트의 테스트 오라클입니다. (테스트 오라클은 테스트 결과에 대해 판정을 내리는 메커니즘을 나타내는 일반적인 용어입니다.)
+
 * **seed inputs**: 테스트의 초기 입력으로 사용되는 입력값으로, 변형될 대상입니다.
 시드 입력의 출력을 알고 있다면, 더 엄격한 관계(출력이 정확해야 함)를 정의할 수 있습니다.
 하지만 시드 출력이 없더라도 관계 검사를 정의할 수 있으며, 이 경우 출력이 정확한지는 모르지만 유사해야 한다는 식으로 다소 느슨하게 설정할 수 있습니다.
@@ -106,12 +102,10 @@ Makes great examples.
 For example, the Tesla Autopilot collects data (or did when I was writing this..) from several front-, rear-, and side-cameras, a radar, and 12 ultrasonic sensors.
 At each moment in time, it must be able to process all this data, along with previous measurements, and come up with reasoning fulfilling highest safety-standards.
 Such real-world input-spaces are incredibly large.
-Consider the two pictures I took just a few days apart, near my previous office:
 
-예를 들어, 테슬라 오토파일럿은 여러 개의 전방, 후방, 측면 카메라, 레이더, 그리고 12개의 초음파 센서로부터 데이터를 수집합니다(제가 이 글을 작성할 당시에도 그랬습니다).
+예를 들어, 예전 테슬라 오토파일럿은 여러 개의 전방, 후방, 측면 카메라, 레이더, 그리고 12개의 초음파 센서로부터 데이터를 수집합니다.
 매 순간 이 모든 데이터와 이전 측정값을 처리하여, 최고 수준의 안전 기준을 충족하는 판단을 내려야 합니다.
 이러한 현실 세계의 입력 공간은 엄청나게 넓습니다.
-며칠 전, 이전 사무실 근처에서 촬영한 두 장의 사진을 생각해 보세요.
 
 ![Figure 5](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig5.png)
 
@@ -151,7 +145,9 @@ In this case, the metamorphic attributes are:
 이 경우 변형 속성(metamorphic attributes)은 다음과 같습니다:
 
 * **Seed inputs**: 자동차 카메라에서 촬영한 실제 이미지  
+
 * **Metamorphic transformations**: 원본 이미지에 이동, 기울이기, 흐리기, 확대/축소, 줌, 안개 추가, 비 추가 등의 변환 적용  
+
 * **Metamorphic relation**: 변환된 후에도 동일한 입력 이미지에 대해 자율주행 시스템의 판단이 최소한의 차이를 보여야 함  
 
 The following illustrates this with some simple examples using the road image from outside my previous office.
@@ -174,9 +170,15 @@ And the same, but with the snowy ground (two transformations in the following co
 ![Figure 8](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig8.png)
 With and without snow, the path should be the same (or close).
 
-Of course, no-one would expect to manually create any large number of such images (or transformations). Instead, automated transformation tools can be used. For example, there are several libraries for image augmentation, originally created to help increase training dataset sizes in machine learning. The following illustrates a few such augmentations run on the original non-snow image from above:
+Of course, no-one would expect to manually create any large number of such images (or transformations).
+Instead, automated transformation tools can be used.
+For example, there are several libraries for image augmentation, originally created to help increase training dataset sizes in machine learning.
+The following illustrates a few such augmentations run on the original non-snow image from above:
 
-물론, 이렇게 많은 수의 이미지(또는 변환)를 수동으로 생성하는 것은 기대하기 어렵습니다. 대신, 자동화된 변환 도구를 사용할 수 있습니다. 예를 들어, 원래는 머신러닝에서 훈련 데이터셋 크기를 늘리기 위해 개발된 여러 이미지 증강 라이브러리가 있습니다. 아래는 눈이 없는 원본 이미지에 적용된 몇 가지 이미지 증강 예시를 보여줍니다:
+물론, 이렇게 많은 수의 이미지(또는 변환)를 수동으로 생성하는 것은 기대하기 어렵습니다.
+대신, 자동화된 변환 도구를 사용할 수 있습니다.
+예를 들어, 원래는 머신러닝에서 훈련 데이터셋 크기를 늘리기 위해 개발된 여러 이미지 증강 라이브러리가 있습니다.
+아래는 눈이 없는 원본 이미지에 적용된 몇 가지 이미지 증강 예시를 보여줍니다:
 
 ![Figure 9](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig9.png)
 Automatically generated augmentations / transformations of the earlier road image.
@@ -238,7 +240,9 @@ The system consists of multiple components:
 이 시스템은 다음과 같은 여러 구성 요소로 이루어져 있습니다:
 
 * **Object segmentation and bounds identification**: ROI 내 장애물을 찾고 식별  
+
 * **Object tracking**: 장애물의 움직임 추적  
+
 * **Sequential type fusion**: 시간 관련 데이터를 사용하여 장애물 유형을 시간에 따라 더 일관되게 분류하도록 하는 과정 (장애물 유형을 시간이 지남에 따라 부드럽게 조정)  
 
 The (Zhou2019) study focuses on metamorphic testing of the object identification component, specifically on robustness of classification vs misclassification in minor variations of the LIDAR point cloud.
@@ -262,7 +266,9 @@ The metamorphic relations and transformations in this case are:
 이 경우 변환 및 변환 관계는 다음과 같습니다:
 
 * **Metamorphic relation**: LIDAR 포인트 클라우드에 소량의 노이즈를 추가하기 전후로 동일한 장애물(객체)이 식별되어야 합니다.
+
 * **Transformation**: LIDAR 포인트 클라우드에 노이즈(포인트) 추가
+
 * **Seed inputs**: 자동차의 실제 LIDAR 측정값
 
 The following figure illustrates this type of metamorphic transformation, with the added points marked in red.
@@ -275,7 +281,8 @@ I simply added them in a random location, outside the ROI in this case, as this 
 
 The above is a very simple transformation and metamorphic relation to check, but I find often the simple ones work the best.
 
-위 내용은 매우 간단한 변환과 변환 관계로, 검증하기 쉽습니다. 하지만 종종 이러한 단순한 방법들이 가장 효과적이라는 것을 발견하곤 합니다.
+위 내용은 매우 간단한 변환과 변환 관계로, 검증하기 쉽습니다.
+하지만 종종 이러한 단순한 방법들이 가장 효과적이라는 것을 발견하곤 합니다.
 
 In summary, the MMT approach here takes existing LIDAR data, and adds some noise to it, in form of added LIDAR data points.
 In relation to the real world, such noise is described in (Zhou2019) as potentially insects, dust, or sensor noise.
@@ -292,12 +299,10 @@ The metamorphic experiments in (Zhou2019) show how adding a small number of poin
 As a result, (Zhou2019) report discussing with the Baidu Apollo team about their findings, getting acknowledgement for the issues, and how the Baidu team incorporated some of the test data into their training dataset.
 This can be a useful approach, since metamorphic testing can be seen as a way to generate new data that could be used for training.
 However, I think one should not simply discard the tests in either case, even if re-using some of the data for further ML-model training.
-More on this later.
 
 결과적으로, (Zhou2019)에서는 Baidu Apollo 팀과 그들의 연구 결과에 대해 논의하였고, 문제를 인정받았으며, Baidu 팀이 일부 테스트 데이터를 그들의 학습 데이터셋에 포함시켰음을 보고하고 있습니다.
 이는 변환 테스트를 새로운 데이터를 생성하는 방법으로 볼 수 있기 때문에 유용한 접근 방식이 될 수 있습니다.
 하지만, 일부 데이터를 추가적인 ML 모델 학습에 재사용하더라도 테스트 자체를 간과해서는 안 된다고 생각합니다.
-이에 대해서는 나중에 더 자세히 설명하겠습니다.
 
 ## Adversarial Inputs and Relations Across Time
 ### Adversarial Inputs
@@ -345,7 +350,8 @@ For other sensors (LIDAR etc), the input and thus output data would change in a 
 Following is an example of what might be two frames a short time apart.
 In a real video stream there would be numerous changes and images (and other inputs) per second:
 
-다음은 짧은 시간 간격으로 두 프레임이 있을 수 있는 예입니다. 실제 비디오 스트림에서는 매 초마다 많은 변화와 이미지(및 기타 입력)가 발생합니다.
+다음은 짧은 시간 간격으로 두 프레임이 있을 수 있는 예입니다.
+실제 비디오 스트림에서는 매 초마다 많은 변화와 이미지(및 기타 입력)가 발생합니다.
 
 ![Figure 12](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig12.png)
 
@@ -397,7 +403,8 @@ While automating metamorphic testing can be quite straightforward (once you figu
 For this reason, test selection in MMT is important, just as with other types of testing.
 
 변환 관계를 정의하고 변환을 구축하면 변환 테스트를 자동화하는 것은 비교적 간단하지만, 선택할 수 있는 잠재적 입력 공간, 변환의 수, 그리고 그들의 조합이 급격히 증가할 수 있습니다.
-이러한 이유로, 다른 테스트 유형과 마찬가지로 변환 테스트에서도 테스트 선택이 매우 중요합니다. 적절한 테스트 사례를 선택하는 것은 효율적인 검증을 위해 필수적입니다.
+이러한 이유로, 다른 테스트 유형과 마찬가지로 변환 테스트에서도 테스트 선택이 매우 중요합니다.
+적절한 테스트 사례를 선택하는 것은 효율적인 검증을 위해 필수적입니다.
 
 One approach to address this is presented in (Tian2018), which applies a greedy search strategy.
 Starting with a seed set of images and transformations, the transformations and their combinations are applied on the input (images), and the achieved neuron activation coverage is measured.
