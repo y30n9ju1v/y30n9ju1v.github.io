@@ -1,149 +1,171 @@
 +++
 title = 'Test Oracle'
-date = 2024-09-08T15:01:28+09:00
+date = 2024-10-16T15:01:28+09:00
 draft = false
 +++
 
-이 글은 https://en.wikipedia.org/wiki/Test_oracle 을 우선 번역하였고 추가적으로 이해한 내용을 추가, 수정하겠습니다.
+테스트 오라클(Test Oracle)은 소프트웨어 테스트에서 특정 입력에 대한 **예상 결과를 결정하거나**, 실제 결과가 올바른지 판단하는 기준이나 메커니즘을 말합니다.
 
-In software testing, a test oracle (or just oracle) is a provider of information that describes correct output based on the input of a test case.
-Testing with an oracle involves comparing actual results of the system under test (SUT) with the expected results as provided by the oracle.
+쉽게 말해, 테스트 대상 시스템(System Under Test, SUT)이 기대한 대로 동작하는지를 검증하는 역할을 합니다.
 
-소프트웨어 테스트에서 테스트 오라클(또는 간단히 오라클)은 테스트 케이스의 입력을 기반으로 올바른 출력을 설명하는 정보를 제공하는 도구입니다.
-오라클을 사용한 테스트는 테스트 대상 시스템(SUT, System Under Test)의 실제 결과를 오라클이 제공한 예상 결과와 비교하는 작업을 포함합니다.
+### **테스트 오라클의 필요성**
 
-The term "test oracle" was first introduced in a paper by William E. Howden.
-Additional work on different kinds of oracles was explored by Elaine Weyuker.
+- **결과 판단의 기준 제공**: 테스트를 실행한 후, 그 결과가 성공인지 실패인지를 판단하기 위해서는 기준이 필요합니다. 테스트 오라클은 이 판단 기준을 제공합니다.
+- **자동화 테스트 지원**: 자동화된 테스트에서는 사람이 직접 결과를 확인하기 어렵기 때문에, 오라클이 예상 결과를 자동으로 결정해줍니다.
 
-“테스트 오라클”이라는 용어는 William E. Howden의 논문에서 처음 도입되었습니다.
-다양한 종류의 오라클에 대한 추가 연구는 Elaine Weyuker에 의해 탐구되었습니다.
+### **테스트 오라클의 유형**
 
-An oracle can operate separately from the SUT; accessed at test runtime, or it can be used before a test is run with expected results encoded into the test logic.
+1. **명세 기반 오라클(Specification-based Oracle)**
+   - 소프트웨어의 명세서나 요구사항 문서를 기반으로 예상 결과를 결정합니다.
+2. **모델 기반 오라클(Model-based Oracle)**
+   - 시스템의 동작을 모델링하여, 모델의 결과와 실제 결과를 비교합니다.
+3. **휴리스틱 오라클(Heuristic Oracle)**
+   - 경험적인 규칙이나 패턴을 이용하여 결과의 올바름을 판단합니다.
+4. **랜덤 오라클(Random Oracle)**
+   - 임의의 입력에 대한 결과를 예측하지 않고, 특정 속성만 검증합니다.
+5. **인간 오라클(Human Oracle)**
+   - 전문가나 사용자가 직접 결과를 확인하고 판단합니다.
 
-오라클은 SUT와 별도로 작동할 수 있으며, 테스트 실행 시 접근하거나, 테스트 실행 전에 예상 결과를 테스트 논리에 인코딩하여 사용할 수 있습니다.
+### **테스트 오라클의 역할**
 
-Determining the correct output for a given input (and a set of program or system states) is known as the oracle problem or test oracle problem, which some consider a relatively hard problem, and involves working with problems related to controllability and observability.
+- **결함 발견**: 예상 결과와 실제 결과를 비교하여 결함을 발견합니다.
+- **품질 보증**: 소프트웨어가 요구사항을 충족하는지 확인하여 품질을 보증합니다.
+- **신뢰성 향상**: 정확한 오라클은 테스트의 신뢰성을 높입니다.
 
-주어진 입력(및 프로그램 또는 시스템 상태 집합)에 대한 올바른 출력을 결정하는 것을 오라클 문제 또는 테스트 오라클 문제라고 합니다.
-일부는 이를 비교적 어려운 문제로 간주하며, 이는 제어 가능성과 관찰 가능성과 관련된 문제들을 다루는 작업을 포함합니다.
+### **자율주행 시스템에서 적용 가능한 테스트 오라클**
 
-## Categories
+자율주행 시스템은 복잡한 센서 데이터 처리, 실시간 의사 결정, 그리고 안전-critical한 동작을 포함하는 복합 시스템입니다.
+이러한 시스템을 테스트하고 검증하기 위해서는 결과의 올바름을 판단할 수 있는 테스트 오라클이 필요합니다.
+아래에서는 자율주행 시스템에 적용할 수 있는 다양한 테스트 오라클과 그 예시에 대해 설명하겠습니다.
 
-### Specified
-A specified oracle is typically associated with formalized approaches to software modeling and software code construction.
-It is connected to formal specification, model-based design which may be used to generate test oracles, state transition specification for which oracles can be derived to aid model-based testing and protocol conformance testing, and design by contract for which the equivalent test oracle is an assertion.
+#### **1. 명세 기반 오라클(Specification-based Oracle)**
 
-명시적 오라클(specified oracle)은 일반적으로 소프트웨어 모델링과 소프트웨어 코드 구축의 형식화된 접근 방식과 관련이 있습니다.
-이는 형식 명세(formal specification), 테스트 오라클 생성을 위해 사용될 수 있는 모델 기반 설계(model-based design), 모델 기반 테스트(model-based testing)를 지원하기 위해 오라클을 도출할 수 있는 상태 전이 명세(state transition specification), 그리고 동등한 테스트 오라클이 단언문(assertion)인 계약에 의한 설계(design by contract)와 연결되어 있습니다.
+**예시: 차선 유지 기능 테스트**
 
-Specified test oracles have a number of challenges.
-Formal specification relies on abstraction, which in turn may naturally have an element of imprecision as all models cannot capture all behavior.
+- **명세서 내용**:
+  - 차량은 도로의 차선을 정확하게 인식하고, 차선 내에서 주행해야 합니다.
+  - 차선 변경 시에는 방향 지시등을 사용하고 주변 차량과 안전 거리를 유지해야 합니다.
+- **오라클의 역할**:
+  - 명세서에 따라 각 상황에서 차량이 취해야 할 정확한 행동을 정의합니다.
+- **테스트 수행 및 검증**:
+  - 다양한 도로 조건(곡선, 차선 마모, 날씨 등)에서 차량의 차선 유지 및 변경 동작을 관찰하고, 예상된 행동과 일치하는지 확인합니다.
 
-명시적 테스트 오라클은 여러 도전 과제를 가지고 있습니다.
-형식 명세는 추상화에 의존하는데, 이는 모든 모델이 모든 동작을 포착할 수 없기 때문에 자연스럽게 부정확한 요소를 포함할 수 있습니다.
+#### **2. 모델 기반 오라클(Model-based Oracle)**
 
-### Derived
-A derived test oracle differentiates correct and incorrect behavior by using information derived from artifacts of the system.
-These may include documentation, system execution results and characteristics of versions of the SUT.
-Regression test suites (or reports) are an example of a derived test oracle - they are built on the assumption that the result from a previous system version can be used as aid (oracle) for a future system version.
-Previously measured performance characteristics may be used as an oracle for future system versions, for example, to trigger a question about observed potential performance degradation.
-Textual documentation from previous system versions may be used as a basis to guide expectations in future system versions.
+**예시: 충돌 회피 시스템 테스트**
 
-유도된 테스트 오라클(derived test oracle)은 시스템의 아티팩트에서 도출된 정보를 사용하여 올바른 동작과 잘못된 동작을 구분합니다.
-이러한 아티팩트에는 문서, 시스템 실행 결과, SUT(System Under Test)의 버전 특성 등이 포함될 수 있습니다.
-예를 들어, 회귀 테스트 스위트(또는 보고서)는 유도된 테스트 오라클의 한 예입니다.
-이는 이전 시스템 버전의 결과를 향후 시스템 버전의 오라클로 사용할 수 있다는 가정에 기반합니다.
-이전에 측정된 성능 특성은 향후 시스템 버전의 오라클로 사용될 수 있으며, 예를 들어 잠재적인 성능 저하를 관찰하고 이에 대한 질문을 제기할 수 있습니다.
-이전 시스템 버전의 텍스트 문서는 향후 시스템 버전에서 기대치를 안내하는 기준으로 사용될 수 있습니다.
+- **모델**:
+  - 차량 주변의 객체(보행자, 다른 차량, 장애물 등)의 위치와 움직임을 모델링한 시뮬레이션 환경을 구축합니다.
+- **오라클의 역할**:
+  - 모델에 따라 예상되는 차량의 반응(감속, 방향 변경 등)을 정의합니다.
+- **테스트 수행 및 검증**:
+  - 시뮬레이션에서 다양한 충돌 위험 상황을 생성하고, 차량이 모델에 따른 적절한 반응을 보이는지 확인합니다.
 
-A pseudo-oracle falls into the category of derived test oracle.
-A pseudo-oracle, as defined by Weyuker, is a separately written program which can take the same input as the program or SUT so that their outputs may be compared to understand if there might be a problem to investigate.
+#### **3. 메타모픽 테스트 오라클(Metamorphic Testing Oracle)**
 
-유사 오라클(pseudo-oracle)은 유도된 테스트 오라클의 범주에 속합니다.
-Weyuker에 의해 정의된 유사 오라클은 프로그램이나 SUT와 동일한 입력을 받아 그 출력을 비교함으로써 조사할 수 있는 문제가 있는지 이해할 수 있는 별도로 작성된 프로그램입니다.
+**예시: 센서 데이터 처리 알고리즘 테스트**
 
-A partial oracle is a hybrid between specified test oracle and derived test oracle. It specifies important (but not complete) properties of the SUT. For example, metamorphic testing exploits such properties, called metamorphic relations, across multiple executions of the system.
+- **메타모픽 관계**:
+  - 센서 데이터에 일정한 변화를 주어도 시스템의 궁극적인 의사 결정은 일관성을 가져야 합니다.
+    - 예: 레이다 센서의 노이즈를 약간 증가시켜도 차량은 여전히 앞 차량을 정확하게 인식해야 합니다.
+- **오라클의 역할**:
+  - 원본 데이터와 변형된 데이터에 대한 시스템의 출력 결과를 비교하여 일관성을 평가합니다.
+- **테스트 수행 및 검증**:
+  - 다양한 노이즈, 해상도 변화 등을 적용한 센서 데이터를 생성하고, 시스템의 반응이 합리적인지 검증합니다.
 
-부분 오라클(partial oracle)은 명시적 테스트 오라클과 유도된 테스트 오라클의 혼합형입니다.
-이는 SUT의 중요한(하지만 완전하지는 않은) 속성을 명시합니다.
-예를 들어, 메타모픽 테스트는 시스템의 여러 실행에 걸쳐 메타모픽 관계라고 불리는 이러한 속성을 활용합니다.
+#### **4. 휴리스틱 오라클(Heuristic Oracle)**
 
-### Implicit
-An implicit test oracle relies on implied information and assumptions.
-For example, there may be some implied conclusion from a program crash, i.e. unwanted behavior - an oracle to determine that there may be a problem.
-There are a number of ways to search and test for unwanted behavior, whether some call it negative testing, where there are specialized subsets such as fuzzing.
+**예시: 에너지 효율 최적화 기능 테스트**
 
-암묵적 테스트 오라클(implicit test oracle)은 암묵적인 정보와 가정에 의존합니다.
-예를 들어, 프로그램이 충돌(crash)했을 때 암묵적으로 문제 발생을 의미하는 결론을 내릴 수 있습니다.
-이는 원하지 않는 동작이 있을 수 있다는 오라클 역할을 합니다.
-원하지 않는 동작을 검색하고 테스트하는 방법에는 여러 가지가 있으며, 그중 일부는 퍼징(fuzzing)과 같은 특수한 하위 집합을 포함하는 부정 테스트(negative testing)라고 불리기도 합니다.
+- **휴리스틱 기준**:
+  - 주행 상황에 따라 연료 소비나 배터리 사용량이 최적화되어야 합니다.
+- **오라클의 역할**:
+  - 일반적인 주행 패턴에서 기대되는 에너지 소비량을 기준으로 시스템의 효율성을 평가합니다.
+- **테스트 수행 및 검증**:
+  - 다양한 주행 조건에서 차량의 에너지 소비 데이터를 수집하고, 휴리스틱 기준과 비교하여 효율성을 판단합니다.
 
-There are limitations in implicit test oracles - as they rely on implied conclusions and assumptions.
-For example, a program or process crash may not be a priority issue if the system is a fault-tolerant system and so operating under a form of self-healing/self-management.
-Implicit test oracles may be susceptible to false positives due to environment dependencies.
-Property based testing relies on implicit oracles.
+#### **5. 시뮬레이션 기반 오라클(Simulation-based Oracle)**
 
-암묵적 테스트 오라클에는 제한 사항이 있습니다.
-이는 암시된 결론과 가정에 의존하기 때문입니다.
-예를 들어, 시스템이 장애 허용(fault-tolerant) 시스템이라서 자가 치유/자가 관리 형태로 운영되는 경우, 프로그램이나 프로세스의 충돌이 우선적인 문제가 아닐 수 있습니다.
-암묵적 테스트 오라클은 환경 의존성으로 인해 잘못된 양성(false positive)에 취약할 수 있습니다.
-속성 기반 테스트(property-based testing)는 암묵적 오라클에 의존합니다.
+**예시: 복잡한 도시 환경에서의 자율주행 테스트**
 
-### Human
-A human can act as a test oracle.
-This approach can be categorized as quantitative or qualitative.
-A quantitative approach aims to find the right amount of information to gather on a SUT (e.g., test results) for a stakeholder to be able to make decisions on fit-for-purpose or the release of the software.
-A qualitative approach aims to find the representativeness and suitability of the input test data and context of the output from the SUT.
-An example is using realistic and representative test data and making sense of the results (if they are realistic).
-These can be guided by heuristic approaches, such as gut instincts, rules of thumb, checklist aids, and experience to help tailor the specific combination selected for the SUT.
+- **시뮬레이션 환경 구축**:
+  - 실제 도시의 도로망, 교통 신호, 보행자 움직임 등을 포함한 고정밀 시뮬레이션 환경을 만듭니다.
+- **오라클의 역할**:
+  - 시뮬레이션에서 예상되는 정확한 교통 흐름과 규칙 준수 여부를 기준으로 시스템의 동작을 평가합니다.
+- **테스트 수행 및 검증**:
+  - 다양한 시나리오(러시아워, 우회로, 공사 구간 등)에서 차량의 주행을 시뮬레이션하고, 예상된 결과와 비교합니다.
 
-사람이 테스트 오라클로 역할할 수 있습니다.
-이러한 접근 방식은 정량적 또는 정성적으로 분류될 수 있습니다.
-정량적 접근 방식은 이해관계자가 소프트웨어의 목적 적합성 또는 릴리스 여부에 대한 결정을 내릴 수 있도록 SUT(System Under Test)에서 수집할 적절한 정보(예: 테스트 결과)의 양을 찾는 것을 목표로 합니다.
-정성적 접근 방식은 입력 테스트 데이터의 대표성(representativeness)과 SUT 출력의 적합성을 찾는 것을 목표로 합니다.
-예를 들어, 현실적이고 대표적인 테스트 데이터를 사용하여 결과가 현실적인지 이해하는 것입니다.
-이러한 접근 방식은 직관(gut instincts), 경험 규칙(rules of thumb), 체크리스트 도구, 경험과 같은 휴리스틱 접근법에 의해 안내되어 SUT에 적합한 특정 조합을 맞춤화하는 데 도움이 될 수 있습니다.
+#### **6. 통계적 오라클(Statistical Oracle)**
 
-## Examples
-Test oracles are most commonly based on specifications and documentation.
-A formal specification used as input to model-based design and model-based testing would be an example of a specified test oracle.
-The model-based oracle uses the same model to generate and verify system behavior.
-Documentation that is not a full specification of the product, such as a usage or installation guide, or a record of performance characteristics or minimum machine requirements for the software, would typically be a derived test oracle.
+**예시: 객체 인식 시스템의 성능 평가**
 
-테스트 오라클은 대부분 사양(specifications)과 문서화(documentation)를 기반으로 합니다.
-모델 기반 설계와 모델 기반 테스트에 입력으로 사용되는 형식 명세(formal specification)는 명시적 테스트 오라클의 예입니다.
-모델 기반 오라클은 동일한 모델을 사용하여 시스템 동작을 생성하고 검증합니다.
-제품의 전체 사양이 아닌 사용 설명서나 설치 가이드, 소프트웨어의 성능 특성 기록 또는 최소 시스템 요구 사항과 같은 문서는 일반적으로 유도된 테스트 오라클로 간주됩니다.
+- **통계적 기준**:
+  - 객체 인식의 정확도, 정밀도, 재현율 등이 특정 기준 이상이어야 합니다.
+- **오라클의 역할**:
+  - 대규모 테스트 데이터셋에 대한 시스템의 성능을 통계적으로 분석합니다.
+- **테스트 수행 및 검증**:
+  - 다양한 조건의 이미지나 센서 데이터를 사용하여 객체 인식 성능을 평가하고, 통계적 기준과 비교합니다.
 
-A consistency oracle compares the results of one test execution to another for similarity.
-This is another example of a derived test oracle.
+#### **7. 참조 모델 오라클(Reference Model Oracle)**
 
-일관성 오라클(consistency oracle)은 한 번의 테스트 실행 결과를 다른 실행 결과와 비교하여 유사성을 확인합니다.
-이것도 유도된 테스트 오라클의 또 다른 예입니다.
+**예시: 경로 계획 알고리즘 테스트**
 
-An oracle for a software program might be a second program that uses a different algorithm to evaluate the same mathematical expression as the product under test.
-This is an example of a pseudo-oracle, which is a derived test oracle.
+- **참조 모델 사용**:
+  - 기존에 검증된 경로 계획 알고리즘이나 상용 내비게이션 시스템을 참조 모델로 사용합니다.
+- **오라클의 역할**:
+  - 동일한 출발지와 목적지에 대해 참조 모델과 테스트 대상 시스템의 경로를 비교합니다.
+- **테스트 수행 및 검증**:
+  - 경로의 최적성(최단 거리, 최단 시간)과 합리성을 평가하고, 차이가 있는 경우 원인을 분석합니다.
 
-소프트웨어 프로그램의 오라클은 테스트 대상 제품과 동일한 수학적 표현을 평가하기 위해 다른 알고리즘을 사용하는 두 번째 프로그램이 될 수 있습니다.
-이는 유사 오라클(pseudo-oracle)의 예로, 유도된 테스트 오라클에 속합니다.
+#### **8. 인간 오라클(Human Oracle)**
 
-During Google search, we do not have a complete oracle to verify whether the number of returned results is correct.
-We may define a metamorphic relation such that a follow-up narrowed-down search will produce fewer results.
-This is an example of a partial oracle, which is a hybrid between specified test oracle and derived test oracle.
+**예시: 비상 상황 대응 테스트**
 
-구글 검색에서는 반환된 결과의 수가 올바른지 확인하기 위한 완전한 오라클이 없습니다.
-좁혀진 후속 검색이 더 적은 결과를 산출하는 메타모픽 관계를 정의할 수 있습니다.
-이는 명시적 테스트 오라클과 유도된 테스트 오라클의 혼합형인 부분 오라클(partial oracle)의 예입니다.
+- **상황**:
+  - 갑작스러운 장애물 등장이나 급정거 차량 등 비상 상황에서의 차량 반응을 테스트합니다.
+- **오라클의 역할**:
+  - 운전 전문가나 안전 전문가가 해당 상황에서 기대되는 적절한 차량 반응을 정의합니다.
+- **테스트 수행 및 검증**:
+  - 시뮬레이션이나 실제 테스트에서 차량의 반응을 관찰하고, 전문가의 의견과 비교하여 적절성을 판단합니다.
 
-A statistical oracle uses probabilistic characteristics, for example with image analysis where a range of certainty and uncertainty is defined for the test oracle to pronounce a match or otherwise.
-This would be an example of a quantitative approach in human test oracle.
+#### **9. 합성 데이터 오라클(Synthetic Data Oracle)**
 
-통계적 오라클(statistical oracle)은 확률적 특성을 사용합니다.
-예를 들어, 이미지 분석에서는 일치 여부를 판단하기 위해 테스트 오라클에 대한 확실성과 불확실성의 범위를 정의합니다.
-이는 인간 테스트 오라클의 정량적 접근의 한 예입니다.
+**예시: 교통 표지판 인식 시스템 테스트**
 
-A heuristic oracle provides representative or approximate results over a class of test inputs.
-This would be an example of a qualitative approach in human test oracle.
+- **합성 데이터 생성**:
+  - 다양한 교통 표지판 이미지를 합성하여 생성하고, 각 이미지의 정확한 레이블을 알고 있습니다.
+- **오라클의 역할**:
+  - 시스템의 인식 결과를 합성 데이터의 레이블과 비교하여 정확도를 평가합니다.
+- **테스트 수행 및 검증**:
+  - 조명 조건, 기상 상황, 표지판 손상 등 다양한 변수를 포함한 합성 데이터를 사용하여 시스템의 견고성을 테스트합니다.
 
-휴리스틱 오라클(heuristic oracle)은 테스트 입력의 클래스에 대해 대표적이거나 대략적인 결과를 제공합니다.
-이는 인간 테스트 오라클의 정성적 접근의 한 예입니다.
+#### **10. 안전 기준 오라클(Safety Criteria Oracle)**
+
+**예시: 차량 제어 시스템의 안정성 테스트**
+
+- **안전 기준**:
+  - 차량은 주행 중 특정 가속도나 감속도를 초과해서는 안 됩니다.
+  - 차량의 제어 시스템은 장애 발생 시 안전 모드로 전환되어야 합니다.
+- **오라클의 역할**:
+  - 안전 기준에 따라 시스템의 동작이 적절한지 판단합니다.
+- **테스트 수행 및 검증**:
+  - 다양한 주행 상황과 시스템 장애 상황을 시뮬레이션하고, 차량의 반응이 안전 기준을 만족하는지 확인합니다.
+
+### **테스트 오라클 적용 시 고려사항**
+
+- **안전성 우선**: 자율주행 시스템은 인명과 직접적으로 연관되므로, 테스트 오라클 설계 시 안전성을 최우선으로 고려해야 합니다.
+- **현실성**: 테스트 시나리오와 오라클은 실제 주행 환경과 상황을 충분히 반영해야 합니다.
+- **데이터 다양성**: 다양한 환경, 기상 조건, 교통 상황 등을 포함한 데이터를 사용하여 시스템의 일반화 능력을 평가해야 합니다.
+- **규제 및 표준 준수**: 자율주행 관련 법규와 산업 표준을 준수하는지도 검증해야 합니다.
+- **오라클의 정확성**: 오라클 자체의 오류를 최소화하기 위해 다중 검증과 전문가 의견을 활용할 수 있습니다.
+
+### **테스트 오라클의 한계**
+
+- **완벽한 오라클의 부재**: 모든 상황에서 정확한 예상 결과를 제공하는 오라클을 만들기는 어렵습니다.
+- **비용 문제**: 복잡한 오라클은 개발과 유지에 많은 비용이 들 수 있습니다.
+- **오라클 오류**: 오라클 자체에 오류가 있으면 잘못된 판단을 내릴 수 있습니다.
+
+### **결론**
+테스트 오라클은 소프트웨어 테스트에서 결과의 올바름을 판단하는 데 필수적인 요소입니다.
+
+적절한 오라클을 사용하면 테스트 효율성과 소프트웨어 품질을 크게 향상시킬 수 있습니다. 그러나 오라클을 설계하고 구현하는 데 따른 비용과 한계를 고려하여야 합니다.
