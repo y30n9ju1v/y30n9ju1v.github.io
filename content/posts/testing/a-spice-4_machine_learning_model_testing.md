@@ -6,34 +6,10 @@ draft = false
 
 이 글은 draft를 보고 번역한 것입니다.
 
-The purpose is to ensure compliance of the trained ML model and the deployed ML model with the ML requirements.
-
-목적은 학습된 ML 모델과 배포된 ML 모델이 ML 요구사항을 준수하도록 보장하는 것입니다.
-
-## Process outcomes
-1. A ML test approach is defined.
-
-ML 테스트 접근 방식을 정의합니다.
-
-2. A ML test data set is created.
-
-ML 테스트 데이터셋을 생성합니다.
-
-3. The trained ML model is tested.
-
-학습된 ML 모델을 테스트합니다.
-
-4. The deployed ML model is derived from the trained ML model and tested.
-
-학습된 ML 모델에서 파생된 배포된 ML 모델을 테스트합니다.
-
-5. Consistency and bidirectional traceability are established between the ML test approach and the ML requirements, and the ML test data set and the ML data requirements; and bidirectional traceability is established between the ML test approach and ML test results.
-
-ML 테스트 접근 방식과 ML 요구사항, ML 테스트 데이터셋과 ML 데이터 요구사항 간의 일관성 및 양방향 추적 가능성을 확립하고, ML 테스트 접근 방식과 ML 테스트 결과 간에도 양방향 추적 가능성을 확립합니다.
-
-6. Results of the ML model testing are summarized and communicated with the deployed ML model to all affected parties.
-
-ML 모델 테스트 결과를 요약하여 배포된 ML 모델과 관련된 모든 이해관계자에게 전달합니다.
+|||
+|---|---|
+| Process Purpose | The purpose is to ensure compliance of the trained ML model and the deployed ML model with the ML requirements. 목적은 학습된 ML 모델과 배포된 ML 모델이 ML 요구사항을 준수하도록 보장하는 것입니다. |
+| Process outcomes | 1. A ML test approach is defined. ML 테스트 접근 방식을 정의합니다. 2. A ML test data set is created. ML 테스트 데이터셋을 생성합니다. 3. The trained ML model is tested. 학습된 ML 모델을 테스트합니다. 4. The deployed ML model is derived from the trained ML model and tested. 학습된 ML 모델에서 파생된 배포된 ML 모델을 테스트합니다. 5. Consistency and bidirectional traceability are established between the ML test approach and the ML requirements, and the ML test data set and the ML data requirements; and bidirectional traceability is established between the ML test approach and ML test results. ML 테스트 접근 방식과 ML 요구사항, ML 테스트 데이터셋과 ML 데이터 요구사항 간의 일관성 및 양방향 추적 가능성을 확립하고, ML 테스트 접근 방식과 ML 테스트 결과 간에도 양방향 추적 가능성을 확립합니다. 6. Results of the ML model testing are summarized and communicated with the deployed ML model to all affected parties. ML 모델 테스트 결과를 요약하여 배포된 ML 모델과 관련된 모든 이해관계자에게 전달합니다. |
 
 ## MLE.4 with 7 Base practices
 ### MLE.4.BP1: Specify an ML test approach.
@@ -44,27 +20,27 @@ Specify an ML test approach suitable to provide evidence for compliance of the t
 
 * ML test scenarios with distribution of data characteristics (e.g., gender, weather conditions, street conditions within the ODD) defined by ML requirements,
 
-ML 요구사항에 의해 정의된 데이터 특성 분포에 따른 ML 테스트 시나리오(예: 성별, 날씨 조건, ODD 내 도로 조건),
+  ML 요구사항에 의해 정의된 데이터 특성 분포에 따른 ML 테스트 시나리오(예: 성별, 날씨 조건, ODD 내 도로 조건),
 
 * distribution and frequency of each ML test scenario inside the ML test data set,
 
-ML 테스트 데이터 세트 내에서 각 ML 테스트 시나리오의 분포와 빈도,
+  ML 테스트 데이터 세트 내에서 각 ML 테스트 시나리오의 분포와 빈도,
 
 * expected test result per test datum,
 
-각 테스트 데이터에 대한 예상 테스트 결과,
+  각 테스트 데이터에 대한 예상 테스트 결과,
 
 * entry and exit criteria of the testing,
 
-테스트의 시작 및 종료 기준,
+  테스트의 시작 및 종료 기준,
 
 * approach for data set creation and modification, and
 
-데이터 세트 생성 및 수정 접근 방식, 그리고
+  데이터 세트 생성 및 수정 접근 방식, 그리고
 
 * the required testing infrastructure and environment setup.
 
-필요한 테스트 인프라 및 환경 설정.
+  필요한 테스트 인프라 및 환경 설정.
 
 이와 같은 사항을 포함하여 ML 테스트 접근 방식을 구체화합니다.
 
