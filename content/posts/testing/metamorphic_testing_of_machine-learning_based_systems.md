@@ -20,7 +20,7 @@ In this article, I take a look at metamorphic testing, which is a technique that
 명확한 입력과 논리적 흐름 대신, ML 기반 시스템은 잠재적으로 방대한 입력 공간과 블랙박스 모델에서 나오는 확률적 결과를 기반으로 합니다.
 이 글에서는 이러한 ML 기반 시스템 테스트 문제를 해결하기 위해 점점 더 인기를 얻고 있는 메타모픽 테스트 기법을 살펴봅니다.
 
-![Figure 1](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig1.png)
+![Figure 1](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig1.png)
 These two images can be used to represent some metamorphic tests for a ML-system.
 
 ## Metamorphic Testing
@@ -38,7 +38,7 @@ To illustrate the concept, I ran two queries on Google (in October 2020):
 현재 검색 엔진은 사실상 자연어 처리(NLP) 및 ML 기반 시스템이기 때문에 이 글의 주제와 잘 맞습니다.
 이 개념을 설명하기 위해, 저는 2020년 10월에 구글에서 두 가지 검색 쿼리를 실행했습니다.
 
-![Figure 2](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig2.png)
+![Figure 2](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig2.png)
 
 The first query is just one word “car”.
 The second query adds another word to the first query, “autonomous”.
@@ -49,13 +49,13 @@ This addition of a restrictive search keyword is an example of an input transfor
 두 번째 쿼리는 첫 번째 쿼리에 “autonomous”라는 단어를 추가하여 “autonomous car”가 됩니다.
 이렇게 제한적인 검색 키워드를 추가하는 것은 입력 변환(혹은 메타모픽 테스트의 "변형")의 예입니다.
 
-![Figure 3](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig3.png)
+![Figure 3](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig3.png)
 
 And to perform a check on the test results (a test oracle), we define a matching relation that should hold when the input transformation is applied:
 
 그리고 테스트 결과를 확인하기 위해, 입력 변환이 적용될 때 성립해야 하는 일치 관계를 정의합니다(테스트 오라클).
 
-![Figure 4](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig4.png)
+![Figure 4](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig4.png)
 
 In this case, adding the restrictive search term (“autonomous”) to the previous query (“car”) changes the result set, restricting it to a smaller set.
 From 8.3 billion results to 159 million.
@@ -107,7 +107,7 @@ Such real-world input-spaces are incredibly large.
 매 순간 이 모든 데이터와 이전 측정값을 처리하여, 최고 수준의 안전 기준을 충족하는 판단을 내려야 합니다.
 이러한 현실 세계의 입력 공간은 엄청나게 넓습니다.
 
-![Figure 5](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig5.png)
+![Figure 5](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig5.png)
 
 Just in these two pictures there are many variations visible.
 Snow/no snow, shadows/no shadows, road markers / no markers, connecting roads visible, parking lots visible, other cars, and so on.
@@ -118,7 +118,7 @@ To illustrate the problem a bit more, here are some example variants in that dom
 그러나 이러한 모든 상황에서도 안전하게 주행할 수 있어야 합니다.
 문제를 조금 더 설명하기 위해, 이와 같은 도메인에서 빠르게 떠오르는 몇 가지 예시 변형을 소개하겠습니다:
 
-![Figure 6](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig6.png)
+![Figure 6](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig6.png)
 
 Besides these, one can easily expand this to different locations, road shapes, object types, bridges, trains, ... Other sensors have other considerations, every location is different, and so on.
 
@@ -160,14 +160,14 @@ The arrow here is manually added, and intended to be only illustrative:
 그런 다음 시스템이 예측해야 할 경로를 나타내기 위해 화살표를 추가했습니다.
 이 화살표는 수동으로 추가한 것으로, 단순히 설명을 위한 것입니다:
 
-![Figure 7](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig7.png)
+![Figure 7](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig7.png)
 Viewed from a different angle, the real-world path should still be the same (or close).
 
 And the same, but with the snowy ground (two transformations in the following compared to the above; added snow + rotation):
 
 그리고 동일한 예시를 눈 덮인 도로에 적용했습니다(위 이미지와 비교했을 때 두 가지 변환이 적용되었습니다: 눈 추가 + 회전).
 
-![Figure 8](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig8.png)
+![Figure 8](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig8.png)
 With and without snow, the path should be the same (or close).
 
 Of course, no-one would expect to manually create any large number of such images (or transformations).
@@ -180,7 +180,7 @@ The following illustrates a few such augmentations run on the original non-snow 
 예를 들어, 원래는 머신러닝에서 훈련 데이터셋 크기를 늘리기 위해 개발된 여러 이미지 증강 라이브러리가 있습니다.
 아래는 눈이 없는 원본 이미지에 적용된 몇 가지 이미지 증강 예시를 보여줍니다:
 
-![Figure 9](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig9.png)
+![Figure 9](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig9.png)
 Automatically generated augmentations / transformations of the earlier road image.
 
 All these augmented / transformed images were generated from the same original source image shown before, using the Python imgaug image augmentation library.
@@ -259,7 +259,7 @@ The green box illustrates a bigger obstacle (e.g., a car), and the smaller red b
 ROI는 더 짙은 색으로 표시했으며, LIDAR 스캔을 나타내기 위해 원형으로 점을 추가했습니다.
 초록색 상자는 더 큰 장애물(예: 자동차)을, 작은 빨간색 상자는 더 작은 장애물(예: 보행자)을 나타냅니다.
 
-![Figure 10](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig10.png)
+![Figure 10](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig10.png)
 
 The metamorphic relations and transformations in this case are:
 
@@ -277,7 +277,7 @@ I simply added them in a random location, outside the ROI in this case, as this 
 다음 그림은 이러한 유형의 변환 관계를 보여주며, 추가된 포인트는 빨간색으로 표시되어 있습니다.
 이 예에서는 추가된 포인트를 ROI(관심 영역) 외부의 임의 위치에 추가했으며, 이는 (Zhou2019)에서도 사용된 예시입니다.
 
-![Figure 11](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig11.png)
+![Figure 11](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig11.png)
 
 The above is a very simple transformation and metamorphic relation to check, but I find often the simple ones work the best.
 
@@ -353,7 +353,7 @@ In a real video stream there would be numerous changes and images (and other inp
 다음은 짧은 시간 간격으로 두 프레임이 있을 수 있는 예입니다.
 실제 비디오 스트림에서는 매 초마다 많은 변화와 이미지(및 기타 입력)가 발생합니다.
 
-![Figure 12](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig12.png)
+![Figure 12](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig12.png)
 
 Not only does the angle change, but time as a context should be more generally considered in this type of testing (and implementation).
 Are we moving past the sign? Towards it? Passing it? Did we stop already? What else is in the scene? And so on.
@@ -374,7 +374,7 @@ The following example illustrates how any such modification would also need to c
 
 다음 예시는 단일 특정 변형 입력을 계산하는 것과 비교하여, 실제 세계의 물리적 데이터가 시간에 따라 이동할 때 모든 변형도 이미지와 함께 시간에 따라 변화해야 한다는 점을 보여줍니다.
 
-![Figure 13](/posts/blog/metamorphic_testing_of_machine-learning_based_systems/fig13.png)
+![Figure 13](/posts/testing/metamorphic_testing_of_machine-learning_based_systems/fig13.png)
 
 This temporal aspect is important in more ways than just for adversarial inputs.
 For example, all the image augmentations (weather effects, etc) I discussed earlier would benefit from being applied in a realistic driving scenario (sequences of images) vs just a single image.
