@@ -368,7 +368,7 @@ More formally, a pattern is an element of 2L1 × 2L2 × ··· × 2Ll , where 2L
 
 \[\text{TKNPat}(T, k) = |\{ (\text{top}_k(x, 1), \ldots, \text{top}_k(x, l)) \mid x \in T \}|\]
 
-![Figure 1](/posts/paper/DeepGause/figure1.png)
+![Figure 1](/posts/paper/DeepGauge/figure1.png)
 
 Intuitively, the top-k neuron patterns denote different kinds of activated scenarios from the top hyperactive neurons of each layer.
 
