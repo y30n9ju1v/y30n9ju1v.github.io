@@ -327,3 +327,605 @@ The control loop to follow the calculated spline is based on the pure pursuit al
 
 The required steering wheel angles and forces are applied by the Drive-by-Wire system.
 필요한 스티어링 휠 각도와 힘은 Drive-by-Wire 시스템에서 적용합니다.
+
+4. EVALUATION SYSTEM
+To be able to correctly assess the performance of ROS2, the entire software stack must be taken into account, and influencing factors must be considered as isolated as possible.
+ROS2의 성능을 정확하게 평가하려면 전체 소프트웨어 스택을 고려해야 하며 영향을 미치는 요소는 가능한 한 분리하여 고려해야 합니다.
+
+The aim of the measurements is to evaluate the performance of ROS2 regarding the requirements in an automated driving system.
+측정의 목표는 자율 주행 시스템의 요구 사항과 관련하여 ROS2의 성능을 평가하는 것입니다.
+
+Two aspects are particularly essential for this.
+이를 위해 두 가지 측면이 특히 중요합니다.
+
+Is ROS2 fast enough to function as the backbone of interprocess communication in a real-time system? This condition can be measured very well with the latency, which for this work is defined as the elapsed time between sending the message and receiving the message in the user application.
+ROS2가 실시간 시스템에서 프로세스 간 통신의 중추 역할을 할 만큼 충분히 빠릅니까? 이 조건은 지연 시간으로 매우 잘 측정할 수 있습니다. 이 작업의 경우 지연 시간은 메시지를 보내는 시간과 사용자 애플리케이션에서 메시지를 받는 시간 사이의 경과 시간으로 정의됩니다.
+
+Another aspect to consider is the error rate in the system.
+고려해야 할 또 다른 측면은 시스템의 오류율입니다.
+
+Reliable delivery of messages is essential for an automated system, as the loss of information can lead to potentially dangerous wrong decisions.
+정보 손실은 잠재적으로 위험한 잘못된 결정으로 이어질 수 있으므로 자동화된 시스템에는 메시지의 안정적인 전달이 필수적입니다.
+
+To estimate this metric, the occurring packet loss is measured as a percentage.
+이 메트릭을 추정하기 위해 발생하는 패킷 손실을 백분율로 측정합니다.
+
+Only local measurements are carried out for the measurement scenario, which corresponds to the current setup of the test vehicles used.
+사용된 테스트 차량의 현재 설정에 해당하는 측정 시나리오에 대해서만 로컬 측정이 수행됩니다.
+
+The participants, nodes, and topics are also predefined; fluctuating behavior is not evaluated.
+참가자, 노드 및 주제도 미리 정의되어 있습니다. 변동하는 동작은 평가되지 않습니다.
+
+The full functional scope of ROS2 is realized via four different abstraction levels.
+ROS2의 전체 기능 범위는 네 가지 추상화 수준을 통해 실현됩니다.
+
+Applications are written with the help of client libraries.
+애플리케이션은 클라이언트 라이브러리의 도움으로 작성됩니다.
+
+These map the API in a specific programming language, officially supported here are C++ (rclcpp) and Python (rclpy).
+이들은 API를 특정 프로그래밍 언어로 매핑합니다. 여기서 공식적으로 지원되는 언어는 C++(rclcpp) 및 Python(rclpy)입니다.
+
+Most of the functionality is implemented in C and available as ROS client library.
+대부분의 기능은 C로 구현되고 ROS 클라이언트 라이브러리로 사용할 수 있습니다.
+
+Communication with the specific DDS implementation, which manages the sending of messages and the discovery of other participants, is handled by the ROS middleware interface (rmw).
+메시지 전송 및 다른 참가자 검색을 관리하는 특정 DDS 구현과의 통신은 ROS 미들웨어 인터페이스(rmw)에서 처리합니다.
+
+Figure 6 summarizes the internal structure of ROS2.
+그림 6은 ROS2의 내부 구조를 요약한 것입니다.
+
+Each of the layers influences the overall performance.
+각 계층은 전체 성능에 영향을 미칩니다.
+
+The first elementary influencing factor that comes into play is the DDS.
+작용하는 첫 번째 기본 영향 요소는 DDS입니다.
+
+Each DDS is used in its standard configuration to ensure basic comparability.
+각 DDS는 기본적인 비교 가능성을 보장하기 위해 표준 구성으로 사용됩니다.
+
+The ROS2 stack with the rmw and rcl layer then follows, based on the DDS.
+그런 다음 DDS를 기반으로 rmw 및 rcl 계층이 있는 ROS2 스택이 이어집니다.
+
+The same version is used for each measurement to rule out possible deviations due to changes to these layers.
+이러한 계층에 대한 변경으로 인한 가능한 편차를 배제하기 위해 각 측정에 동일한 버전이 사용됩니다.
+
+rclcpp is used to implement the user applications for the measurement.
+rclcpp는 측정을 위한 사용자 애플리케이션을 구현하는 데 사용됩니다.
+
+In addition to the hardware and software stack, the way in which the system is used is also important.
+하드웨어 및 소프트웨어 스택 외에도 시스템 사용 방식도 중요합니다.
+
+Parameters that have a major influence on the possible performance here are the data size per message, the number of messages sent per time unit, the number of nodes in the entire network, the number of topics used, and the number of publishers and subscribers per topic.
+여기에서 가능한 성능에 큰 영향을 미치는 매개변수는 메시지당 데이터 크기, 시간 단위당 전송되는 메시지 수, 전체 네트워크의 노드 수, 사용된 주제 수, 주제당 게시자 및 구독자 수입니다.
+
+These parameters in particular are of great interest for the measurements, as they demand the central aspects of the DDS and ROS2 implementation with regard to their efficiency.
+이러한 매개변수는 특히 DDS 및 ROS2 구현의 중심 측면을 효율성 측면에서 요구하기 때문에 측정에 매우 중요합니다.
+
+Only the publish / subscribe pattern is considered for the measurements, as both services and actions are based on this methodology.
+서비스와 작업 모두 이 방법론을 기반으로 하므로 측정에는 게시/구독 패턴만 고려됩니다.
+
+Furthermore, the following assumptions are made for the measurements: A node is either a publisher or a subscriber, never both at the same time; each measurement is performed with one DDS; this is not exchanged during a measurement; and all nodes involved in the measurement are started beforehand; there are no late-joining components.
+또한 측정을 위해 다음과 같은 가정을 합니다.
+노드는 게시자 또는 구독자이며 동시에 둘 다가 아닙니다.
+각 측정은 하나의 DDS로 수행됩니다.
+측정 중에는 교환되지 않습니다.
+측정에 관련된 모든 노드는 미리 시작됩니다.
+나중에 참여하는 구성 요소는 없습니다.
+
+In a first iteration, the different DDS implementations are compared with each other.
+첫 번째 반복에서는 서로 다른 DDS 구현을 서로 비교합니다.
+
+For this purpose, the performance test framework from Apex.AI [Pemmaiah et al., 2022] is used.
+이를 위해 Apex.AI [Pemmaiah et al., 2022]의 성능 테스트 프레임워크가 사용됩니다.
+
+Each DDS is tested in different scenarios with varying data sizes and numbers of participants.
+각 DDS는 다양한 데이터 크기와 참가자 수를 사용하는 다양한 시나리오에서 테스트됩니다.
+
+Based on the results, a selected DDS is then evaluated in detail to gain a deeper understanding of the performance of ROS2.
+결과를 바탕으로 ROS2의 성능에 대한 더 깊은 이해를 얻기 위해 선택한 DDS를 자세히 평가합니다.
+
+For this purpose, a much larger number of factors are permuted and analyzed using tracing [Bédard et al., 2022] to track the path of the message through the software stack in order to precisely localize possible performance losses.
+이를 위해 더 많은 수의 요소를 순열하고 추적을 사용하여 분석하여 [Bédard et al., 2022] 소프트웨어 스택을 통한 메시지 경로를 추적하여 가능한 성능 손실을 정확하게 찾아냅니다.
+
+ROS2 works on the basis of workspaces [Open Robotics, 2022b].
+ROS2는 작업 공간을 기반으로 작동합니다 [Open Robotics, 2022b].
+
+A workspace comprises a collection of ROS2 packages, i.e., ROS2-based software projects, which are built with the help of the  ROS2-specific build tool Colcon [Open Robotics, 2022c].
+작업 공간은 ROS2 기반 소프트웨어 프로젝트인 ROS2 패키지 컬렉션으로 구성되며 ROS2 특정 빌드 도구인 Colcon을 사용하여 빌드됩니다 [Open Robotics, 2022c].
+
+These workspaces can in turn build on each other so that the hierarchically higher workspace has access to all packages of the underlying workspace.
+이러한 작업 공간은 차례로 서로 빌드하여 계층적으로 더 높은 작업 공간이 기본 작업 공간의 모든 패키지에 액세스할 수 있도록 합니다.
+
+This enables a structured and clean setup of all necessary packages without having to install packages that are not required for the specific measurement.
+이를 통해 특정 측정에 필요하지 않은 패키지를 설치할 필요 없이 필요한 모든 패키지를 구조화되고 깔끔하게 설정할 수 있습니다.
+
+As first step of the implementation, the lowest common denominator of required packages is installed in a workspace.
+구현의 첫 번째 단계로 필요한 패키지의 최소 공통 분모가 작업 공간에 설치됩니다.
+
+Here, this is the ROS2 library itself with the basic functionalities in the Rolling version.
+여기서는 롤링 버전의 기본 기능을 갖춘 ROS2 라이브러리 자체입니다.
+
+This workspace is built using the build tools, and all external dependencies are installed.
+이 작업 공간은 빌드 도구를 사용하여 빌드되고 모든 외부 종속성이 설치됩니다.
+
+For the initial comparison testing a new workspace is created, and the Apex.AI Performance Test Project [Pemmaiah et al., 2022] is built.
+초기 비교 테스트를 위해 새 작업 공간이 생성되고 Apex.AI 성능 테스트 프로젝트가 빌드됩니다 [Pemmaiah et al., 2022].
+
+With the help of a Python script, a bash script is created from the benchmark configuration for the parameters.
+Python 스크립트의 도움으로 매개변수에 대한 벤치마크 구성에서 bash 스크립트가 생성됩니다.
+
+As part of the benchmark, the workspace is rebuilt once for each DDS so that the performance test uses it accordingly.
+벤치마크의 일부로 성능 테스트에서 이에 따라 사용할 수 있도록 각 DDS에 대해 작업 공간이 한 번 다시 빌드됩니다.
+
+All subscribers are started for each configuration and each DDS; the executable provided by Apex.AI is called up configured accordingly for this purpose.
+각 구성 및 각 DDS에 대해 모든 구독자가 시작됩니다. 이를 위해 Apex.AI에서 제공하는 실행 파일이 이에 따라 구성되어 호출됩니다.
+
+After a short wait to ensure that all subscribers have been initialized, the publishers are also started; the Apex.AI executable is also used here.
+모든 구독자가 초기화되었는지 확인하기 위해 잠시 기다린 후 게시자도 시작됩니다. 여기에서도 Apex.AI 실행 파일이 사용됩니다.
+
+After the configured time, the processes end automatically, and all open log files are closed.
+구성된 시간이 지나면 프로세스가 자동으로 종료되고 열려 있는 모든 로그 파일이 닫힙니다.
+
+The process is repeated for each of the configurations.
+각 구성에 대해 프로세스가 반복됩니다.
+
+Only the layers below the rmw layer are used here.
+여기서는 rmw 계층 아래의 계층만 사용됩니다.
+
+This allows to consider only the influence of the specific DDS implementation and to exclude any influences from higher layers.
+이를 통해 특정 DDS 구현의 영향만 고려하고 상위 계층의 영향을 배제할 수 있습니다.
+
+Table 1 lists the permutations of the parameters; each of the DDS implementations is tested once for each of the specified configurations over a runtime of 60 seconds.
+표 1에는 매개변수의 순열이 나열되어 있습니다. 각 DDS 구현은 60초의 런타임 동안 지정된 각 구성에 대해 한 번씩 테스트됩니다.
+
+The aim of the configurations is to obtain a comprehensive overview of the performance in order to be able to compare the various DDSs as accurately possible.
+구성의 목표는 다양한 DDS를 가능한 한 정확하게 비교할 수 있도록 성능에 대한 포괄적인 개요를 얻는 것입니다.
+
+The first three configurations serve as a basis for this.
+처음 세 가지 구성이 이를 위한 기초 역할을 합니다.
+
+The simple 1 - 1 communication reduces the possible interference to a minimum.
+간단한 1-1 통신은 가능한 간섭을 최소한으로 줄입니다.
+
+The 1 - 31 communication is already more demanding, as the DDS must now distribute the message to 31 subscribers, which leads to a considerably larger required bandwidth, especially with larger data packets.
+1-31 통신은 이미 더 까다롭습니다. DDS가 이제 메시지를 31명의 구독자에게 배포해야 하므로 특히 더 큰 데이터 패킷을 사용할 경우 상당히 더 큰 대역폭이 필요하기 때문입니다.
+
+32 nodes in a network comes much closer to an application in the field of automated driving in terms of the number of participants and can therefore provide initial indications of performance under load.
+네트워크의 32개 노드는 참가자 수 측면에서 자율 주행 분야의 애플리케이션에 훨씬 더 가깝기 때문에 부하 상태에서 성능에 대한 초기 표시를 제공할 수 있습니다.
+
+The frequency set for all tests is 10Hz, which corresponds to the frequency most commonly used by sensors and computing components in automated driving systems and therefore serves as a sensible clock rate for generating the load.
+모든 테스트에 대해 설정된 빈도는 10Hz입니다. 이는 자율 주행 시스템에서 센서 및 컴퓨팅 구성 요소에서 가장 일반적으로 사용되는 빈도에 해당하므로 부하를 생성하기 위한 적절한 클럭 속도 역할을 합니다.
+
+The different data sizes represent different scenarios.
+서로 다른 데이터 크기는 서로 다른 시나리오를 나타냅니다.
+
+Struct16 is the smallest message and can, for example, be equated with a message from a simple sensor in the vehicle, such as acceleration.
+Struct16은 가장 작은 메시지이며 예를 들어 가속도와 같은 차량의 간단한 센서의 메시지와 동일시할 수 있습니다.
+
+Array64k represents more complex data, such as a trajectory or recognized objects.
+Array64k는 궤적 또는 인식된 물체와 같은 더 복잡한 데이터를 나타냅니다.
+
+Pointcloud1m is the largest message and is used to represent LIDAR scans or camera streams.
+Pointcloud1m은 가장 큰 메시지이며 LIDAR 스캔 또는 카메라 스트림을 나타내는 데 사용됩니다.
+
+This message size usually forms the upper limit of the messages used in the automated vehicle in terms of size per message.
+이 메시지 크기는 일반적으로 메시지당 크기 측면에서 자율 주행 차량에 사용되는 메시지의 상한을 형성합니다.
+
+Overall, the parameters thus cover a good range from the actual application and provide initial indications of the performance of the various DDS implementations.
+전반적으로 매개변수는 실제 애플리케이션에서 좋은 범위를 포괄하며 다양한 DDS 구현의 성능에 대한 초기 표시를 제공합니다.
+
+Several ROS2 packages are required for more detailed measurements of a selected DDS.
+선택한 DDS를 더 자세히 측정하려면 여러 ROS2 패키지가 필요합니다.
+
+ROS2 tracing is elementary here [Bédard et al., 2022], as well as a special version of the DDS, to provide the necessary insight at this level.
+ROS2 추적은 여기서 기본입니다 [Bédard et al., 2022]. 이 수준에서 필요한 통찰력을 제공하기 위해 특별 버전의 DDS도 마찬가지입니다.
+
+With the help of the ROS2 tracing package [Bédard et al., 2022] the message can be traced through the entire stack [Bédard et al., 2023] to understand how the latency arises, and where message losses occur.
+ROS2 추적 패키지의 도움으로 [Bédard et al., 2022] 메시지는 전체 스택을 추적하여 [Bédard et al., 2023] 지연 시간이 어떻게 발생하고 메시지 손실이 어디에서 발생하는지 이해할 수 있습니다.
+
+It is demonstrated that the additional overhead caused by tracing is minimal and therefore does not distort the results [Bédard et al., 2022].
+추적으로 인한 추가 오버헤드가 최소화되므로 결과가 왜곡되지 않는다는 것이 입증되었습니다 [Bédard et al., 2022].
+
+For measurements, a package is required to generate the load in the system according to the configuration.
+측정을 위해 구성에 따라 시스템에서 부하를 생성하는 패키지가 필요합니다.
+
+For this purpose, a simple but fully configurable node is implemented as a publisher and subscriber.
+이를 위해 간단하지만 완전히 구성 가능한 노드가 게시자 및 구독자로 구현됩니다.
+
+When the process is started, the publisher receives the frequency in milliseconds at which the message is to be sent, the size of the message in bytes, the length of the measurement in seconds and the topic on which it is to send.
+프로세스가 시작되면 게시자는 메시지를 보낼 빈도(밀리초), 메시지 크기(바이트), 측정 길이(초) 및 보낼 주제를 수신합니다.
+
+Based on this information, it then starts a ROS2 timer to periodically publish a packet on the topic according to the frequency.
+그런 다음 이 정보를 기반으로 ROS2 타이머를 시작하여 빈도에 따라 주제에 대한 패킷을 주기적으로 게시합니다.
+
+The message sent consists of a header, containing a timestamp and an ID in the form of an integer number, and a byte array of the defined size, which is filled with random values.
+전송된 메시지는 타임스탬프와 정수 형식의 ID가 포함된 헤더와 임의 값으로 채워진 정의된 크기의 바이트 배열로 구성됩니다.
+
+The timestamp is entered in the message immediately before the actual transmission.
+타임스탬프는 실제 전송 직전에 메시지에 입력됩니다.
+
+The structure of the subscriber nodes is similar.
+구독자 노드의 구조는 유사합니다.
+
+They receive a list of topics for which corresponding subscriptions are created.
+해당 구독이 생성된 주제 목록을 수신합니다.
+
+A timestamp is also taken directly in the associated callback, which is then compared with the timestamp from the received message, and the difference is saved.
+관련 콜백에서도 타임스탬프가 직접 가져와 수신된 메시지의 타임스탬프와 비교하여 그 차이를 저장합니다.
+
+The actual measurement of the latency then follows using the recorded traces.
+그런 다음 기록된 추적을 사용하여 지연 시간을 실제로 측정합니다.
+
+The measurement is started with a Python script, which parses the various configurations and instantiates a corresponding number of publishers and subscribers, starts the tracing, and activates the corresponding DDS using an environment variable.
+측정은 다양한 구성을 구문 분석하고 해당 수의 게시자와 구독자를 인스턴스화하고 추적을 시작하고 환경 변수를 사용하여 해당 DDS를 활성화하는 Python 스크립트로 시작됩니다.
+
+The aim of these benchmarks is to gain a more detailed, in-depth insight into the performance of ROS2.
+이러한 벤치마크의 목표는 ROS2의 성능에 대한 더 자세하고 심층적인 통찰력을 얻는 것입니다.
+
+For this purpose, the parameter space is significantly enlarged to obtain a higher resolution of the test results.
+이를 위해 테스트 결과의 해상도를 높이기 위해 매개변수 공간이 크게 확장됩니다.
+
+The aim is also to go beyond the current requirements to be able to assess the performance limits of ROS2.
+또한 ROS2의 성능 한계를 평가할 수 있도록 현재 요구 사항을 뛰어넘는 것을 목표로 합니다.
+
+Table 2 shows the possible configurations of the parameters for the detailed benchmark.
+표 2는 자세한 벤치마크에 대한 매개변수의 가능한 구성을 보여줍니다.
+
+Based on the number of nodes, three topologies are created for the publisher-subscriber-subscriber-per-node ratio, as shown in Figure 7.
+노드 수를 기반으로 그림 7과 같이 노드당 게시자-구독자-구독자 비율에 대해 세 가지 토폴로지가 생성됩니다.
+
+The first topology has exactly as many publishers as subscribers, each with their own topic and one subscriber per node.
+첫 번째 토폴로지에는 구독자 수만큼 게시자가 있으며 각 게시자는 고유한 주제와 노드당 하나의 구독자를 갖습니다.
+
+The second topology changes the ratio, with only one publisher serving all the remaining nodes as a subscriber; here, too, there is only one subscriber per node.
+두 번째 토폴로지는 비율을 변경하여 하나의 게시자만 나머지 모든 노드를 구독자로 사용합니다. 여기에도 노드당 구독자는 하나뿐입니다.
+
+Finally, this relationship is reversed, and a node with many subscribers is served by the remaining nodes as a publisher.
+마지막으로 이 관계가 반전되고 많은 구독자가 있는 노드가 나머지 노드에서 게시자로 사용됩니다.
+
+Topology 1 makes it possible to evaluate the influence of the number of topics on the overall performance and thus to test the scalability of topics.
+토폴로지 1을 사용하면 주제 수가 전체 성능에 미치는 영향을 평가하여 주제의 확장성을 테스트할 수 있습니다.
+
+Topology 2 makes it possible to check how efficiently the distribution of messages on a topic works and how great the influence of the number of subscribers per topic is on the overall performance.
+토폴로지 2를 사용하면 주제에 대한 메시지 배포가 얼마나 효율적으로 작동하는지 그리고 주제당 구독자 수가 전체 성능에 얼마나 큰 영향을 미치는지 확인할 수 있습니다.
+
+Topology 3 allows to check how well the executor of a single node scales under load with more callbacks and how many subscribers per node can be effectively implemented before the SingleThreadedExecutor is overloaded.
+토폴로지 3을 사용하면 단일 노드의 실행기가 더 많은 콜백으로 부하 상태에서 얼마나 잘 확장되는지 그리고 SingleThreadedExecutor가 과부하되기 전에 노드당 구독자를 효과적으로 몇 개나 구현할 수 있는지 확인할 수 있습니다.
+
+In practical applications, a mixture of all three topologies can be found.
+실제 애플리케이션에서는 세 가지 토폴로지가 모두 혼합되어 있습니다.
+
+Each of the topologies is measured for each combination of frequency and data size over a runtime of 60 seconds.
+각 토폴로지는 60초의 런타임 동안 빈도와 데이터 크기의 각 조합에 대해 측정됩니다.
+
+For the detailed benchmarks, additional data sizes were added to the three data packets from the previous benchmarks.
+자세한 벤치마크를 위해 이전 벤치마크의 세 가지 데이터 패킷에 추가 데이터 크기가 추가되었습니다.
+
+First, 512kB was added as the middle value of the previous value range to achieve better coverage in this area.
+첫째, 이 영역에서 더 나은 범위를 달성하기 위해 이전 값 범위의 중간값으로 512kB가 추가되었습니다.
+
+Secondly, in order to test the limits, twice the previous maximum was added again with the aim of demanding the maximum bandwidth.
+둘째, 한계를 테스트하기 위해 최대 대역폭을 요구하는 것을 목표로 이전 최대값의 두 배가 다시 추가되었습니다.
+
+Measurements at 100Hz were also added to the previously used frequency of 10Hz in order to gain an insight into the extent to which there is still potential for improvement here.
+여기에 얼마나 개선의 여지가 있는지에 대한 통찰력을 얻기 위해 이전에 사용된 10Hz 빈도에 100Hz에서의 측정값도 추가되었습니다.
+
+All benchmarks are run on the PU with an Intel® Xeon® E5-2667 v4 CPU and 8x 32GB RDIMM DDR4-2400+ reg ECC.
+모든 벤치마크는 Intel® Xeon® E5-2667 v4 CPU 및 8x 32GB RDIMM DDR4-2400+ reg ECC가 탑재된 PU에서 실행됩니다.
+
+An Intel X550-T2 network card handles communication with the connected sensors.
+Intel X550-T2 네트워크 카드는 연결된 센서와의 통신을 처리합니다.
+
+The system is running Ubuntu 20.04 LTS.
+시스템에서 Ubuntu 20.04 LTS를 실행하고 있습니다.
+
+## 5. EVALUATION RESULTS
+A direct comparison of the three officially supported DDS implementations reveals differences but also similarities in performance behavior.
+공식적으로 지원되는 세 가지 DDS 구현을 직접 비교하면 성능 동작의 차이점뿐만 아니라 유사점도 드러납니다.
+
+Figure 8 shows the course of the latency in milliseconds over the measurement period of 60 seconds, with Struct16 in blue, Array64k in orange, and PointCloud1m in green as introduced in section 4.
+그림 8은 60초의 측정 기간 동안 지연 시간(밀리초)의 경과를 보여줍니다. 4장에서 소개된 것처럼 파란색은 Struct16, 주황색은 Array64k, 녹색은 PointCloud1m입니다.
+
+Each column represents one of the three DDS implementations.
+각 열은 세 가지 DDS 구현 중 하나를 나타냅니다.
+
+The top row shows the results for a publisher communicating with a subscriber.
+맨 위 행은 게시자가 구독자와 통신하는 결과를 보여줍니다.
+
+The bottom row shows the results for a publisher communicating with 31 subscribers.
+맨 아래 행은 게시자가 31명의 구독자와 통신하는 결과를 보여줍니다.
+
+The first scenario here serves as a basic assessment, while the second scenario is more of an application scenario from the field of automated driving regarding the subscribers.
+여기서 첫 번째 시나리오는 기본 평가 역할을 하는 반면 두 번째 시나리오는 구독자와 관련하여 자율 주행 분야의 애플리케이션 시나리오에 가깝습니다.
+
+The individual measurement lines represent the different packet sizes.
+개별 측정선은 서로 다른 패킷 크기를 나타냅니다.
+
+The measurement results are generally very good.
+측정 결과는 일반적으로 매우 좋습니다.
+
+For most scenarios, the latency remains below 2 ms, leaving a clear margin up to a frequency of 10 Hz.
+대부분의 시나리오에서 지연 시간은 2ms 미만으로 유지되어 10Hz의 주파수까지 명확한 여유가 있습니다.
+
+Only the latency for PointCloud1m is higher, which is particularly clear for the higher number of subscribers.
+PointCloud1m에 대한 지연 시간만 더 높으며, 이는 특히 구독자 수가 더 많은 경우에 분명합니다.
+
+In this case, the latency increases to at least 8ms (FastDDS) and on average to 15-20 ms.
+이 경우 지연 시간은 최소 8ms(FastDDS)로 증가하고 평균 15-20ms로 증가합니다.
+
+It is worth noting that the variance for each combination is below 1 ms, apart from ConnextDDS for 31 subscribers / PointCloud1m, where the variance is around 18 ms.
+분산이 약 18ms인 31명의 구독자/PointCloud1m에 대한 ConnextDDS를 제외하고 각 조합의 분산은 1ms 미만이라는 점은 주목할 가치가 있습니다.
+
+This low variance indicates stable message transmission behavior, as does the almost constant latency over the course of the measurement.
+이 낮은 분산은 측정 과정에서 거의 일정한 지연 시간과 마찬가지로 안정적인 메시지 전송 동작을 나타냅니다.
+
+The packet loss is also fairly limited.
+패킷 손실도 상당히 제한적입니다.
+
+In the maximum case it is 0.88%, in most cases it is 0%.
+최대의 경우 0.88%이고 대부분의 경우 0%입니다.
+
+It is noticeable, however, that ConnextDDS is the only one with a packet loss of 0.18% in the 1-1 communication for the PointCloud1m messages, while all other 1-1 communication scenarios each have 0%.
+그러나 ConnextDDS는 PointCloud1m 메시지에 대한 1-1 통신에서 패킷 손실이 0.18%인 유일한 DDS인 반면 다른 모든 1-1 통신 시나리오는 각각 0%입니다.
+
+ConnextDDS also performs worse in the 1-31 scenario, losing a small number of packets for each message size.
+ConnextDDS는 1-31 시나리오에서도 성능이 좋지 않아 각 메시지 크기에 대해 소수의 패킷을 잃습니다.
+
+CycloneDDS and FastDDS predominantly lose packets for Struct16 in this case, which is presumably due to the fact that this packet is not fragmented.
+CycloneDDS와 FastDDS는 이 경우 주로 Struct16에 대한 패킷을 잃습니다. 이는 아마도 이 패킷이 조각화되지 않았기 때문일 것입니다.
+
+This means that the loss of a single UDP packet is not noticeable, whereas with fragmented messages there is a higher chance that at least one fragment will arrive and thus trigger a resend [Granados, 2017].
+즉, 단일 UDP 패킷의 손실은 눈에 띄지 않는 반면 조각화된 메시지의 경우 하나 이상의 조각이 도착하여 재전송을 트리거할 가능성이 더 큽니다 [Granados, 2017].
+
+Overall, both latency and packet loss are satisfactory, even for more subscribers and larger data packets.
+전반적으로 지연 시간과 패킷 손실 모두 더 많은 구독자와 더 큰 데이터 패킷에 대해서도 만족스럽습니다.
+
+This is illustrated again in Figure 9.
+이는 그림 9에 다시 설명되어 있습니다.
+
+The boxplot shows the latency per packet size for each of the three DDS.
+상자 그림은 세 가지 DDS 각각에 대한 패킷 크기별 지연 시간을 보여줍니다.
+
+The box includes the upper and lower quartiles, the line within the box shows the median latency.
+상자에는 상위 및 하위 사분위수가 포함되고 상자 내의 선은 중앙값 지연 시간을 나타냅니다.
+
+The whiskers show the 1.5-fold quartile distance.
+수염은 1.5배 사분위수 거리를 나타냅니다.
+
+Neither the quartile distances nor the whiskers are significantly wide in most cases.
+대부분의 경우 사분위수 거리나 수염이 크게 넓지 않습니다.
+
+After an initial comparative measurement, CycloneDDS is evaluated again using tracing and an enlarged parameter space as an example, as CycloneDDS appears to be the most reliable, particularly in terms of low packet loss and low latency variance.
+초기 비교 측정 후 CycloneDDS는 특히 낮은 패킷 손실 및 낮은 지연 시간 분산 측면에서 가장 안정적인 것으로 보이므로 예로 추적 및 확대된 매개변수 공간을 사용하여 다시 평가됩니다.
+
+Figure 10 again shows the performance of CycloneDDS for 1-N communication.
+그림 10은 1-N 통신에 대한 CycloneDDS의 성능을 다시 보여줍니다.
+
+The left-hand plot shows the measurement data for a frequency of 10Hz, while the right-hand plot shows the same measurements with a frequency of 100Hz.
+왼쪽 그림은 10Hz 주파수에 대한 측정 데이터를 보여주고 오른쪽 그림은 100Hz 주파수에서 동일한 측정값을 보여줍니다.
+
+The x-axis shows the subscriber distribution (1, 7, 31, and 63), which is further divided according to packet size.
+x축은 구독자 분포(1, 7, 31 및 63)를 보여주며 패킷 크기에 따라 더 세분화됩니다.
+
+For the frequency of 10 Hz, the latencies are still below the frequency limit on average, even if the whiskers exceed it, especially for the 2Mb packet.
+10Hz 주파수의 경우 수염이 특히 2Mb 패킷에 대해 주파수 제한을 초과하더라도 지연 시간은 여전히 평균적으로 주파수 제한 아래에 있습니다.
+
+For the higher frequency of 100 Hz, the frequency limit of 10 ms is already exceeded for the 1 - 1 communication for the largest packet, and, as the number of subscribers increases, the 512kB and 1Mb packets also exceed this limit.
+100Hz의 더 높은 주파수의 경우 가장 큰 패킷에 대한 1-1 통신에 대해 10ms의 주파수 제한이 이미 초과되었으며 구독자 수가 증가함에 따라 512kB 및 1Mb 패킷도 이 제한을 초과합니다.
+
+It is also noticeable in this case that the quartile distance for these measurements is in most cases significantly larger than in the comparative measurements before.
+또한 이 경우 이러한 측정에 대한 사분위수 거리가 대부분의 경우 이전의 비교 측정보다 상당히 크다는 점도 눈에 띕니다.
+
+The increased frequency and the larger number of subscribers therefore show a strong influence on this.
+따라서 주파수 증가와 구독자 수 증가는 이에 큰 영향을 미칩니다.
+
+It is also worth noting that the latency for 100 Hz, especially for 63 subscribers, shows a lower latency and lower variance.
+또한 100Hz, 특히 63명의 구독자에 대한 지연 시간은 더 낮은 지연 시간과 더 낮은 분산을 보여준다는 점도 주목할 가치가 있습니다.
+
+One reason for this behavior is due to the following correlation.
+이러한 동작의 한 가지 이유는 다음과 같은 상관 관계 때문입니다.
+
+Figure 11 shows the categorized latency of all received messages per number of subscribers and data size.
+그림 11은 구독자 수와 데이터 크기별로 수신된 모든 메시지의 분류된 지연 시간을 보여줍니다.
+
+The lower plot shows the view of the subscribers.
+아래쪽 그림은 구독자의 보기를 보여줍니다.
+
+As can be seen in the previous figure, almost every message arrives below the frequency limit of 100ms.
+이전 그림에서 볼 수 있듯이 거의 모든 메시지가 100ms의 주파수 제한 아래에 도착합니다.
+
+These are categorized as ”in time” in the plot.
+이들은 그림에서 "제시간에"로 분류됩니다.
+
+Only for the more complex configurations messages are occasionally lost or arrive too late.
+더 복잡한 구성의 경우에만 메시지가 가끔 손실되거나 너무 늦게 도착합니다.
+
+However, the view of the publishers in the upper plot is conspicuous.
+그러나 위쪽 그림에서 게시자의 보기는 눈에 띕니다.
+
+Even for the simplest configuration, the publisher does not manage to send all messages in the given frequency time.
+가장 간단한 구성의 경우에도 게시자는 주어진 주파수 시간에 모든 메시지를 보내는 것을 관리하지 못합니다.
+
+This explains why the packet loss on the subscriber side remains so low despite the high load and large packet size.
+이는 부하가 높고 패킷 크기가 크더라도 구독자 측의 패킷 손실이 낮게 유지되는 이유를 설명합니다.
+
+The majority of messages are not sent within the measurement window and therefore cannot be received on the subscriber side.
+대부분의 메시지는 측정 기간 내에 전송되지 않으므로 구독자 측에서 수신할 수 없습니다.
+
+As this behavior increases for higher frequencies, it is obvious that this is the reason for the better latencies in comparison.
+이러한 동작은 더 높은 주파수에 대해 증가하므로 비교에서 더 나은 지연 시간의 이유가 분명합니다.
+
+According to the frequency used and the measurement period, 600 messages should be sent in each configuration, but this is only possible for the two smallest packets in most cases.
+사용된 주파수와 측정 기간에 따르면 각 구성에서 600개의 메시지를 보내야 하지만 대부분의 경우 두 개의 가장 작은 패킷에 대해서만 가능합니다.
+
+From 512kB upwards, the messages are increasingly delayed so that the total number of 600 is no longer reached in the measurement period.
+512kB 이상부터는 메시지가 점점 더 지연되어 측정 기간에 총 600개에 도달하지 않습니다.
+
+Tracing can be used to determine where these delays occur. Figure 12 shows this broken down by the various layers of the ROS2 architecture on side of the publisher, again categorized by subscriber and data size.
+추적을 사용하여 이러한 지연이 발생하는 위치를 확인할 수 있습니다.
+
+It is clear here that by far the most time is required at the DDS level, since the message is serialized and prepared for transmission at this level.
+그림 12는 구독자와 데이터 크기별로 다시 분류된 게시자 측의 ROS2 아키텍처의 다양한 계층으로 나누어 이를 보여줍니다. 여기서 메시지가 이 수준에서 직렬화되고 전송을 위해 준비되므로 DDS 수준에서 훨씬 더 많은 시간이 필요하다는 것이 분명합니다.
+
+It is already established that the serialization process takes a significant amount of time [Wang et al., 2018], especially as the message format of ROS2 and DDS is not uniform and therefore each requires its own processing.
+직렬화 프로세스에는 상당한 시간이 걸린다는 것이 이미 확립되어 있습니다 [Wang et al., 2018]. 특히 ROS2와 DDS의 메시지 형식이 균일하지 않아 각각 고유한 처리가 필요하기 때문입니다.
+
+The figure also shows that the effect increases primarily with the data size, which also points to the serialization step.
+이 그림은 또한 효과가 주로 데이터 크기에 따라 증가한다는 것을 보여줍니다. 이는 직렬화 단계를 나타냅니다.
+
+The comparison between topologies 2 and 3 is also relevant: on the one hand, a publisher serves a larger number of subscribers, and, conversely, a large number of publishers serve a single node with many subscribers.
+토폴로지 2와 3의 비교도 관련이 있습니다. 한편으로 게시자는 더 많은 수의 구독자에게 서비스를 제공하고 반대로 많은 수의 게시자는 많은 구독자가 있는 단일 노드에 서비스를 제공합니다.
+
+This evaluates the efficiency of the executor in particular, in this case the SingleThreadedExecutor.
+이는 특히 실행기의 효율성을 평가합니다. 이 경우 SingleThreadedExecutor입니다.
+
+Figure 13 shows this comparison: The left-hand side shows the latencies for 1-N communication, while the right-hand side shows the N-1 scenario.
+그림 13은 이 비교를 보여줍니다. 왼쪽은 1-N 통신의 지연 시간을 보여주고 오른쪽은 N-1 시나리오를 보여줍니다.
+
+Both scenarios are almost identical, especially for 7 and 31 subscribers.
+두 시나리오는 특히 7명과 31명의 구독자에게 거의 동일합니다.
+
+For 63 subscribers, however, the difference is noticeably greater.
+그러나 63명의 구독자의 경우 차이가 눈에 띄게 커집니다.
+
+Though, the influence of the ratio of publishers and subscribers on latency does not have a significant impact in general.
+그러나 지연 시간에 대한 게시자와 구독자 비율의 영향은 일반적으로 큰 영향을 미치지 않습니다.
+
+The significantly greater variance for the N-1 scenario is due to the executor, as it processes all callbacks sequentially and therefore cannot process the open events quickly enough, especially under high load.
+N-1 시나리오에 대한 상당히 큰 분산은 실행기 때문입니다. 모든 콜백을 순차적으로 처리하므로 특히 부하가 높은 경우 열려 있는 이벤트를 충분히 빠르게 처리할 수 없기 때문입니다.
+
+Finally, it is checked whether the subscriber fairness described in [Maruyama et al., 2016], which is one essential change compared to ROS1, can also withstand more complex scenarios.
+마지막으로 ROS1에 비해 한 가지 중요한 변경 사항인 [Maruyama et al., 2016]에 설명된 구독자 공정성이 더 복잡한 시나리오에도 견딜 수 있는지 확인합니다.
+
+Figure 14 shows this case as an example for a 1-N scenario, a packet size of 64kB, and a frequency of 10 Hz.
+그림 14는 1-N 시나리오, 64kB의 패킷 크기 및 10Hz의 주파수에 대한 예로 이 경우를 보여줍니다.
+
+Even if the latency for each subscriber differs slightly, they are on average max. 2 ms apart.
+각 구독자의 지연 시간이 약간씩 다르더라도 평균적으로 최대 2ms 차이가 납니다.
+
+There is also no staircase like increase for the subscribers, all have a latency of around 7 ms.
+또한 구독자에 대한 계단식 증가는 없으며 모두 약 7ms의 지연 시간을 갖습니다.
+
+The variance for this scenario is greater than for smaller scenarios, but here too none of the subscribers are significantly further apart than the others.
+이 시나리오의 분산은 더 작은 시나리오보다 크지만 여기에서도 구독자가 다른 구독자보다 크게 떨어져 있지 않습니다.
+
+This plot is comparable for all other combinations of parameters evaluated.
+이 그림은 평가된 다른 모든 매개변수 조합에 대해 비교할 수 있습니다.
+
+This leads to the assumption that other influencing factors, such as frequency and size, have a stronger negative influence earlier, and therefore the performance collapses before the subscriber fair behavior can no longer be maintained.
+이로 인해 주파수 및 크기와 같은 다른 영향 요소가 더 일찍 더 강한 부정적인 영향을 미치므로 구독자 공정 동작을 더 이상 유지할 수 없기 전에 성능이 저하된다는 가정이 생깁니다.
+
+## 6. SUMMARY
+As the development of automated vehicles is an ongoing research task, this paper presents an evaluation of a ROS2 based ADS.
+자율 주행 차량 개발은 진행 중인 연구 과제이므로 본 논문에서는 ROS2 기반 ADS에 대한 평가를 제시합니다.
+
+The automated Mercedes E-Class of Fraunhofer FOKUS comprises both hardware and software components.
+프라운호퍼 FOKUS의 자동화된 메르세데스 E-Class는 하드웨어 및 소프트웨어 구성 요소를 모두 포함합니다.
+
+The hardware setup consists of the sensor installation, the on-board PU for processing and planning, and the actuation hardware to control the vehicle.
+하드웨어 설정은 센서 설치, 처리 및 계획을 위한 온보드 PU, 차량을 제어하기 위한 작동 하드웨어로 구성됩니다.
+
+With a sensor rig, several cameras and LIDAR sensors are mounted on the roof of the vehicle.
+센서 리그를 사용하여 여러 대의 카메라와 LIDAR 센서가 차량 지붕에 장착됩니다.
+
+For vehicle control, a Drive-by-Wire system by Schaeffler Paravan is installed.
+차량 제어를 위해 Schaeffler Paravan의 Drive-by-Wire 시스템이 설치됩니다.
+
+The software components of the architecture are split in three segments: sensing, planning, and acting.
+아키텍처의 소프트웨어 구성 요소는 감지, 계획 및 작동의 세 부분으로 나뉩니다.
+
+The complexity of the distributed nature of the ADS leads to the research question, if ROS2 fulfills the performance requirements for automated driving.
+ADS의 분산 특성의 복잡성으로 인해 ROS2가 자율 주행에 대한 성능 요구 사항을 충족하는지 여부에 대한 연구 질문이 발생합니다.
+
+Thus, a thorough analysis of ROS2 is performed for this paper.
+따라서 본 논문에서는 ROS2에 대한 철저한 분석을 수행합니다.
+
+Two important aspects to consider are the latency, which measures the elapsed time between sending and receiving a message, and the packet loss, which measures the percentage of lost messages.
+고려해야 할 두 가지 중요한 측면은 메시지 전송과 수신 사이의 경과 시간을 측정하는 지연 시간과 손실된 메시지의 백분율을 측정하는 패킷 손실입니다.
+
+The data size per message, number of messages sent per time unit, number of nodes, number of topics, and number of publishers and subscribers per topic are parameters of interest for the measurements.
+메시지당 데이터 크기, 시간 단위당 전송되는 메시지 수, 노드 수, 주제 수, 주제당 게시자 및 구독자 수는 측정에 중요한 매개변수입니다.
+
+Different DDS implementations are compared using a performance test framework, and one selected DDS is further evaluated using tracing to identify performance losses.
+성능 테스트 프레임워크를 사용하여 서로 다른 DDS 구현을 비교하고 성능 손실을 식별하기 위해 추적을 사용하여 선택한 DDS를 추가로 평가합니다.
+
+The subscribers and publishers are started accordingly for of the three official DDS systems, FastDDS, CycloneDDS, and RTI Connext.
+구독자와 게시자는 세 가지 공식 DDS 시스템인 FastDDS, CycloneDDS 및 RTI Connext에 따라 시작됩니다.
+
+Only the layers below the rmw layer are inspected for the comparative benchmark to isolate the influence of the DDS implementation.
+DDS 구현의 영향을 분리하기 위해 비교 벤치마크에 대해 rmw 계층 아래의 계층만 검사합니다.
+
+In the detailed benchmark tracing is used to track the message progress through the complete stack and to understand latency and message losses.
+자세한 벤치마크에서 추적은 전체 스택을 통한 메시지 진행 상황을 추적하고 지연 시간과 메시지 손실을 이해하는 데 사용됩니다.
+
+Three different publish/subscriber topologies are assessed.
+세 가지 게시/구독 토폴로지가 평가됩니다.
+
+The first one has a 1-1 relation between publishers and subscribers and topics, respectively.
+첫 번째는 게시자와 구독자 및 주제 간에 각각 1-1 관계가 있습니다.
+
+The next one has a 1-N publisher-subscriber relation, while the last one reverses this relation.
+다음은 1-N 게시자-구독자 관계가 있는 반면 마지막은 이 관계를 반전시킵니다.
+
+They show comparable results for latency, error rate, and bandwidth.
+지연 시간, 오류율 및 대역폭에 대해 비슷한 결과를 보여줍니다.
+
+Latency depends mainly on packet size and number of nodes in the system.
+지연 시간은 주로 패킷 크기와 시스템의 노드 수에 따라 달라집니다.
+
+With high load, fragmentation of messages can lead to a lower packet loss.
+부하가 높으면 메시지 조각화로 인해 패킷 손실이 줄어들 수 있습니다.
+
+In general, packet loss is very low in the tested configurations.
+일반적으로 테스트된 구성에서 패킷 손실은 매우 낮습니다.
+
+A large part of the latency is generated on the publisher side before the actual sending and does not count into the transmission time.
+지연 시간의 대부분은 실제 전송 전에 게시자 측에서 생성되며 전송 시간에 포함되지 않습니다.
+
+However, this affects the performance of the system, especially for high frequencies and large packet sizes.
+그러나 이는 특히 높은 주파수와 큰 패킷 크기의 경우 시스템 성능에 영향을 미칩니다.
+
+Latency remains very similar, comparing different topologies.
+서로 다른 토폴로지를 비교하면 지연 시간이 매우 유사하게 유지됩니다.
+
+Only in the n:1 scenario, the average latency is not changing much, while the variance increases significantly, due to the single threaded execution.
+n:1 시나리오에서만 평균 지연 시간은 크게 변경되지 않지만 단일 스레드 실행으로 인해 분산이 크게 증가합니다.
+
+In the 1:n scenario it can be observed that subscribers are served in a fair manner, and all have similar latency results.
+1:n 시나리오에서는 구독자에게 공정한 방식으로 서비스가 제공되고 모두 유사한 지연 시간 결과를 갖는다는 것을 알 수 있습니다.
+
+As overall both latency and packet loss are low in all tested setups, ROS2 proves as an efficient and reliable communication framework for an ADS.
+테스트된 모든 설정에서 지연 시간과 패킷 손실이 모두 낮기 때문에 ROS2는 ADS에 효율적이고 안정적인 통신 프레임워크임이 입증되었습니다.
+
+It should of course be noted that ROS2 does not support hard real time rigor.
+물론 ROS2는 하드 실시간 엄격성을 지원하지 않는다는 점에 유의해야 합니다.
+
+However, for the majority of communication, where low latency but no strict real-time capability is mandatory, it is a flexible communication framework that can be used to connect the components within an ADS.
+그러나 낮은 지연 시간이 필요하지만 엄격한 실시간 기능이 필수는 아닌 대부분의 통신의 경우 ADS 내의 구성 요소를 연결하는 데 사용할 수 있는 유연한 통신 프레임워크입니다.
+
+However, hard real time rigor should be implemented at least for the actuators.
+그러나 하드 실시간 엄격성은 최소한 액추에이터에 대해 구현되어야 합니다.
+
+Many other interesting measurements could be considered due to the various customization options available for ROS2 and the underlying DDS.
+ROS2 및 기본 DDS에 사용할 수 있는 다양한 사용자 지정 옵션으로 인해 다른 많은 흥미로운 측정을 고려할 수 있습니다.
+
+This includes the influence of Quality of Service (QoS) profiles and their reliability with the coverage of various bandwidths, which is relevant for automated driving systems.
+여기에는 자율 주행 시스템과 관련된 다양한 대역폭 범위를 갖는 서비스 품질(QoS) 프로필의 영향과 안정성이 포함됩니다.
+
+Additionally, there are different execution models from single thread to multi threaded.
+또한 단일 스레드에서 다중 스레드까지 다양한 실행 모델이 있습니다.
+
+This may require higher hardware requirements but can lead to significant performance improvements.
+이를 위해 더 높은 하드웨어 요구 사항이 필요할 수 있지만 성능이 크게 향상될 수 있습니다.
+
+Another leverage point for performance is the specific configuration of the DDS used.
+성능을 위한 또 다른 레버리지 포인트는 사용되는 DDS의 특정 구성입니다.
+
+All three implementations offer extensive options to adapt behavior for the scenario.
+세 가지 구현 모두 시나리오에 대한 동작을 조정할 수 있는 광범위한 옵션을 제공합니다.
+
+For example, using Shared Memory (SHMEM) instead of UDP can avoid fragmentation of large messages and can reduce overall load.
+예를 들어 UDP 대신 공유 메모리(SHMEM)를 사용하면 큰 메시지의 조각화를 방지하고 전체 부하를 줄일 수 있습니다.
+
+The Towards Zero Copy (TZC) technique presented in a study [Wang et al., 2018] eventually eliminates the overhead of serializing and copying messages.
+연구에서 제시된 제로 카피(TZC) 기술 [Wang et al., 2018]은 결국 메시지 직렬화 및 복사의 오버헤드를 제거합니다.
