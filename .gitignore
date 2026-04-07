@@ -1,0 +1,28 @@
+# Hugo build output
+/public
+/resources
+/.hugo_build.lock
+
+# OS files
+.DS_Store
+**/.DS_Store
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Hugo generated stats
+hugo_stats.json
+
+# Local environment files
+.env
+.env.local
