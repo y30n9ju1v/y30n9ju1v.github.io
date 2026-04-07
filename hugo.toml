@@ -3,9 +3,11 @@ languageCode = 'en-us'
 title = "y30n9ju1v's Blog"
 theme = "hugo-book"
 
+# hugo-book menu config
 [[menu.main]]
-name = "Archives"
-url = "/archives/"
+  name = "Archives"
+  url = "/archives/"
+  weight = 10
 
 [markup]
   [markup.goldmark]
@@ -15,13 +17,12 @@ url = "/archives/"
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['\[', '\]'], ['$$', '$$']]
           inline = [['\(', '\)']]
-[params]
-  math = true
-  ShowToc = true
-  comments = true
-  ShowBreadCrumbs = true
-  ShowPostNavLinks = true
 
-  [params.homeInfoParams]
-  Title = "Hi there 👋 "
-  Content = "📧 : y30n9ju1v [at] 9m411 [dot] c0m"
+[params]
+  # hugo-book specific settings
+  BookTheme = 'auto'         # light, dark, or auto
+  BookToC = true            # table of contents on right
+  BookComments = true       # enable comments partial
+  BookSearch = true         # enable search
+  BookSection = 'posts'     # show posts in the menu
+  BookSectionName = 'Blog'  # label for the section in menu
