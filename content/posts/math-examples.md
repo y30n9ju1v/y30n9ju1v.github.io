@@ -4,6 +4,7 @@ date = 2024-07-13T10:00:23+09:00
 draft = false
 +++
 
+
 This is an inline \(a^*=x-b^*\) equation.
 
 These are block equations:

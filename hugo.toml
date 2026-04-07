@@ -26,3 +26,4 @@ theme = "hugo-book"
   BookSearch = true         # enable search
   BookSection = 'posts'     # show posts in the menu
   BookSectionName = 'Blog'  # label for the section in menu
+  math = true               # 글로벌 수식 사용 활성화
