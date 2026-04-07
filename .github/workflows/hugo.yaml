@@ -27,13 +27,15 @@ defaults:
   run:
     shell: bash
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.160.0
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Install Hugo CLI
         run: |
