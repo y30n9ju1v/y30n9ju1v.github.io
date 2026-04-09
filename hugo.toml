@@ -14,7 +14,7 @@ paginate = 10
         enable = true
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['\[', '\]'], ['$$', '$$']]
-          inline = [['\(', '\)']]
+          inline = [['\(', '\)'], ['$', '$'], ['$$', '$$']]
 
 [params]
   # PaperMod settings
