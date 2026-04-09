@@ -32,7 +32,8 @@ parameters:
 4. 각 섹션의 핵심 개념을 bullet point로 정리합니다
 5. 전체 논문의 핵심 개념을 정리합니다
 6. 수식은 KaTeX 형식($$...$$)으로 작성하며, **각 수식마다 변수 설명과 직관적 의미를 초보자도 이해할 수 있도록** 추가합니다
-7. `content/posts/papers/논문-제목.md` 파일을 Hugo 블로그 포스트 형식으로 생성합니다
+7. 날짜는 KST(한국 표준시) 타임스탐프로 작성합니다 (예: `2026-04-10T08:30:00+09:00`)
+8. `content/posts/papers/논문-제목.md` 파일을 Hugo 블로그 포스트 형식으로 생성합니다
 
 ## Output format
 
@@ -41,7 +42,7 @@ parameters:
 ```markdown
 ---
 title: "논문 제목"
-date: 2026-04-08
+date: 2026-04-10T08:30:00+09:00
 draft: false
 categories: ["Papers"]
 ---
