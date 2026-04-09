@@ -1,13 +1,11 @@
 baseURL = 'https://y30n9ju1v.github.io/'
 languageCode = 'en-us'
 title = "y30n9ju1v's Blog"
-theme = "hugo-book"
+theme = "PaperMod"
+paginate = 10
 
-# hugo-book menu config
-[[menu.main]]
-  name = "Archives"
-  url = "/archives/"
-  weight = 10
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
 
 [markup]
   [markup.goldmark]
@@ -19,11 +17,53 @@ theme = "hugo-book"
           inline = [['\(', '\)']]
 
 [params]
-  # hugo-book specific settings
-  BookTheme = 'auto'         # light, dark, or auto
-  BookToC = true            # table of contents on right
-  BookComments = true       # enable comments partial
-  BookSearch = true         # enable search
-  BookSection = 'posts'     # show posts in the menu
-  BookSectionName = 'Blog'  # label for the section in menu
-  math = true               # 글로벌 수식 사용 활성화
+  # PaperMod settings
+  env = "production"
+  title = "y30n9ju1v's Blog"
+  description = "Research paper summaries and AI/ML notes"
+  defaultTheme = "auto"
+  disableThemeToggle = false
+
+  # Profile mode
+  profileMode.enabled = true
+  profileMode.title = "y30n9ju1v"
+  profileMode.subtitle = "Research paper summaries & AI/ML notes"
+  profileMode.imageUrl = "/images/profile.jpg"
+  profileMode.imageTitle = "avatar"
+
+  [[params.profileMode.buttons]]
+  name = "Blog"
+  url = "/posts"
+
+  [[params.profileMode.buttons]]
+  name = "Archives"
+  url = "/archives"
+
+  # Home info mode (alternative to profile mode)
+  homeInfoParams.Title = "y30n9ju1v's Blog"
+  homeInfoParams.Content = "Research paper summaries and AI/ML notes"
+
+  # Social icons
+  [[params.socialIcons]]
+  name = "github"
+  url = "https://github.com/y30n9ju1v"
+
+  [[params.socialIcons]]
+  name = "linkedin"
+  url = "https://linkedin.com"
+
+  # Search
+  params.fuseOpts.isCaseSensitive = false
+  params.fuseOpts.shouldSort = true
+  params.fuseOpts.location = 0
+  params.fuseOpts.distance = 1000
+  params.fuseOpts.threshold = 0.4
+  params.fuseOpts.minMatchCharLength = 0
+  params.fuseOpts.keys = ["title", "permalink", "summary", "content"]
+
+  # Math
+  math = true
+
+  # Show reading time
+  showReadingTime = true
+  showToc = true
