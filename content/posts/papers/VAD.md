@@ -1,438 +1,293 @@
 ---
 title: "VAD: Vectorized Scene Representation for Efficient Autonomous Driving"
-date: 2026-04-09
+date: 2026-04-10T08:30:00+09:00
 draft: false
 categories: ["Papers"]
+tags: ["Autonomous Driving", "End-to-End Planning", "Vectorized Representation", "BEV"]
 ---
 
 ## 개요
+
 - **저자**: Bo Jiang, Shaoyu Chen, Qing Xu, Bencheng Liao, Jiajie Chen, Helong Zhou, Qian Zhang, Wenyu Liu, Chang Huang, Xinggang Wang
 - **소속**: Huazhong University of Science & Technology, Horizon Robotics
-- **발행년도**: 2023
-- **주요 내용**: 자율주행을 위한 완전 벡터화된 장면 표현(scene representation) 방법 제안. 기존의 계산 집약적인 래스터 기반 방식을 대체하여 효율성과 성능을 동시에 달성
+- **발행년도**: 2023 (arXiv:2303.12077)
+- **주요 내용**: 자율주행을 위한 완전 벡터화된 장면 표현(VAD) 프레임워크 제안. 래스터화된 밀집 맵 대신 벡터화된 에이전트 모션과 맵 요소를 사용하여 인스턴스 수준의 계획 제약을 명시적으로 모델링함으로써 안전성과 효율성을 동시에 향상시킴.
 
 ## 목차
-1. 소개 (Introduction)
-2. 관련 연구 (Related Work)
-3. 방법론 (Method)
-   - 벡터화된 장면 학습 (Vectorized Scene Learning)
-   - 상호작용을 통한 계획 (Planning via Interaction)
-   - 벡터화된 계획 제약 (Vectorized Planning Constraint)
-   - 엔드-투-엔드 학습 (End-to-End Learning)
-4. 실험 결과 (Experiments)
-5. 결론 (Conclusion)
+
+- 1. Introduction: 자율주행에서 벡터화 표현의 필요성
+- 2. Related Work: 인식, 모션 예측, 계획 관련 선행 연구
+- 3. Method: VAD 아키텍처 및 벡터화 계획 제약
+- 4. Experiments: nuScenes 및 CARLA 벤치마크 실험 결과
+- 5. Conclusion: 벡터화 패러다임의 가능성
 
 ---
 
-## 1. 소개 (Introduction)
+## 1. Introduction
 
-### 배경
-자율주행은 주변 환경을 정확히 이해하면서도 효율적이어야 합니다. 기존의 모듈식 자율주행 시스템은 다음과 같은 문제점을 가지고 있습니다:
+**요약**
 
-- **모듈 간 정보 손실**: 인식(perception)과 계획(planning) 모듈이 분리되어 있어, 원본 센서 데이터의 정밀한 정보가 손실됨
-- **계획 모듈의 제약**: 계획 모듈은 사전 처리된 인식 결과에만 접근 가능하므로, 인식 오류가 계획에 영향을 미침
-- **해석 가능성 부족**: 최근의 엔드-투-엔드 방법은 해석 가능성이 떨어지고 최적화가 어려움
+자율주행은 안전하고 효율적인 궤적 계획을 위해 주변 환경에 대한 포괄적인 이해가 필요합니다. 기존의 방법들은 시맨틱 맵, 점유 맵, 비용 맵 등의 **래스터화된(rasterized) 장면 표현**에 의존했습니다. 하지만 이 방식은 다음과 같은 한계가 있습니다:
 
-### VAD의 핵심 아이디어
-**VAD(Vectorized Autonomous Driving)**는 완전한 벡터화된 패러다임을 제안합니다:
+1. **계산 비용이 큼**: 밀집된 픽셀 단위 표현으로 인해 처리 부담이 큼
+2. **인스턴스 수준 정보 부재**: 개별 에이전트나 맵 요소를 구분하지 못해 정밀한 계획 제약을 세우기 어려움
 
-- **벡터 기반 장면 표현**: 경계(boundary), 차선(lane), 운동 정보(motion)를 모두 벡터로 표현
-- **명시적 제약 조건**: 벡터화된 계획 제약(planning constraints)으로 안전성 보장
-- **효율성 극대화**: 래스터 표현과 후처리 단계를 제거하여 계산 효율 향상
+이 논문은 장면 전체를 **벡터화된 표현(Vectorized Scene Representation)**으로 모델링하는 **VAD(Vectorized Autonomous Driving)**를 제안합니다. VAD는 에이전트의 모션 벡터와 맵 요소를 벡터 형태로 직접 활용하여 계획 제약을 인스턴스 단위로 정의합니다.
 
----
+**핵심 개념**
 
-## 2. 관련 연구 (Related Work)
-
-### 인식(Perception) 분야
-자율주행의 기본은 정확한 장면 인식입니다:
-
-- **3D 객체 탐지**: DETR3D, BEVFormer 등이 조류 눈 뷰(BEV: Bird's Eye View) 표현에서 객체를 탐지
-- **조류 눈 뷰의 확산**: BEV 표현이 공간 정보를 효과적으로 인코딩하면서 자율주행 분야에서 표준화
-- **벡터 기반 지도**: VectorMapNet, MapTR 등이 지도 요소를 벡터로 예측
-
-### 운동 예측(Motion Prediction)
-차량과 보행자의 미래 궤적 예측:
-
-- **궤적 기반**: 과거 궤적과 HD 지도를 입력으로 미래 궤적 예측
-- **CNN/RNN 기반**: 조류 눈 뷰 이미지와 CNN을 활용한 예측
-- **최근 발전**: Transformer 기반 방법들이 다중 모달(multi-modal) 궤적 예측 가능
-
-### 계획(Planning) 분야
-자율주행 의사결정의 핵심:
-
-- **전통적 계획**: 학습 기반이 아닌 규칙 기반의 비용 지도(cost map) 활용
-- **학습 기반 계획**: 강화학습을 통한 계획 학습이 주목받고 있음
-- **해석 가능성의 중요성**: 안전성을 위해 계획 과정의 투명성 필요
+- **래스터화 표현의 한계**: 픽셀 기반 밀집 맵은 연산 집약적이고 수작업 후처리가 필요하며, 인스턴스별 정보 활용이 어려움
+- **벡터화 표현의 장점**: 경계 벡터, 차선 벡터, 모션 벡터 형태로 장면을 표현하여 경량화 및 인스턴스 수준 제약 가능
+- **End-to-End 학습**: 인식부터 계획까지 하나의 모델로 통합 학습 가능
 
 ---
 
-## 3. 방법론 (Method)
+## 2. Related Work
 
-### 3.1 개요 (Overview)
+**요약**
 
-VAD는 4개 단계로 구성됩니다:
+세 가지 분야의 선행 연구를 검토합니다.
 
-1. **백본(Backbone)**: 다중 프레임, 다중 뷰 이미지에서 BEV 특성 추출
-2. **벡터화된 장면 학습**: BEV 특성으로부터 벡터화된 지도와 에이전트 운동 벡터 학습
-3. **계획 추론(Planning Inference)**: 에이전트와 지도 쿼리를 통한 상호작용으로 계획 궤적 생성
-4. **계획 학습(Planning Training)**: 벡터화된 제약 조건으로 계획 궤적 정규화
+**핵심 개념**
 
-### 3.2 벡터화된 장면 학습 (Vectorized Scene Learning)
+- **Perception (인식)**: BEVFormer, FIERY 등은 멀티카메라 이미지에서 BEV(Bird's Eye View) 특징을 추출. VAD도 BEV 인코더를 백본으로 사용
+- **Motion Prediction (모션 예측)**: VectorNet, MapTR 등은 벡터화된 표현으로 에이전트 미래 궤적을 예측. VAD는 이를 계획에 통합
+- **Planning (계획)**: UniAD, ST-P3 등의 E2E 자율주행 방법은 래스터화 맵 기반. VAD는 벡터화 맵으로 이를 대체하여 계산 효율 개선
 
-#### 벡터화된 지도(Vectorized Map)
-지도의 기하학적 정보를 명시적으로 표현합니다:
+---
 
-**주요 요소**:
-- **차선 분할선(Lane Divider)**: 도로 방향 정보 제공
-- **도로 경계(Road Boundary)**: 주행 가능 영역 정의
-- **보행자 횡단보도(Pedestrian Crossing)**: 보행자 관련 정보
+## 3. Method
 
-**수식**:
-$$V_{m} \in \mathbb{R}^{N_m \times d_m}$$
+### 3.1 전체 아키텍처 개요
 
-**수식 설명**:
-- **$V_m$**: 예측된 지도 벡터들의 집합
-- **$N_m$**: 지도 벡터의 개수 (예: 100개)
-- **$d_m$**: 각 벡터의 차원 (예: 128차원)
-- **의미**: 지도의 모든 기하학적 요소를 고정 크기의 벡터 집합으로 인코딩
+**요약**
 
-#### 벡터화된 에이전트 운동(Vectorized Agent Motion)
-다른 차량과 보행자의 미래 움직임을 다중 모달로 예측합니다:
+VAD의 전체 파이프라인은 4단계로 구성됩니다:
 
-**수식**:
-$$V_a \in \mathbb{R}^{N_a \times T \times 2}$$
+1. **Backbone**: 멀티카메라 이미지에서 특징 추출 후 BEV 특징 생성
+2. **Vectorized Scene Learning**: 에이전트 쿼리와 맵 쿼리로 모션 벡터 및 맵 벡터 학습
+3. **Planning (Inferring Phase)**: ego 쿼리가 에이전트/맵과 상호작용하여 planning trajectory 출력
+4. **Vectorized Planning Constraints (Training Phase)**: 벡터화된 제약으로 계획 궤적 정규화
 
-**수식 설명**:
-- **$V_a$**: 모든 에이전트의 예측된 궤적 모음
-- **$N_a$**: 장면에 있는 에이전트의 개수
-- **$T$**: 예측할 미래 시간 스텝 개수 (예: 6초를 0.5초 간격으로 12스텝)
-- **$2$**: 각 스텝에서 x, y 좌표 (평면 운동)
-- **$\mathbb{R}^{...}$**: 실수 공간을 의미
-- **의미**: 각 에이전트가 미래에 어디로 이동할지를 예측
+**핵심 개념**
 
-**학습 방식**:
-- BEV 특성 맵에서 **에이전트 쿼리(Agent Query)** $Q_a$를 무작위로 초기화
-- Transformer 디코더를 통해 BEV 특성과 상호작용하여 에이전트 속성(위치, 방향, 크기 등) 학습
-- MLP 기반 디코더로 에이전트 속성을 운동 벡터로 변환
+- **Agent Query ($Q_a$)**: 도로 위 다른 차량 등 동적 에이전트를 나타내는 학습 가능한 쿼리
+- **Map Query ($Q_m$)**: 도로 경계, 차선 등 정적 지도 요소를 나타내는 쿼리
+- **Ego Query ($Q_{ego}$)**: 자차(ego vehicle)의 계획을 위한 쿼리. 에이전트 및 맵 쿼리와 상호작용하여 계획 정보 획득
+- **BEV Encoder**: 6개 카메라 이미지를 $1280 \times 720$ 해상도로 입력받아 BEV 특징 생성
 
-### 3.3 상호작용을 통한 계획 (Planning via Interaction)
+---
 
-#### Ego-에이전트 상호작용
-자신의 차량(ego vehicle)과 다른 에이전트들 간의 관계를 학습합니다:
+### 3.2 Ego-Agent 및 Ego-Map 상호작용
 
-**수식**:
-$$Q^t_{ego} = \text{TransformerDecoder}(q, k, v, q_{pos}, k_{pos})$$
+**요약**
 
-$$q = Q_{ego}, \quad k = v = Q_a,$$
+Ego 쿼리는 Transformer Decoder를 통해 에이전트 및 맵 쿼리와 상호작용합니다.
 
-$$q_{pos} = \text{PE}_1(q_{ego}), \quad k_{pos} = \text{PE}_1(p_a)$$
+**Ego-Agent 상호작용** 수식:
 
-**수식 설명**:
-- **TransformerDecoder**: 자기 자신과 다른 차량들의 관계를 학습하는 신경망
-- **$q$ (Query)**: Ego 차량의 현재 위치/상태
-- **$k, v$ (Key, Value)**: 주변 에이전트들의 정보
-- **$\text{PE}_1$**: Positional Encoding - 절대 위치를 신경망이 이해할 수 있도록 변환
-- **의미**: "Ego 차량 주변에 어떤 다른 차량이 있고, 어떻게 상호작용하는가?"를 학습
+$$Q_{ego} = \text{TransformerDecoder}(q, k, v, q_{pos}, k_{pos})$$
 
-#### Ego-지도 상호작용
-자신의 차량과 도로 지도 간의 관계를 학습합니다:
+$$q = Q_{ego},\ k = v = Q_a,$$
 
-**수식**:
-$$Q^t_{ego} = \text{MLP}(Q^t_{ego}, Q^t_m, \text{MLP}(\text{PE}_2(p_{ego})))$$
+$$q_{pos} = \text{PE}_1(p_{ego}),\ k_{pos} = \text{PE}_1(p_a)$$
 
-**수식 설명**:
-- **MLP (Multi-Layer Perceptron)**: 간단한 신경망 (fully connected layers)
-- **$\text{PE}_2$**: Ego 차량의 상대 위치를 지도 쿼리와 융합
-- **의미**: "도로 지도에서 ego 차량이 어디에 위치하고, 주변 도로 정보는 무엇인가?"를 결합
+**수식 설명**
+- **$Q_{ego}$**: ego 차량의 계획 쿼리 (업데이트됨)
+- **$q, k, v$**: Transformer의 query, key, value. ego가 query로서 에이전트 정보를 주목(attention)함
+- **$p_{ego}$**: ego 차량의 예측 위치
+- **$p_a$**: 각 에이전트의 위치
+- **$\text{PE}_1$**: 위치를 임베딩 벡터로 변환하는 단일 레이어 MLP. 상대적 위치 관계를 인코딩
 
-#### 계획 헤드(Planning Head)
-학습된 정보로부터 최종 계획 명령을 생성합니다:
+**Ego-Map 상호작용** 수식:
 
-**수식**:
-$$V_{ego} = \text{PlanHead}(f = f_{ego}, \text{cmd} = c)$$
+$$Q''_{ego} = \text{TransformerDecoder}(q, k, v, q_{pos}, k_{pos})$$
 
-$$f_{ego} = [Q_{ego}, Q'_{ego}, s_{ego}]$$
+$$q = Q'_{ego},\ k = v = Q_m,$$
 
-**수식 설명**:
-- **PlanHead**: Ego 차량의 특성 및 네비게이션 명령으로부터 궤적을 생성하는 신경망
-- **$f_{ego}$**: Ego 차량의 모든 특성을 연결(concatenate)한 것
-  - $Q_{ego}$: Ego 차량 쿼리
-  - $Q'_{ego}$: 에이전트와의 상호작용으로 업데이트된 쿼리
-  - $s_{ego}$: Ego 상태 (속도, 가속도 등)
-- **$c$**: 네비게이션 명령 (turn left, turn right, go straight)
-- **$V_{ego}$**: 최종 계획된 궤적 (다음 6초간의 경로)
-- **의미**: "현재 상황에서 네비게이션 명령에 따라 어떤 경로를 그려야 할까?"
+$$q_{pos} = \text{PE}_2(p_{ego}),\ k_{pos} = \text{PE}_2(p_m)$$
 
-### 3.4 벡터화된 계획 제약 (Vectorized Planning Constraint)
+**수식 설명**
+- **$Q'_{ego}$**: 에이전트와 상호작용 후 업데이트된 ego 쿼리
+- **$Q_m$**: 맵 쿼리 (차선, 경계 등 정적 정보)
+- **$p_m$**: 맵 요소의 위치 포인트
+- **$\text{PE}_2$**: 맵 위치용 MLP 임베딩. 에이전트 상호작용과 구분된 별도의 위치 인코더 사용
 
-안전한 주행을 보장하기 위해 3가지 명시적 제약을 도입합니다:
+---
 
-#### 1️⃣ Ego-에이전트 충돌 회피 제약(Ego-Agent Collision Constraint)
-다른 차량과의 충돌을 피합니다:
+### 3.3 Planning Head
 
-**수식**:
-$$\mathcal{L}_{col} = \frac{1}{T_f} \sum_{t=1}^{T_f} \sum_{i \in \{X, Y\}} L^{it}_{col}, \quad i \in \{X, Y\}$$
+**요약**
 
-$$L^{it}_{col} = \begin{cases} \delta_i - d^it_u, & \text{if } d^it_u < \delta_i \\ 0, & \text{if } d^it_u \geq \delta_i \end{cases}$$
+Planning Head는 ego 쿼리와 driving command를 입력받아 미래 궤적을 출력합니다.
 
-**수식 설명**:
-- **$L_{col}$**: 충돌 손실(loss) - 충돌의 위험도를 수치화
-- **$T_f$**: 미래 예측 시간 스텝 개수 (예: 12)
-- **$d^it_u$**: 시간 $t$에서 Ego 차량과 가장 가까운 다른 차량 $u$ 사이의 거리 (X 또는 Y 방향)
-- **$\delta_i$**: 안전 거리 임계값 (X 방향 3m, Y 방향 1m)
-- **의미**: 계획된 궤적이 다른 차량과의 거리 기준을 만족하도록 강제
+$$\hat{V}_{ego} = \text{PlanHead}(\text{ft} = f_{ego},\ \text{cmd} = c)$$
 
-**직관**: 
-- 만약 Ego 차량이 옆 차량에 너무 가까워지려 하면, 그 손실 값이 커짐
-- 신경망은 이 손실을 최소화하려고 궤적을 조정하여 안전 거리 유지
+$$f_{ego} = [Q_{ego},\ Q'_{ego},\ s_{ego}]$$
 
-#### 2️⃣ Ego-경계 오버스테핑 제약(Ego-Boundary Overstepping Constraint)
-도로 경계를 넘어가지 않습니다:
+**수식 설명**
+- **$\hat{V}_{ego} \in \mathbb{R}^{T_f \times 2}$**: 예측된 미래 궤적. $T_f$개의 미래 타임스텝에서 2D 위치 좌표 시퀀스
+- **$f_{ego}$**: ego 특징 벡터. 에이전트 상호작용 전후의 ego 쿼리와 ego 상태($s_{ego}$)를 concatenate
+- **$c$**: 고수준 주행 명령 (turn left / turn right / go straight)
+- **$[\cdot]$**: concatenation 연산
 
-**수식**:
-$$\mathcal{L}_{bd} = \frac{1}{T_f} \sum^{T_f}_{t=1} L^t_{bd}$$
+---
 
-$$L^t_{bd} = \begin{cases} \delta_{bd} - d^t_{bd}, & \text{if } d^t_{bd} < \delta_{bd} \\ 0, & \text{if } d^t_{bd} \geq \delta_{bd} \end{cases}$$
+### 3.4 Vectorized Planning Constraint
 
-**수식 설명**:
-- **$d^t_{bd}$**: 시간 $t$에서 계획 궤적과 도로 경계선 사이의 거리
-- **$\delta_{bd}$**: 경계와의 최소 안전 거리 (예: 0.5m)
-- **의미**: 계획된 경로가 도로 경계 안에 있도록 강제
+**요약**
 
-#### 3️⃣ Ego-차선 방향 제약(Ego-Lane Directional Constraint)
-주행 방향이 차선 방향과 일치하도록 합니다:
+VAD는 세 가지 벡터화된 계획 제약을 통해 학습 시 궤적을 정규화합니다.
 
-**수식**:
-$$\mathcal{L}_{dir} = \frac{1}{T_f} \sum^{T_f}_{t=1} \mathcal{L}_{ang}(\vec{v}^t_m, \vec{v}^t_{ego})$$
+#### (1) Ego-Agent 충돌 제약 (Collision Constraint)
 
-$$\mathcal{L}_{ang}(\vec{v}_m, \vec{v}') = \arccos\left(\frac{\vec{v}_m \cdot \vec{v}'}{|\vec{v}_m| |\vec{v}'|}\right)$$
+자차 계획 궤적과 다른 에이전트의 미래 궤적 사이의 안전 거리를 유지하도록 강제합니다.
 
-**수식 설명**:
-- **$\vec{v}^t_m$**: 시간 $t$에서 가장 가까운 차선의 방향 벡터
-- **$\vec{v}^t_{ego}$**: 시간 $t$에서 Ego 차량의 주행 방향 벡터
-- **$\arccos$**: 두 벡터 사이의 각도를 계산 (코사인 역함수)
-- **의미**: 주행 방향이 차선과 일치할수록 손실이 작아짐
+$$\mathcal{L}_{col} = \frac{1}{T_f} \sum_{t=1}^{T_f} \sum_{i} \mathcal{L}^{it}_{col},\ i \in \{X, Y\}$$
 
-**직관**:
-- 차선이 북쪽으로 향하고 Ego 차량이 남쪽으로 향하면 각도가 크므로 손실 값이 큼
-- 신경망은 이 손실을 최소화하여 차선 방향과 일치하는 방향으로 주행
+$$\mathcal{L}^{it}_{col} = \begin{cases} \delta_i - d^{it}_n, & \text{if } d^{it}_n < \delta_i \\ 0, & \text{if } d^{it}_n \geq \delta_i \end{cases}$$
 
-### 3.5 엔드-투-엔드 학습 (End-to-End Learning)
+**수식 설명**
+- **$\mathcal{L}_{col}$**: 충돌 제약 손실. 모든 미래 타임스텝과 방향에 대해 평균
+- **$d^{it}_n$**: 시간 $t$에서 방향 $i$로의 가장 가까운 에이전트까지의 거리
+- **$\delta_i$**: 방향별 안전 거리 임계값 ($\delta_X$: 종방향, $\delta_Y$: 횡방향). 나란히 달리는 경우 횡방향($\delta_Y$)보다 종방향($\delta_X$)에서 더 긴 안전 거리 필요
+- 거리가 임계값보다 가까울 때만 패널티 부과 (마진 기반 손실)
 
-#### 벡터화된 장면 학습 손실(Vectorized Scene Learning Loss)
-지도와 에이전트 운동 예측을 감독합니다:
+#### (2) Ego-Boundary 이탈 제약 (Boundary Overstepping Constraint)
 
-**지도 학습 손실**:
-- **Manhattan 거리**: 예측된 지도 포인트와 실제 포인트 사이의 거리 계산
-- **분류 손실**: 각 지도 벡터의 클래스 분류
+계획 궤적이 도로 경계를 벗어나지 않도록 합니다.
 
-**운동 예측 손실**:
-$$\mathcal{L}_{mot} = \text{l1 loss (regression)} + \text{focal loss (classification)}$$
+$$\mathcal{L}_{bd} = \frac{1}{T_f} \sum_{t=1}^{T_f} \mathcal{L}^t_{bd}$$
 
-- **회귀 손실(l1 loss)**: 궤적의 위치 오차
-- **초점 손실(focal loss)**: 에이전트 클래스 분류
+$$\mathcal{L}^t_{bd} = \begin{cases} \delta_{bd} - d^t_{bd}, & \text{if } d^t_{bd} < \delta_{bd} \\ 0, & \text{if } d^t_{bd} \geq \delta_{bd} \end{cases}$$
 
-#### 벡터화된 계획 제약 손실(Vectorized Constraint Loss)
-앞서 정의한 3가지 제약을 손실함수로 표현:
+**수식 설명**
+- **$d^t_{bd}$**: 시간 $t$의 계획 위치에서 가장 가까운 맵 경계선까지의 거리
+- **$\delta_{bd}$**: 경계 안전 임계값 (기본값 1.0m)
+- 낮은 신뢰도의 맵 예측은 임계값 $\epsilon_m$으로 필터링 후 사용
 
-$$\mathcal{L}_{con} = \omega_1 \mathcal{L}_{col} + \omega_2 \mathcal{L}_{bd} + \omega_3 \mathcal{L}_{dir}$$
+#### (3) Ego-Lane 방향 제약 (Lane Directional Constraint)
 
-**수식 설명**:
-- **$\omega_1, \omega_2, \omega_3$**: 각 제약의 중요도를 조절하는 가중치
-- **의미**: 세 제약을 균형있게 조합하여 안전한 계획 생성
+자차의 이동 방향이 현재 차선 방향과 일치하도록 합니다.
 
-#### 모방 학습 손실(Imitation Learning Loss)
-전문가 운전 데이터로부터 학습합니다:
+$$\mathcal{L}_{dir} = \frac{1}{T_f} \sum_{t=1}^{T_f} F_{ang}(\hat{v}^t_m,\ \hat{v}^t_{ego})$$
 
-$$\mathcal{L}_{imi} = \frac{1}{T_f} \sum_{t=1}^{T_f} ||V^t_{ego} - V^{t*}_{ego}||_1$$
+**수식 설명**
+- **$\hat{v}^t_m \in \mathbb{R}^{T_f \times 2 \times 2}$**: 가장 가까운 차선 중앙선의 방향 벡터
+- **$\hat{v}^t_{ego}$**: 계획 시작점에서의 ego 이동 방향 벡터
+- **$F_{ang}(v_1, v_2)$**: 두 벡터 간의 각도 차이. 이 값이 작을수록 차선 방향을 잘 따름
+- 신뢰도 $\epsilon_{dir}$ 이하의 차선은 제외하고, 거리 $\delta_{dir}$ 이내의 차선만 사용
 
-**수식 설명**:
-- **$V^t_{ego}$**: 신경망이 예측한 Ego 궤적
-- **$V^{t*}_{ego}$**: 전문 운전자의 실제 궤적 (ground truth)
-- **$||..||_1$**: L1 거리 (절댓값의 합)
-- **의미**: 신경망의 예측이 전문가의 운전과 얼마나 비슷한지 측정
+---
 
-#### 전체 손실 함수(Overall Loss)
-모든 손실을 결합합니다:
+### 3.5 전체 학습 손실
 
 $$\mathcal{L} = \omega_1 \mathcal{L}_{map} + \omega_2 \mathcal{L}_{mot} + \omega_3 \mathcal{L}_{col} + \omega_4 \mathcal{L}_{bd} + \omega_5 \mathcal{L}_{dir} + \omega_6 \mathcal{L}_{imi}$$
 
-**수식 설명**:
-- 6가지 손실을 가중합으로 결합
-- 각 항의 가중치를 조절하여 모든 목표 간의 균형 유지
-- **의미**: 장면 이해, 계획, 안전성을 모두 고려하는 종합적 학습
+**수식 설명**
+- **$\mathcal{L}_{map}$**: 벡터화 맵 학습 손실 (Manhattan distance + focal loss)
+- **$\mathcal{L}_{mot}$**: 에이전트 모션 예측 손실 ($l_1$ regression + classification)
+- **$\mathcal{L}_{col}, \mathcal{L}_{bd}, \mathcal{L}_{dir}$**: 세 가지 벡터화 계획 제약 손실
+- **$\mathcal{L}_{imi}$**: Imitation learning 손실. 전문가 주행 궤적을 모방하도록 학습
+
+$$\mathcal{L}_{imi} = \frac{1}{T_f} \sum_{t=1}^{T_f} ||\hat{V}^t_{ego} - \tilde{V}^t_{ego}||_1$$
+
+- **$\hat{V}^t_{ego}$**: 예측 궤적, **$\tilde{V}^t_{ego}$**: ground truth 전문가 궤적
 
 ---
 
-## 4. 실험 결과 (Experiments)
+## 4. Experiments
 
-### 4.1 데이터셋 및 평가 지표
+### 4.1 Open-loop Planning (nuScenes)
 
-**데이터셋**: nuScenes
-- 1,000개의 주행 장면
-- 각 장면 약 20초
-- 6개 카메라로 360도 촬영
-- 주석: 2Hz 샘플링
+**요약**
 
-**평가 지표**:
-- **L2 Displacement Error (L2 m ↓)**: 예측된 경로와 실제 경로 간의 거리 오차 (낮을수록 좋음)
-- **Collision Rate (%) ↓**: 충돌 사건의 비율 (낮을수록 좋음)
-- **Latency (ms)**: 계획 생성 시간 (낮을수록 좋음)
-- **FPS**: 초당 처리 프레임 (높을수록 좋음)
+nuScenes validation 데이터셋에서 VAD는 SOTA 성능을 달성했습니다.
 
-### 4.2 주요 결과
+| Method | L2 Avg (m) ↓ | Collision Avg (%) ↓ | FPS |
+|--------|-------------|---------------------|-----|
+| ST-P3 | 2.11 | 0.71 | 1.6 |
+| UniAD | 1.03 | 0.31 | 1.8 |
+| **VAD-Tiny** | **0.78** | **0.38** | **16.8** |
+| **VAD-Base** | **0.72** | **0.22** | **4.5** |
 
-#### 개방 루프(Open-loop) 계획 성능
+**핵심 개념**
 
-| 방법 | L2 (m) ↓ | Collision (%) ↓ | Latency (ms) |
-|------|----------|-----------------|--------------|
-| NMP† | 2.31 | 1.92 | - |
-| SA-NMP† | 2.05 | 1.59 | - |
-| FF† | 2.54 | 1.07 | - |
-| EOI† | 2.78 | 0.88 | - |
-| ST-P3† | 2.90 | 1.27 | 628.3 |
-| UniAD | 1.65 | 0.71 | 555.6 |
-| VAD-Tiny | **1.12** | **0.58** | **59.5** |
-| VAD-Base | **1.05** | **0.41** | **224.3** |
+- **L2 (m)**: 예측 궤적과 실제 궤적의 평균 거리 오차. 낮을수록 좋음
+- **Collision Rate (%)**: 다른 에이전트와의 충돌 비율. 낮을수록 안전
+- **VAD-Base**: 평균 충돌률을 29.0% 감소, L2 오차도 크게 개선
+- **VAD-Tiny**: UniAD 대비 9.3배 빠른 추론 속도 (16.8 FPS vs 1.8 FPS)
 
-**핵심 결과**:
-- **VAD-Base**: L2 오차 30% 감소, 충돌율 29% 감소
-- **VAD-Tiny**: UniAD 대비 **2.5배 빠른** 추론 속도 (9.3 FPS → 16.8 FPS)
-- **우수한 균형**: 가장 빠르면서도 경쟁력 있는 정확도 유지
+### 4.2 Closed-loop Simulation (CARLA)
 
-#### 폐쇄 루프(Closed-loop) 시뮬레이션
+**요약**
 
-| 방법 | Town05 Short | Town05 Long |
-|------|--------------|------------|
-| CILRS | DS ↑ 7.47 | DS ↑ 3.68 |
-| LBC | DS ↑ 30.97 | DS ↑ 7.05 |
-| Transfuser | DS ↑ 54.52 | DS ↑ 33.15 |
-| ST-P3 | DS ↑ 55.14 | DS ↑ 11.45 |
-| VAD-Base | **DS ↑ 64.29** | **DS ↑ 30.31** |
+CARLA 시뮬레이터에서 VAD-Base는 비전 전용 E2E 방법 중 최고 성능을 달성했습니다.
 
-**의미**:
-- **DS (Driving Score)**: 주행 성공도 (높을수록 좋음)
-- VAD가 모든 벤치마크에서 최고 성능 달성
+| Method | Town05 Short DS↑ | Town05 Short RC↑ | Town05 Long DS↑ | Town05 Long RC↑ |
+|--------|-----------------|-----------------|----------------|----------------|
+| ST-P3 | 55.14 | 86.74 | 11.45 | 83.15 |
+| **VAD-Base** | **64.29** | **87.26** | **30.31** | **75.20** |
 
-### 4.3 어블레이션 연구 (Ablation Study)
+- **DS (Driving Score)**: 경로 완성률과 안전 이벤트를 종합한 점수
+- **RC (Route Completion)**: 목표 경로 완주율
 
-#### 설계 선택의 효과성
+### 4.3 Ablation Study
 
-| ID | Agent Inter. | Map Inter. | Overstep. | Dir. | Col. | L2 (m) | Collision (%) |
-|----|--------------|-----------|----------|------|------|--------|---------------|
-| 1 | ✓ | - | ✓ | ✓ | ✓ | 0.52 | 0.29 |
-| 2 | - | ✓ | ✓ | ✓ | ✓ | 0.49 | 0.26 |
-| 3 | ✓ | ✓ | - | ✓ | ✓ | 0.43 | 0.28 |
-| 4 | ✓ | ✓ | ✓ | - | - | 0.46 | 0.24 |
-| 5 | ✓ | ✓ | ✓ | ✓ | - | 0.42 | 0.25 |
-| 6 | ✓ | ✓ | - | - | ✓ | 0.44 | 0.26 |
-| 7 | ✓ | ✓ | ✓ | ✓ | ✓ | **0.41** | **0.22** |
+**요약**
 
-**발견**:
-- **지도 쿼리의 중요성**: 지도 상호작용 없을 때 L2 오차 증가
-- **에이전트 상호작용**: 충돌율에 큰 영향
-- **모든 제약의 기여**: 전체 제약을 함께 사용할 때만 최적 성능
+설계 선택의 유효성을 검증하는 절제 실험 결과:
 
-#### 지도 표현 비교 (래스터 vs 벡터)
+| ID | Agent Inter. | Map Inter. | Overstep. | Dir. | Col. | L2 Avg ↓ | Collision Avg ↓ |
+|----|-------------|-----------|-----------|------|------|----------|----------------|
+| 1 | ✓ | - | ✓ | ✓ | ✓ | 0.86 | 0.29 |
+| 3 | ✓ | ✓ | ✓ | - | - | 0.76 | 0.28 |
+| 7 (Full) | ✓ | ✓ | ✓ | ✓ | ✓ | **0.72** | **0.22** |
 
-| 표현 방식 | Vectorized Map | L2 (m) | Collision (%) |
-|---------|---|--------|---------------|
-| Rasterized | ✓ | - | 0.43 | 0.39 |
-| Vectorized | - | 0.44 | 0.26 |
-| Vectorized | ✓ | **0.41** | **0.22** |
+- 맵 상호작용 추가 시 충돌률 크게 감소
+- 세 가지 제약 모두 사용할 때 최고 성능
+- 래스터화 맵 대비 벡터화 맵의 충돌률이 현저히 낮음
 
-**의미**:
-- **래스터 방식**: 높은 계산 비용으로 성능 저하
-- **벡터 방식**: 계산 효율성과 성능 동시 달성
+### 4.4 Module Runtime (VAD-Tiny)
 
-### 4.4 모듈별 런타임 분석
-
-VAD-Tiny 기준 (NVIDIA GeForce RTX 3090):
-
-| 모듈 | 지연시간 (ms) | 비율 |
-|------|------------|------|
+| Module | Latency (ms) | Proportion |
+|--------|-------------|-----------|
 | Backbone | 23.2 | 39.0% |
 | BEV Encoder | 12.3 | 20.7% |
 | Motion Module | 11.5 | 19.3% |
 | Map Module | 9.1 | 15.3% |
 | Planning Module | 3.4 | 5.7% |
-| **합계** | **59.5** | 100% |
+| **Total** | **59.5** | **100%** |
 
-**분석**:
-- 백본 네트워크가 전체 시간의 40% 차지
-- **계획 모듈은 단 5.7%**: 벡터화된 계획이 매우 효율적
-- 전체 시스템이 16.8 FPS 달성 가능 (실시간 요구사항 충족)
+- Planning 모듈이 전체의 단 5.7%만 차지 → 벡터화 표현으로 인한 경량 계획 가능
+- Backbone + BEV Encoder가 가장 큰 비중 (59.7%)
 
 ---
 
-## 5. 핵심 개념 정리
+## 핵심 개념 정리
 
-### 벡터 표현의 장점
-
-| 특성 | 래스터 | 벡터 |
-|-----|-------|------|
-| **표현** | 고해상도 2D 그리드 | 기하학적 포인트/선 |
-| **정밀도** | 그리드 해상도 제약 | 무제한 정밀도 |
-| **계산량** | 높음 | 낮음 |
-| **해석 가능성** | 낮음 | 높음 |
-| **점진적 처리** | 어려움 | 용이 |
-
-### Transformer 기반 상호작용
-
-```
-[Agent Queries]  ──┐
-                   ├→ TransformerDecoder ──→ [Updated Queries]
-[Map Features] ───┘
-
-의미: 에이전트 정보와 지도 정보를 신경망이 상호작용하게 하여 
-      더 나은 표현 학습
-```
-
-### 명시적 제약의 역할
-
-**제약 없음**: 신경망이 임의로 궤적 생성 → 불안전
-**제약 있음**: 안전 조건을 명시적으로 강제 → 신뢰할 수 있는 계획
+| 개념 | 설명 |
+|------|------|
+| **VAD** | Vectorized Autonomous Driving. 장면 전체를 벡터 형태로 표현하는 E2E 자율주행 프레임워크 |
+| **Vectorized Scene Representation** | 경계 벡터, 차선 벡터, 모션 벡터로 장면을 표현. 래스터 맵보다 경량화되고 인스턴스 단위 정보 포함 |
+| **BEV (Bird's Eye View)** | 하늘에서 내려다보는 시점. 멀티카메라 이미지를 BEV 공간으로 변환하여 공간적 관계 파악 |
+| **Ego Query** | 자차의 계획 정보를 담는 쿼리 벡터. 에이전트/맵 쿼리와 Attention을 통해 상호작용 |
+| **Vectorized Planning Constraint** | 충돌 제약, 경계 이탈 제약, 차선 방향 제약 세 가지로 구성. 인스턴스 수준에서 안전 계획 강제 |
+| **Imitation Learning** | 전문가(사람) 운전 궤적을 모방하도록 학습하는 방식 |
+| **HD Map-free Planning** | 사전 구축된 HD 맵 없이 실시간으로 맵을 예측하면서 계획 수행 |
+| **minFDE** | minimum Final Displacement Error. 다중 모달 예측 중 최종 위치 오차가 가장 작은 예측 선택 |
 
 ---
 
-## 6. 결론 및 시사점
+## 결론 및 시사점
 
-### VAD의 기여
+VAD는 자율주행에서 **벡터화된 장면 표현**의 잠재력을 입증했습니다:
 
-1. **새로운 패러다임**: 자율주행을 위한 완전한 벡터화된 표현 제안
-2. **성능과 효율성**: 기존 방법 대비 더 정확하면서도 훨씬 빠름
-3. **해석 가능성**: 벡터 표현과 명시적 제약으로 의사결정 과정 투명성 확보
-4. **실용성**: 실시간 요구사항을 만족하는 추론 속도
+1. **성능**: nuScenes에서 이전 SOTA 대비 충돌률 29% 감소, L2 오차 대폭 감소
+2. **효율성**: VAD-Tiny는 9.3배 빠른 추론 속도로 실시간 배포 가능성 제시
+3. **안전성**: 인스턴스 수준의 벡터화 제약으로 더 정밀하고 해석 가능한 계획 달성
+4. **확장성**: 교통 신호, 속도 제한 등 추가 정보를 벡터 쿼리로 통합 가능
 
-### 실무적 시사점
-
-- **산업 배포**: 계산 효율성이 자율주행 실제 배포의 핵심 요소
-- **안전성 보장**: 신경망 기반 학습 + 명시적 제약의 조합이 신뢰성 확보
-- **모듈식 설계의 재평가**: 완전 엔드-투-엔드보다 벡터 기반 구조화된 표현이 더 효과적
-- **향후 방향**: 벡터 기반 방식이 자율주행의 표준 패러다임이 될 가능성
-
-### 주요 성과 요약
-
-| 지표 | 개선도 |
-|-----|-------|
-| 경로 오차 | 30% ↓ |
-| 충돌율 | 29% ↓ |
-| 추론 속도 | 2.5배 ↑ |
-| 폐쇄 루프 성능 | 최고 달성 |
-
----
-
-## 참고 자료
-
-- **GitHub**: https://github.com/hustvl/VAD
-- **arXiv**: 2303.12077
-- **Conference**: ICCV 2023
-
-## 관련 논문 및 기술
-
-- **BEVFormer**: 조류 눈 뷰 기반 다중 작업 학습
-- **MapTR**: 벡터 기반 지도 요소 예측
-- **UniAD**: 통합 자율주행 프레임워크
-- **Transformer**: 시퀀스 기반 상호작용 모델링
-- **CARLA**: 자율주행 시뮬레이션 환경
+**한계 및 미래 연구 방향**:
+- 다중 모달 모션 예측의 계획 활용 방법 추가 연구 필요
+- 차선 그래프, 도로 표지판, 교통 신호 등 추가 교통 정보 통합 탐색 필요
