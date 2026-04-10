@@ -1,530 +1,299 @@
 ---
 title: "HUGS: Holistic Urban 3D Scene Understanding via Gaussian Splatting"
-date: 2026-04-09
+date: 2026-04-10T09:00:00+09:00
 draft: false
 categories: ["Papers"]
+tags: ["3D Gaussian Splatting", "Autonomous Driving", "Scene Understanding", "Novel View Synthesis", "Semantic Segmentation"]
 ---
 
 ## 개요
 
 - **저자**: Hongyu Zhou, Jiahao Shao, Lu Xu, Dongfeng Bai, Weichao Qiu, Bingbing Liu, Yue Wang, Andreas Geiger, Yiyi Liao
-- **소속**: Zhejiang University, Huawei Noah's Ark Lab, University of Tübingen
-- **발행년도**: 2024
-- **논문 링크**: arXiv:2403.12722v1
-- **주요 내용**: 3D Gaussian Splatting을 활용하여 RGB 이미지만으로 도시 장면의 기하학, 외형, 의미론, 동작을 통합적으로 이해하는 방법. 새로운 뷰 합성, 의미론적 분할, 동적 객체 추적을 실시간으로 수행할 수 있습니다.
+- **소속**: Zhejiang University, Huawei Noah's Ark Lab, University of Tübingen, Tübingen AI Center
+- **발행년도**: 2024 (arXiv:2403.12722, March 2024)
+- **주요 내용**: RGB 이미지만으로 도시 3D 장면의 외관(appearance), 의미(semantics), 움직임(motion)을 통합적으로 이해하는 3D Gaussian Splatting 기반 프레임워크. LiDAR나 수동 주석 3D 바운딩 박스 없이도 실시간 novel view synthesis, 3D 시맨틱 재구성, 동적 객체 추적을 동시에 수행함.
 
 ## 목차
 
-- 도입부 및 동기
-- 관련 연구
-- 방법: 분해된 장면 표현
-- Holistic Urban Gaussian Splatting 렌더링
-- 손실 함수 및 최적화
-- 실험 및 결과
+1. Introduction
+2. Related Work
+3. Method
+   - 3.1 Decomposed Scene Representation
+   - 3.2 Holistic Urban Gaussian Splatting
+   - 3.3 Loss Functions
+   - 3.4 Implementation Details
+4. Experiments
+   - 4.1 Novel View Synthesis
+   - 4.2 Semantic and Geometric Scene Understanding
+   - 4.3 Scene Editing
+   - 4.4 Ablation Study
+5. Conclusion
 
-## 1. 도입부 및 동기
+---
+
+## Chapter 1: Introduction
 
 **요약**
 
-자율주행 시뮬레이터 개발 같은 실제 응용에서는 도시 장면의 포괄적인 이해가 필수입니다. 기존 방법들은:
-- 특정 작업(예: 의미론적 분할 또는 추적)에만 집중
-- LiDAR 스캔이나 수동 3D 바운딩 박스 같은 추가 입력 필요
-- 많은 경우 정적 장면만 처리 가능
-- 실시간 렌더링 불가능
+도시 장면을 RGB 이미지만으로 전체론적(holistic)으로 이해하는 것은 자율주행 시뮬레이터 구축에 핵심적인 과제입니다. 기존 접근법들은 새로운 시점 합성, 시맨틱 라벨 파싱, 동적 객체 추적 등 특정 측면에만 집중했으며, 대부분 LiDAR 스캔이나 수동 주석 3D 바운딩 박스에 의존합니다.
 
-이 논문은 **HUGS(Holistic Urban Gaussian Splatting)**를 제안합니다. RGB 이미지만으로부터 다음을 동시에 달성합니다:
-1. 새로운 뷰에서의 고품질 이미지 합성
-2. 의미론적 정보의 2D 및 3D 재구성
-3. 광학 흐름 추정
-4. 동적 객체 추적 및 의미론적 레이블링
-5. 실시간 렌더링 (93 fps)
+HUGS는 다음을 동시에 달성합니다:
+- 실시간 novel view synthesis (약 93 fps)
+- 2D/3D 시맨틱 정보의 정확한 재구성
+- 동적 3D 객체 추적 (3D bounding box 예측 포함)
+
+핵심 아이디어는 노이즈 있는 2D 예측값(시맨틱 라벨, 광학 흐름, 3D 추적 결과)을 3D Gaussian으로 올려(lift) 물리적 제약 조건을 통해 정제하는 것입니다.
 
 **핵심 개념**
 
-- **신경 렌더링**: 2D 정보를 3D 공간으로 lifting하여 장면 이해
-- **3D Gaussian Splatting**: 정적 장면의 고품질 신경 렌더링에 효과적
-- **물리 제약**: Unicycle 모델을 사용하여 동적 객체의 궤적에 제약 조건 추가
-- **분해된 표현**: 정적 영역과 동적 객체를 분리하여 모델링
+- **Holistic Understanding**: 외관, 기하, 의미, 움직임을 하나의 통합 모델로 다루는 접근법
+- **2D-to-3D Lifting**: 2D 이미지에서 얻은 예측을 3D 공간으로 변환하는 기술
+- **Physical Constraints**: 유니사이클 모델 등 물리적 법칙을 활용해 노이즈 있는 예측을 정제
 
-## 2. 관련 연구
+---
 
-**요약**
-
-논문은 세 가지 관련 분야를 검토합니다:
-
-**3D 장면 이해**
-- 2D 기반 접근: 의미론, 깊이, 광학 흐름 예측 (다중 뷰 일관성 부족)
-- 3D 기반 접근: LiDAR 기반 (비용이 높음)
-- 최근 접근: 신경 렌더링(NeRF)을 사용한 2D→3D lifting
-
-**도시 장면 재구성**
-- Point-based, Mesh-based, NeRF-based 방법들
-- 정적 장면에 주로 초점
-- 동적 장면 처리: NSG, MARS, UniSim (정확한 3D 바운딩 박스 필요)
-- PNF: 부정확한 바운딩 박스 사용 (하지만 물리 제약 부재)
-
-**3D Gaussian Splatting**
-- 정적 장면에서 우수한 성능
-- 최근 동적 장면으로 확장 (제한사항: 많은 학습 뷰 필요, 마스크 필요)
-- 이 논문의 기여: 동적 객체 분해, 스파스 입력, 노이즈 있는 라벨 처리
-
-**핵심 개념**
-
-- **NeRF (Neural Radiance Fields)**: 미분 가능한 신경 렌더링으로 2D 정보를 3D로 lifting
-- **Semantic NeRF**: 2D 의미 주석을 3D 공간으로 lifting
-
-## 3. 방법: 분해된 장면 표현
+## Chapter 2: Related Work
 
 **요약**
 
-HUGS는 장면을 정적 영역과 N개의 강직한 동작(rigid motion)을 수행하는 동적 차량으로 분해합니다.
+관련 연구는 크게 세 가지 범주로 나뉩니다:
 
-### 3.1 장면 표현
+1. **도시 3D 장면 이해**: LiDAR 기반 포인트 클라우드를 활용하는 방법들이 주를 이루며, RGB 전용 방법들은 기하 정확도가 낮음
+2. **동적 장면의 NeRF/Gaussian**: NSG, MARS 등은 ground-truth 3D 바운딩 박스가 필요하여 실용성이 제한됨
+3. **시맨틱 NeRF**: 2D 시맨틱을 3D로 올리는 작업들은 정적 장면에만 집중하거나 동적 객체를 개별적으로 분해하는 능력이 부족
 
-**3D Gaussian 모델링**
+HUGS의 차별점은 노이즈 있는 단안(monocular) 예측만으로 동적 객체를 개별 분해하면서도 전체 장면을 통합적으로 표현한다는 점입니다.
 
-각 3D Gaussian은 다음으로 정의됩니다:
+---
 
-$$G(x) = \alpha \exp\left(-\frac{1}{2}(x - \mu)^T \Sigma^{-1}(x - \mu)\right)$$
+## Chapter 3: Method
 
-**변수 설명:**
-- **$G(x)$**: 공간의 점 $x$에서의 Gaussian 값 (밀도를 나타냄)
-- **$\alpha$**: 불투명도 (0 = 완전 투명, 1 = 완전 불투명)
-- **$\mu$**: Gaussian의 중심 위치 (3D 좌표)
-- **$\Sigma$**: 3×3 공분산 행렬 (Gaussian의 형태 결정)
-- **$(x - \mu)$**: 점과 Gaussian 중심 간의 거리
+**요약**
 
-**직관적 의미:**
-이 수식은 3D 공간의 특정 점에서 객체가 존재할 확률을 나타냅니다. 중심에서 멀어질수록 값이 지수적으로 감소합니다.
+HUGS는 도시 장면을 정적 Gaussian과 N개의 동적 차량 Gaussian으로 분해하여 표현합니다. 각 동적 객체는 유니사이클 모델(unicycle model)로 움직임이 모델링됩니다.
 
-**추가 속성:**
-- **색상**: SH (Spherical Harmonics) 계수로 매개변수화
-- **의미론**: 각 Gaussian이 의미 logit $s \in \mathbb{R}^S$ 보유 (S = 클래스 수)
-- **광학 흐름**: Gaussian 중심의 두 시간 프레임 간의 투영 차이로 계산
+### 3.1 Decomposed Scene Representation (분해된 장면 표현)
 
-### 3.2 Unicycle 모델
+**Static and Dynamic 3D Gaussians**
 
-**동기**
+3D Gaussian Splatting을 기반으로 정적/동적 영역 모두를 표현합니다. 각 Gaussian은 다음으로 정의됩니다:
 
-각 프레임마다 독립적으로 객체 변환을 최적화하면:
-- 국소 최솟값에 빠지기 쉬움
-- 초기화에 민감함
-- 부드럽지 않은 궤적
+$$G(\mathbf{x}) = \alpha \exp\left(-\frac{1}{2}(\mathbf{x} - \mu)^T \Sigma^{-1}(\mathbf{x} - \mu)\right)$$
 
-**Unicycle 모델**
+**수식 설명**
+- $G(\mathbf{x})$: 위치 $\mathbf{x}$에서 이 Gaussian이 기여하는 값 (투명도 가중치)
+- $\mu \in \mathbb{R}^3$: Gaussian의 중심 위치 (3D 공간에서의 좌표)
+- $\Sigma \in \mathbb{R}^{3 \times 3}$: 공분산 행렬 (Gaussian의 모양과 방향을 결정)
+- $\alpha$: 기본 불투명도 (opacity)
+- $(\mathbf{x} - \mu)^T \Sigma^{-1}(\mathbf{x} - \mu)$: 마할라노비스 거리 — 중심에서 멀수록 값이 커지고 Gaussian 기여가 줄어듦
 
-자동차의 상태를 3개 파라미터로 매개변수화합니다:
+각 Gaussian은 추가로:
+- **색상 벡터** $\mathbf{c} \in \mathbb{R}^3$: 구면 조화 함수(SH) 계수로 파라미터화
+- **시맨틱 로짓** $\mathbf{s} \in \mathbb{R}^S$: 각 클래스에 대한 확률 점수
+- **광학 흐름** $\mathbf{f}_{t_1 \to t_2} \in \mathbb{R}^2$: 두 시간 $t_1, t_2$ 사이의 픽셀 이동 벡터
 
-$$\text{State} = (x_t, y_t, \theta_t)$$
+**Unicycle Model (유니사이클 모델)**
 
-**변수 설명:**
-- **$x_t, y_t$**: 시간 t에서의 위치 (2D)
-- **$\theta_t$**: 차량의 요(yaw) 각도
+N개의 동적 차량 각각은 유니사이클 모델로 움직임이 파라미터화됩니다. 상태 $(x_t, y_t, \theta_t)$와 속도 $(v_t, \omega_t)$를 학습 가능한 파라미터로 두며, 시간 $t$에서 $t+1$로의 전환은:
 
-**프레임 간 전환:**
+$$x_{t+1} = x_t + \frac{v_t}{\omega_t}(\sin\theta_{t+1} - \sin\theta_t)$$
 
-$$x_{t+1} = x_t + \frac{v_t}{\omega_t}(\sin \theta_{t+1} - \sin \theta_t)$$
-
-$$y_{t+1} = y_t - \frac{v_t}{\omega_t}(\cos \theta_{t+1} - \cos \theta_t)$$
+$$y_{t+1} = y_t - \frac{v_t}{\omega_t}(\cos\theta_{t+1} - \cos\theta_t)$$
 
 $$\theta_{t+1} = \theta_t + \omega_t$$
 
-**변수 설명:**
-- **$v_t$**: 시간 t에서의 전진 속도
-- **$\omega_t$**: 시간 t에서의 각속도
-- **분수 부분 $\frac{v_t}{\omega_t}$**: 회전 중심까지의 거리
+**수식 설명**
+- $(x_t, y_t)$: 시간 $t$에서 차량의 2D 위치 (지면 좌표계)
+- $\theta_t$: 시간 $t$에서 차량의 진행 방향 (요우각, yaw angle)
+- $v_t$: 전진 속도 (앞으로 가는 빠르기)
+- $\omega_t$: 각속도 (방향이 바뀌는 빠르기)
+- $\frac{v_t}{\omega_t}$: 회전 반경 — 빠르게 달리고 천천히 회전할수록 큰 원을 그림
+- $\sin\theta_{t+1} - \sin\theta_t$: 방향 변화에 따른 x 방향 이동량
 
-**직관적 의미:**
-이 수식들은 자동차의 기하학적 제약을 모델링합니다. 자동차는 앞바퀴 방향으로만 움직이고, 뒷바퀴는 차량의 방향을 따릅니다.
+이 모델의 장점: 프레임별로 독립적으로 위치를 최적화하는 것보다 물리적으로 자연스러운 궤적을 생성하여 로컬 미니마에 빠질 가능성이 낮음.
 
-**최적화 전략**
+### 3.2 Holistic Urban Gaussian Splatting (전체론적 렌더링)
 
-직접 재귀적 매개변수화는 최적화하기 어려우므로:
-1. 모든 시간 단계의 상태 $\{(x_t, y_t, \theta_t)\}_t$ 학습
-2. 모든 시간 단계의 속도 $\{v_t, \omega_t\}_t$ 학습
-3. Unicycle 제약을 만족하도록 정규화 항 추가
+**Novel View Synthesis (신규 시점 합성)**
 
-**핵심 개념**
+정적/동적 Gaussian을 이미지 평면에 투영하고 $\alpha$-블렌딩으로 합성합니다:
 
-- **강직한 동작 (Rigid Motion)**: 회전 $R_t$와 이동 $t_t$로 표현
-- **Canonical Space**: 각 동적 객체의 로컬 좌표계
-- **Physical Constraints**: 물리적으로 타당한 궤적만 가능하게 함
+$$\pi: \quad \mathbf{C} = \sum_{i \in \mathcal{N}} \mathbf{c}_i \alpha_i' \prod_{j=1}^{i-1}(1 - \alpha_j')$$
 
-## 4. Holistic Urban Gaussian Splatting 렌더링
+**수식 설명**
+- $\mathbf{C}$: 최종 렌더링된 픽셀 색상
+- $\mathbf{c}_i$: i번째 Gaussian의 색상 (카메라 방향에 따라 달라지는 구면 조화 함수 기반)
+- $\alpha_i'$: i번째 Gaussian의 투영된 불투명도 (3D 모양이 2D로 투영된 값)
+- $\prod_{j=1}^{i-1}(1 - \alpha_j')$: 앞에 있는 Gaussian들을 투과한 빛의 비율
+  - 앞의 객체가 완전 불투명(α=1)이면 뒤의 객체는 보이지 않음 (곱이 0)
+  - 앞의 객체가 반투명이면 뒤의 객체도 부분적으로 보임
 
-**요약**
+**Exposure Modeling (노출 모델링)**
 
-분해된 장면 표현으로부터 RGB 이미지, 의미론적 맵, 광학 흐름을 합성합니다.
+도시 장면은 자동 노출로 촬영되어 프레임마다 밝기가 다릅니다. 카메라의 외부/내부 파라미터를 이용해 아핀 변환으로 노출을 보정합니다:
 
-### 4.1 새로운 뷰 합성 (Novel View Synthesis)
+$$\tilde{\mathbf{C}} = \mathbf{A} \times \mathbf{C} + \mathbf{b}$$
 
-**알파 블렌딩 (Alpha Blending)**
+**수식 설명**
+- $\mathbf{A} \in \mathbb{R}^{3 \times 3}$: 색상 변환 행렬 (화이트 밸런스, 채도 등 전역적 색상 조정)
+- $\mathbf{b} \in \mathbb{R}^3$: 밝기 오프셋 벡터
+- 이 행렬은 카메라 외부 파라미터로부터 MLP를 통해 소규모로 학습
 
-정적 및 동적 Gaussian을 정렬하여 투영하고 알파 블렌딩으로 합칩니다:
+**Semantic Reconstruction (시맨틱 재구성)**
 
-$$C = \sum_{i \in N} c_i \alpha_i' \prod_{j=1}^{i-1}(1 - \alpha_j')$$
+3D 시맨틱 로짓 $\mathbf{s}_i$에 소프트맥스를 적용 후 $\alpha$-블렌딩:
 
-**변수 설명:**
-- **$C$**: 최종 출력 색상
-- **$c_i$**: i번째 Gaussian의 색상
-- **$\alpha_i'$**: 투영된 2D Gaussian에 따른 불투명도
-- **$\prod_{j=1}^{i-1}(1 - \alpha_j')$**: 앞의 모든 객체를 지나온 빛의 투과율
+$$\pi: \quad \mathbf{S} = \sum_{i \in \mathcal{N}} \text{softmax}(\mathbf{s}_i) \alpha_i' \prod_{j=1}^{i-1}(1 - \alpha_j')$$
 
-**직관적 의미:**
-앞에 있는 객체부터 뒤로 누적하면서 색상을 섞습니다. 앞의 객체가 투명하면 뒤의 색상이 더 많이 보입니다.
+**수식 설명**
+- $\mathbf{S}$: 렌더링된 픽셀의 시맨틱 클래스 확률 분포
+- $\text{softmax}(\mathbf{s}_i)$: 3D 공간에서 정규화된 클래스 확률 — 2D에서 소프트맥스 적용하는 것보다 더 안정적인 3D 시맨틱을 생성
+- 핵심 차이: 2D 소프트맥스는 큰 로짓 값을 가진 단일 Gaussian이 전체 렌더링을 지배할 수 있으나, 3D 소프트맥스는 이런 floater 현상을 방지
 
-### 4.2 노출 모델링 (Exposure Modeling)
+**Optical Flow (광학 흐름)**
 
-**문제**
+두 타임스탬프 $t_1, t_2$ 사이의 각 Gaussian 중심 $\mu$의 투영 차이로 모션 벡터를 계산합니다:
 
-도시 장면은 자동 화이트밸런스와 자동 노출로 촬영되어 프레임마다 다릅니다.
+$$\mu_1' = \mathbf{K}[\mathbf{R}_{t_1}^{\text{cam}} | \mathbf{t}_{t_1}^{\text{cam}}]\mu, \quad \mu_2' = \mathbf{K}[\mathbf{R}_{t_2}^{\text{cam}} | \mathbf{t}_{t_2}^{\text{cam}}]\mu$$
 
-**해결책**
+$$\pi: \quad \mathbf{F} = \sum_{i \in \mathcal{N}} \mathbf{f}_i \alpha_i' \prod_{j=1}^{i-1}(1 - \alpha_j')$$
 
-카메라의 외부 파라미터를 작은 MLP로 매핑하여 노출 어파인 행렬 생성:
+**수식 설명**
+- $\mathbf{K}$: 카메라 내부 파라미터 행렬 (3D→2D 투영)
+- $\mathbf{R}^{\text{cam}}, \mathbf{t}^{\text{cam}}$: 각 타임스탬프에서 카메라의 회전/이동
+- $\mathbf{f}_i = \mu_2' - \mu_1'$: 3D Gaussian 중심의 2D 이미지상 이동 벡터
+- $\mathbf{F}$: 최종 렌더링된 광학 흐름 맵
 
-$$\tilde{C} = A \times C + b$$
+### 3.3 Loss Functions (손실 함수)
 
-**변수 설명:**
-- **$A$**: 3×3 변환 행렬
-- **$b$**: 3D 오프셋 벡터
-- **MLP**: 카메라 파라미터를 입력으로 받아 A와 b를 생성
+전체 손실 함수:
 
-**핵심 개념**
+$$\mathcal{L} = \mathcal{L}_I + \lambda_S \mathcal{L}_S + \lambda_F \mathcal{L}_F + \lambda_t \mathcal{L}_t + \lambda_{uni} \mathcal{L}_{uni} + \lambda_{reg} \mathcal{L}_{reg}$$
 
-- **어파인 변환**: 색상에 선형 변환과 오프셋 적용
-- **Per-camera 모델링**: 각 카메라의 고유한 노출 특성 캡처
+**수식 설명**
+- $\mathcal{L}_I$: 이미지 재구성 손실 (렌더링 품질)
+- $\mathcal{L}_S$: 시맨틱 분할 손실 (클래스 정확도)
+- $\mathcal{L}_F$: 광학 흐름 손실 (움직임 정확도)
+- $\mathcal{L}_t$: 3D 바운딩 박스 위치 손실 (추적 정확도)
+- $\mathcal{L}_{uni}$: 유니사이클 모델 정규화 손실 (물리적 움직임 제약)
+- $\mathcal{L}_{reg}$: 속도/각속도 가속도 정규화 (부드러운 궤적)
+- $\lambda$ 값들: 각 손실의 가중치 (하이퍼파라미터)
 
-### 4.3 의미론적 재구성 (Semantic Reconstruction)
+**이미지 재구성 손실:**
 
-**주요 기여: 3D Softmax vs 2D Softmax**
+$$\mathcal{L}_I = (1 - \lambda_{SSIM})\|\tilde{\mathbf{I}} - \mathbf{I}\| + \lambda_{SSIM} \text{SSIM}(\tilde{\mathbf{I}}, \mathbf{I})$$
 
-기존 방법 (2D Softmax):
-$$S_{\text{2D}} = \text{softmax}\left(\sum_{i \in N} s_i \alpha_i' \prod_{j=1}^{i-1}(1 - \alpha_j')\right)$$
+**시맨틱 손실 (크로스 엔트로피):**
 
-제안 방법 (3D Softmax):
-$$S = \sum_{i \in N} \text{softmax}(s_i) \alpha_i' \prod_{j=1}^{i-1}(1 - \alpha_j')$$
+$$\mathcal{L}_S = -\sum_{k=0}^{S-1} \hat{\mathbf{S}}_k \log(\mathbf{S}_k)$$
 
-**변수 설명:**
-- **$s_i$**: i번째 Gaussian의 의미 logit 벡터
-- **$\text{softmax}(s_i)$**: 클래스 확률로 정규화
+**유니사이클 정규화 손실:**
 
-**직관적 의미:**
-- **2D Softmax 문제**: 하나의 높은 logit 값이 전체 결과를 지배하여 "floater"(떠다니는 잘못된 레이블) 발생
-- **3D Softmax 해결책**: 각 3D 점의 logit을 정규화하여 floater 제거
+$$\mathcal{L}_{uni} = \sum_t \left\|x_{t+1} - x_t - \frac{v_t}{\omega_t}(\sin\theta_{t+1} - \sin\theta_t)\right\|_2 + \sum_t \left\|y_{t+1} - y_t + \frac{v_t}{\omega_t}(\cos\theta_{t+1} - \cos\theta_t)\right\|_2 + \sum_t \|\theta_{t+1} - \theta_t - \omega_t\|$$
 
-**핵심 개념**
+**수식 설명**
+- 이 손실은 학습된 차량 상태 $(x_t, y_t, \theta_t)$가 물리적으로 타당한 유니사이클 운동 방정식을 따르도록 강제
+- 노이즈 있는 3D 바운딩 박스 예측값을 물리 법칙으로 정제하는 핵심 메커니즘
 
-- **Floater**: 기하학이 부정확할 때 떠다니는 의미론적 레이블
-- **Volume Rendering**: 광선을 따라 누적하여 2D 맵 생성
+**가속도 정규화:**
 
-### 4.4 광학 흐름 렌더링 (Optical Flow)
+$$\mathcal{L}_{reg} = \sum_t \|v_{t+1} + v_{t-1} - 2v_t\|_2 + \sum_t \|\theta_{t+1} + \theta_{t-1} - 2\theta_t\|_2$$
 
-**계산**
+**수식 설명**
+- 2차 차분(second-order difference)으로 가속도를 계산하여 급격한 속도 변화 억제
+- 부드러운 궤적 생성을 통해 현실적인 차량 동작 모델링
 
-두 시간 프레임 $t_1, t_2$에서:
+---
 
-1. Gaussian 중심 $\mu$를 두 프레임에서 투영:
-
-$$\mu'_1 = K[R^{\text{cam}}_{t_1}; t^{\text{cam}}_{t_1}]\mu$$
-
-$$\mu'_2 = K[R^{\text{cam}}_{t_2}; t^{\text{cam}}_{t_2}]\mu$$
-
-2. 모션 벡터 계산:
-
-$$f_{t_1 \to t_2} = \mu'_2 - \mu'_1$$
-
-3. 광학 흐름 렌더링:
-
-$$F = \sum_{i \in N} f_i \alpha_i' \prod_{j=1}^{i-1}(1 - \alpha_j')$$
-
-**변수 설명:**
-- **$K$**: 카메라 내부 파라미터
-- **$R^{\text{cam}}, t^{\text{cam}}$**: 카메라의 회전과 이동
-- **$F$**: 렌더링된 광학 흐름 맵
-
-**직관적 의미:**
-Gaussian 중심의 위치 변화로 객체의 움직임을 직접 계산합니다.
-
-**단순화:**
-모든 픽셀이 Gaussian 중심과 같은 광학 흐름 방향을 가진다고 가정 (크기는 다를 수 있음)
-
-**핵심 개념**
-
-- **Pseudo Ground Truth**: 미리 학습된 모델(Unimatch)로 광학 흐름 생성
-- **Supervision 효과**: 광학 흐름 감독은 깊이 지도 품질도 개선
-
-## 5. 손실 함수 및 최적화
+## Chapter 4: Experiments
 
 **요약**
 
-RGB, 의미론, 광학 흐름, 추적, Unicycle 제약을 통합 감독합니다.
+### 4.1 Novel View Synthesis
 
-### 5.1 이미지 손실
+KITTI, vKITTI2, KITTI-360 데이터셋에서 NSG, MARS와 비교 평가합니다.
 
-$$L_I = (1 - \lambda_{\text{SSIM}}) \|\hat{I} - \tilde{I}\|_1 + \lambda_{\text{SSIM}} \text{SSIM}(\hat{I}, \tilde{I})$$
+| 방법 | KITTI Scene02 PSNR↑ | KITTI Scene02 SSIM↑ | KITTI Scene02 LPIPS↓ |
+|------|---------------------|---------------------|----------------------|
+| NSG  | 23.00 | 0.664 | 0.373 |
+| MARS | 23.70 | 0.731 | 0.310 |
+| **Ours** | **25.42** | **0.821** | **0.092** |
 
-**변수 설명:**
-- **$\hat{I}$**: 그라운드 트루 이미지
-- **$\tilde{I}$**: 렌더링된 이미지
-- **$\lambda_{\text{SSIM}}$**: 가중치 (0.2로 설정)
-- **L1**: 픽셀별 절대 오차
-- **SSIM**: 구조적 유사성 지수
+노이즈 있는 3D 바운딩 박스(QD-3DT 예측)를 사용한 동적 장면에서도 PSNR 기준 약 2dB 향상을 달성합니다.
 
-**직관적 의미:**
-렌더링된 이미지가 실제 이미지와 같도록 학습합니다.
+### 4.2 Semantic and Geometric Scene Understanding
 
-### 5.2 의미론 손실
+**3D Semantic Reconstruction** (KITTI-360 기준):
 
-$$L_S = -\sum_{k=0}^{S-1} \hat{S}_k \log(S_k)$$
+| 방법 | acc.↓ | comp.↓ | mIoU↑ |
+|------|-------|--------|-------|
+| Semantic Nerfacto | 1.508 | 24.28 | 0.055 |
+| **Ours** | **0.233** | **0.214** | **0.505** |
 
-**변수 설명:**
-- **$\hat{S}_k$**: k번째 클래스의 그라운드 트루 확률
-- **$S_k$**: 렌더링된 k번째 클래스 확률
-- **Cross-entropy**: 확률 분포 간의 차이 측정
+기하 정확도(acc, comp)와 시맨틱 정확도(mIoU) 모두에서 큰 폭으로 앞섭니다. 기존 2D→3D 리프팅 방법들은 2D 공간 내 소프트맥스 정규화의 한계로 인해 floater가 발생하나, HUGS는 3D 소프트맥스로 이를 해결합니다.
 
-### 5.3 광학 흐름 손실
+### 4.3 Scene Editing
 
-$$L_F = \|\hat{F} - F\|_1$$
+분해된 장면 표현 덕분에 다양한 편집이 가능합니다:
+- **전경/배경 분리**: 차량 제거 및 배경만 렌더링
+- **동적 객체 교체**: 다른 차량으로 대체
+- **위치/방향 조작**: 차량의 회전 및 이동
 
-**변수 설명:**
-- **$\hat{F}$**: 예측된 광학 흐름 (Unimatch 사용)
-- **$F$**: 렌더링된 광학 흐름
+### 4.4 Ablation Study
 
-**중요성**: 광학 흐름 감독은 기하학 품질을 개선합니다.
+**동적 장면 (KITTI, 다양한 노이즈 수준):**
 
-### 5.4 추적 손실
+| 설정 | PSNR↑ | SSIM↑ | LPIPS↓ | $\epsilon_R$↓ | $\epsilon_t$↓ |
+|------|-------|-------|--------|---------------|---------------|
+| w/o opt., w/o uni. | 22.56 | 0.879 | 0.062 | 0.031 | 0.027 |
+| w/ opt., w/o uni. | 24.80 | 0.897 | 0.038 | 0.022 | 0.051 |
+| **w/ opt., w/ uni. (Ours)** | **28.78** | **0.928** | **0.023** | **0.017** | **0.022** |
 
-$$L_t = \sum_t \|x_t - \hat{x}_t\|^2 + \sum_t \|y_t - \hat{y}_t\|^2$$
+유니사이클 모델이 노이즈 있는 바운딩 박스 상황에서 추적 정확도와 렌더링 품질 모두를 크게 향상시킵니다.
 
-**변수 설명:**
-- **$(x_t, \hat{x}_t)$**: 최적화된 vs 예측된 x 좌표
-- 노이즈가 있는 3D 바운딩 박스 예측과 일치하도록 학습
+**정적 장면 (KITTI-360):**
 
-### 5.5 Unicycle 제약 손실
+| 설정 | PSNR↑ | SSIM↑ | LPIPS↓ | Depth↓ |
+|------|-------|-------|--------|--------|
+| w/o Affine transform | 24.18 | 0.827 | 0.083 | — |
+| w/o $\mathcal{L}_S$ | 24.47 | 0.831 | 0.081 | 0.892 |
+| w/o $\mathcal{L}_F$ | 24.41 | 0.831 | 0.081 | 1.031 |
+| **Ours** | **24.52** | **0.833** | **0.081** | **0.872** |
 
-$$L_{\text{uni}} = \sum_t \left\|x_{t+1} - x_t - \frac{v_t}{\omega_t}(\sin \theta_{t+1} - \sin \theta_t)\right\| + \ldots$$
+광학 흐름 손실이 기하 품질(Depth)에 명확한 기여를 하며, 아핀 변환이 외관 품질에 중요합니다.
 
-**역할**: 최적화된 상태가 Unicycle 역학을 따르도록 강제
+---
 
-### 5.6 속도 매끄러움 정규화
+## 핵심 개념 정리
 
-$$L_{\text{reg}} = \sum_t \|v_{t+1} + v_{t-1} - 2v_t\|^2 + \sum_t \|w_{t+1} + w_{t-1} - 2w_t\|^2$$
+- **3D Gaussian Splatting**: 3D 장면을 수백만 개의 소형 타원형 Gaussian으로 표현하는 방법. 각 Gaussian은 위치, 모양, 색상, 불투명도를 가지며 실시간 렌더링이 가능함.
 
-**역할**: 속도 변화가 매끄럽도록 (2차 미분 최소화)
+- **Decomposed Scene Representation**: 장면을 정적 배경 Gaussian과 N개의 동적 차량 Gaussian으로 분리. 이 분해가 편집, 추적, 시맨틱 이해를 가능케 하는 핵심.
 
-### 5.7 전체 손실
+- **Unicycle Model**: 차량을 단순화된 두 바퀴 자전거 역학으로 모델링. 전진 속도 $v$와 각속도 $\omega$만으로 물리적으로 타당한 궤적을 생성하여 노이즈 있는 예측을 정제.
 
-$$L = L_I + \lambda_S L_S + \lambda_F L_F + \lambda_t L_t + \lambda_\text{uni} L_\text{uni} + \lambda_\text{reg} L_\text{reg}$$
+- **3D Softmax vs 2D Softmax**: 기존 방법들은 렌더링 후 2D에서 소프트맥스 적용 → 단일 Gaussian이 시맨틱을 지배하는 floater 문제 발생. HUGS는 3D 로짓에 먼저 소프트맥스 적용 → 더 일관된 3D 시맨틱 표현.
 
-**가중치:**
-- $\lambda_S = 0.01$
-- $\lambda_F = 0.01$
-- $\lambda_t = 0.1$
-- $\lambda_\text{uni} = 0.1$
-- $\lambda_\text{reg} = 0.1$
+- **Exposure Modeling**: 자율주행 데이터의 자동 노출 변화를 카메라 파라미터 기반 아핀 변환으로 보정. 고품질 렌더링의 필수 요소.
 
-**핵심 개념**
+- **Pseudo Ground Truth**: LiDAR나 수동 주석 없이 InverseForm(시맨틱), QD-3DT(3D 추적), Unimatch(광학 흐름)에서 자동으로 생성한 의사 정답 사용.
 
-- **Pseudo Ground Truth**: 미리 학습된 모델(InverseForm, QD-3DT, Unimatch)에서 생성
-- **다중 감독**: RGB + 의미론 + 광학 흐름의 상호작용으로 더 나은 기하학
+- **$\alpha$-blending**: Gaussian들을 앞에서 뒤로 정렬하여 누적 투명도를 계산하며 색상/시맨틱/흐름을 합성하는 볼륨 렌더링 방식.
 
-## 6. 실험 및 결과
+---
 
-### 6.1 실험 설정
+## 결론 및 시사점
 
-**데이터셋:**
-- **KITTI**: Scene02 (140-224), Scene06 (65-120)
-- **Virtual KITTI 2 (vKITTI)**: 합성 데이터, 동일한 장면
-- **KITTI-360**: 정적/동적 장면
+HUGS는 RGB 이미지만으로 도시 3D 장면의 **외관, 의미, 움직임을 통합적으로 표현**하는 최초의 실시간 프레임워크입니다. 주요 기여:
 
-**평가 메트릭:**
+1. **통합 표현**: 단일 3D Gaussian 기반으로 novel view synthesis, 시맨틱 재구성, 동적 추적을 동시 수행
+2. **노이즈 강건성**: 유니사이클 모델을 통해 단안 모노큘러 3D 추적의 노이즈를 효과적으로 제거
+3. **실시간 성능**: RTX 4090에서 약 93 fps (NSG, MARS 대비 압도적 속도)
+4. **라벨 효율성**: LiDAR, 수동 3D 바운딩 박스 없이도 SOTA 성능 달성
 
-| 작업 | 메트릭 | 설명 |
-|------|--------|------|
-| Novel View Synthesis | PSNR, SSIM, LPIPS | 이미지 품질 |
-| Semantic Synthesis | mIoU | 의미론적 정확도 |
-| 3D Semantic Reconstruction | Chamfer Distance, mIoU | 기하학 및 의미론 |
-| 3D Tracking | $e_R, e_t$ | 회전/이동 오차 |
+**한계점**:
+- 동적 객체는 현재 단순 회전만 가능 (차량 문 열림 등 비강체 변형 불가)
+- 카테고리 수준(category-level) 사전 지식 미활용
+- 조명 편집 등 더 많은 자유도는 미지원
 
-### 6.2 동적 장면 새로운 뷰 합성
-
-**노이즈가 있는 3D 바운딩 박스 사용:**
-
-| 방법 | KITTI Scene02 PSNR | KITTI Scene06 PSNR | vKITTI Scene02 PSNR |
-|------|-------------------|-------------------|-------------------|
-| NSG | 23.00 | 23.78 | 21.40 |
-| MARS | 23.30 | 25.09 | 22.67 |
-| **HUGS** | **25.42** | **28.20** | **26.21** |
-
-**결과 해석:**
-- HUGS는 모든 장면에서 2-3 dB 이상 우수
-- Unicycle 제약이 노이즈에 강건함을 입증
-
-### 6.3 의미론적 합성
-
-KITTI-360 데이터셋에서 mIoU 개선:
-- 3D Softmax: 0.505 (평균)
-- 2D Softmax: 0.402 (평균)
-- **개선율**: +25%
-
-### 6.4 성능 및 속도
-
-**실시간 렌더링:**
-- **추론 속도**: 93 fps (NVIDIA RTX 4090)
-- **수렴 시간**: 30분
-- **비교:**
-  - NSG: <1 fps
-  - MARS: <1 fps
-
-**성능 분해:**
-| 컴포넌트 | 소요 시간 (ms) |
-|----------|---------------|
-| 준비 | 6.25 |
-| RGB 렌더링 | +1.88 |
-| 노출 모델링 | +0.41 |
-| 의미론 렌더링 | +1.16 |
-| 광학 흐름 렌더링 | +0.47 |
-| **총합** | **10.17** |
-
-### 6.5 절제 연구 (Ablation Study)
-
-**1. 3D vs 2D Softmax:**
-- 3D Softmax가 floater를 효과적으로 제거
-- 정확한 기하학이 필요하지만 COLMAP 초기화로 충분
-
-**2. 광학 흐름 감독 효과:**
-- 광학 흐름 손실 추가 시 깊이 지도 품질 향상
-- 명시적 픽셀 대응 정보 제공
-
-**3. 의미론 감독 효과:**
-- 의미론 손실도 기하학 개선에 도움
-- RGB 손실만으로 완벽하지 않음
-
-**4. 초기화 전략 비교:**
-
-| 초기화 | PSNR | SSIM | LPIPS |
-|--------|------|------|-------|
-| 랜덤 | 20.93 | 0.763 | 0.457 |
-| LiDAR | 24.19 | 0.825 | 0.080 |
-| COLMAP | **24.52** | **0.833** | **0.081** |
-
-**통찰:**
-- COLMAP이 LiDAR보다 우수 (먼거리에서 더 정확)
-- RGB 이미지만으로도 우수한 초기화 가능
-
-**5. Unicycle 제약 효과:**
-
-| 추적 방법 | 회전 오차 ($e_R$) | 이동 오차 ($e_t$) |
-|----------|-----------------|-----------------|
-| QD-3DT (원본) | 0.027 | 0.215 |
-| **HUGS** | **0.018** | **0.108** |
-
-**개선율**: 33% 회전 오차 감소, 50% 이동 오차 감소
-
-### 6.6 노이즈 견고성
-
-vKITTI에서 노이즈 수준을 변화시킨 실험:
-- 평균 노이즈: 0.5m 이동, 5도 회전
-- 더 높은 노이즈 수준에서도 안정적인 성능
-- Unicycle 제약이 노이즈에 견고함을 확인
-
-**핵심 개념**
-
-- **Pseudo Ground Truth**: 자동 생성되는 약한 감독 신호
-- **Multi-task Learning**: RGB + 의미론 + 광학 흐름의 상호 강화
-- **물리 기반 제약**: 기계 학습 모델의 결과를 정규화
-
-## 7. 핵심 개념 정리
-
-### 기술적 혁신
-
-1. **3D Gaussian 확장**
-   - 색상 (SH 계수)
-   - 의미론 로짓
-   - 광학 흐름
-
-2. **Unicycle 모델**
-   - 자동차 역학 모델링
-   - 물리 기반 제약
-   - 노이즈 저항성
-
-3. **3D Softmax**
-   - 기존 2D Softmax의 한계 극복
-   - Floater 제거
-   - 3D 의미론 재구성 개선
-
-4. **Multi-modal 감독**
-   - RGB: 색상 충실도
-   - 의미론: 의미론적 정확도
-   - 광학 흐름: 기하학적 일관성
-
-### 실무적 의미
-
-1. **자율주행**
-   - 포괄적인 장면 이해
-   - 실시간 성능 (93 fps)
-   - 정확한 3D 의미론
-
-2. **시뮬레이션**
-   - 포토리얼한 렌더링
-   - 동적 객체 포함
-   - 노이즈가 있는 입력 처리
-
-3. **스파스 입력**
-   - 적은 학습 뷰로도 작동
-   - LiDAR 필요 없음
-   - 수동 주석 불필요
-
-### 연구의 기여
-
-1. **문제 정의**: 도시 장면의 포괄적 이해를 RGB만으로 해결
-2. **기술 혁신**: Gaussian Splatting을 의미론, 광학 흐름, 동작으로 확장
-3. **물리 기반 제약**: Unicycle 모델로 동적 추적 정규화
-4. **3D 의미론**: Floater 제거로 3D 의미론 재구성 개선
-5. **실시간 성능**: 93 fps 달성으로 실제 응용 가능
-
-## 8. 결론 및 시사점
-
-### 논문의 결론
-
-HUGS는 3D Gaussian Splatting을 확장하여 RGB 이미지만으로 도시 장면의 기하학, 외형, 의미론, 동작을 통합적으로 이해할 수 있음을 보였습니다. 
-
-**주요 성과:**
-- KITTI, vKITTI, KITTI-360 데이터셋에서 SOTA 성능
-- 노이즈가 있는 3D 바운딩 박스에도 작동
-- 실시간 렌더링 성능 (93 fps)
-- 정적 및 동적 객체의 의미론적 정확도 향상
-
-### 미래 연구 방향
-
-1. **더 복잡한 동작**: Unicycle 모델을 자전거 모델 등으로 확장
-2. **여러 객체 상호작용**: 객체 간 충돌 감지 및 처리
-3. **비정적 카메라**: 카메라 움직임이 더 복잡한 경우
-4. **실시간 학습**: 온라인으로 장면 모델 업데이트
-
-### 실제 응용
-
-1. **자율주행 시뮬레이터**: 포토리얼한 트레이닝 데이터 생성
-2. **도시 지도 제작**: 정적/동적 객체 분해로 3D 맵 구성
-3. **증강 현실**: 실제 장면에 가상 객체 배치
-4. **비디오 편집**: 의미론 기반 객체 선택 및 조작
-5. **안전성 연구**: 자율주행 알고리즘의 보안 테스트
-
-### 방법론적 교훈
-
-1. **다중 감독의 강력함**
-   - 단일 손실만으로는 부족
-   - RGB + 의미론 + 광학 흐름의 상호 강화 효과
-
-2. **물리 기반 제약의 중요성**
-   - 딥러닝의 결과에 구조를 부여
-   - 노이즈와 불완전한 입력에 강건함
-
-3. **3D 정규화 vs 2D 정규화**
-   - 문제에 맞는 정규화 방식 선택 중요
-   - 3D 공간에서 처리할 때는 3D 정규화 필요
-
-4. **Pseudo Ground Truth의 활용**
-   - 약한 감독 신호도 유용한 정보 제공
-   - 완벽한 정답이 없을 때의 실용적 해결책
+**실무적 시사점**: 자율주행 시뮬레이터에서 포토리얼리스틱한 장면 재구성, 센서 시뮬레이션, 데이터 증강에 직접 활용 가능. 특히 고가의 LiDAR 없이도 고품질 3D 이해가 가능하다는 점이 산업적으로 의미 있음.
