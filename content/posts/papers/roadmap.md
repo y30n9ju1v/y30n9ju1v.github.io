@@ -1,6 +1,6 @@
 ---
 title: "논문 로드맵: 자율주행 & 3D 장면 표현"
-date: 2026-04-17T08:20:00+09:00
+date: 2026-04-17T08:41:00+09:00
 draft: false
 categories: ["Papers"]
 tags: ["Roadmap", "Autonomous Driving", "3DGS", "NeRF", "Overview"]
@@ -16,13 +16,13 @@ tags: ["Roadmap", "Autonomous Driving", "3DGS", "NeRF", "Overview"]
 ```
 [데이터/시뮬레이터]          [인식·표현]                          [예측·계획]
  nuScenes / Waymo  ──────►  OFT → LSS → BEVDepth → BEVFormer  ──►  UniAD / VAD
- CARLA             ──────►  TransFuser                          ──►  NAVSIM / nuPlan
+ CARLA             ──────►  TransFuser / BEVFusion              ──►  NAVSIM / nuPlan
                                                                             │
 [강화학습 기반]                                                       [World Model]
  DQN (2013)  ──────────────────────────────────────────────────►  GAIA-1 (2023)
                                                                             │
 [3D 장면 표현]                                                             ▼
- NeRF ──► Instant-NGP ──► 3DGS ──► 4D-GS ──► 3DGS-RT / 3DGUT ──► DrivingGaussian ──► HUGSIM
+ NeRF ──► Mip-NeRF 360 ──► Instant-NGP ──► 3DGS ──► 4D-GS ──► 3DGS-RT / 3DGUT ──► DrivingGaussian ──► HUGSIM
                                                DIFIX3D+ / HUGS
 ```
 
@@ -71,11 +71,16 @@ OFT (2018) ─────────────────► Lift-Splat-Sho
 TransFuser (2022)
  └─ Camera + LiDAR → Transformer Fusion → Waypoint 예측
      └─ CARLA 리더보드 1위, NAVSIM baseline으로 재활용
+
+BEVFusion (2023)
+ └─ Camera-to-BEV + LiDAR-to-BEV → 공유 BEV 공간 Concat → 멀티태스크 Head
+     └─ 포인트 레벨 융합의 의미론적 손실 해소, Efficient BEV Pooling으로 40× 속도 향상
 ```
 
 | 논문 | 핵심 아이디어 |
 |------|-------------|
 | [TransFuser](./TransFuser) | Transformer self-attention으로 카메라+LiDAR 전역 융합 (TPAMI 2022) |
+| [BEVFusion](./bevfusion-multi-task-multi-sensor-fusion) | BEV 공간 멀티센서 융합으로 탐지+분할 멀티태스크 동시 수행, Efficient BEV Pooling (CVPR 2023) |
 
 ### 2-3. 통합 예측·계획
 
@@ -138,6 +143,9 @@ GAIA-1 (2023) ─── "세상이 어떻게 작동하는지"를 학습
 
 ```
 NeRF (2020) ─────────────────────── MLP로 5D 연속 함수 표현
+    │ 유한 장면만 표현 가능, 무한 야외 장면에 취약
+    ▼
+Mip-NeRF 360 (2022) ──────────────── 비선형 장면 파라미터화로 무한 장면 표현, 57% MSE 감소
     │ 느린 렌더링 속도가 한계
     ▼
 Instant-NGP (2022) ───────────────── Multiresolution Hash Encoding, 1000배 속도 향상
@@ -154,6 +162,7 @@ Instant-NGP (2022) ───────────────── Multireso
 | 논문 | 핵심 아이디어 |
 |------|-------------|
 | [NeRF](./nerf-representing-scenes-as-neural-radiance-fields-for-view-synthesis) | 희소 이미지로부터 체적 렌더링으로 새로운 시점 합성 (ECCV 2020) |
+| [Mip-NeRF 360](./mip-nerf-360) | contract 함수 기반 비선형 파라미터화로 무한 야외 장면 표현, MSE 57% 감소 (CVPR 2022) |
 | [Instant-NGP](./instant-ngp-multiresolution-hash-encoding) | Multiresolution Hash Encoding으로 NeRF 학습 속도 1000배 향상 (SIGGRAPH 2022) |
 | [3DGS](./3d-gaussian-splatting) | Gaussian 파티클 + tile-based 래스터화로 실시간 렌더링 (SIGGRAPH 2023) |
 | [4D-GS](./4d-gaussian-splatting) | Canonical 3DGS + Gaussian Deformation Field로 실시간 동적 NVS (ICLR 2024) |
@@ -229,12 +238,14 @@ Instant-NGP (2022) ───────────────── Multireso
 2020  NeRF ──────────────────────── 신경 장면 표현
       nuScenes, Waymo ─────────────── 멀티모달 데이터셋
       Lift-Splat-Shoot ────────────── Latent Depth로 BEV, E2E 모션 플래닝
-2022  Instant-NGP ────────────────── Hash Encoding으로 NeRF 1000배 가속
+2022  Mip-NeRF 360 ───────────────── 무한 야외 장면을 위한 NeRF 확장
+      Instant-NGP ────────────────── Hash Encoding으로 NeRF 1000배 가속
       BEVDepth ───────────────────── LiDAR 감독으로 깊이 신뢰도 개선
       BEVFormer ──────────────────── 멀티카메라 BEV Transformer
       TransFuser ─────────────────── 카메라+LiDAR 융합 E2E
       nuPlan ──────────────────────── 클로즈드루프 계획 벤치마크
-2023  3DGS ───────────────────────── 실시간 3D Gaussian 렌더링
+2023  BEVFusion ───────────────────── BEV 공간 멀티센서 융합, 멀티태스크
+      3DGS ───────────────────────── 실시간 3D Gaussian 렌더링
       UniAD ───────────────────────── 계획 지향 통합 AV
       VAD ──────────────────────────── 벡터화 장면 표현
       GAIA-1 ──────────────────────── 생성형 AV World Model (LLM 방식)
@@ -255,19 +266,20 @@ Instant-NGP (2022) ───────────────── Multireso
 ### 자율주행 스택에 집중한다면
 1. [nuScenes](./nuscenes-multimodal-dataset-autonomous-driving) — 데이터 기반 이해
 2. [OFT](./OFT-monocular-3d-object-detection) → [Lift-Splat-Shoot](./lift-splat-shoot) → [BEVDepth](./bevdepth) → [BEVFormer](./BEVFormer) — BEV 인식 계보
-3. [TransFuser](./TransFuser) — 센서 융합 E2E
+3. [TransFuser](./TransFuser) → [BEVFusion](./bevfusion-multi-task-multi-sensor-fusion) — 센서 융합 E2E
 4. [UniAD](./uniad-planning-oriented-autonomous-driving) → [VAD](./VAD) — 통합 계획
 5. [nuPlan](./nuPlan) → [NAVSIM](./NAVSIM) — 평가 체계
 6. [GAIA-1](./GAIA-1) — 생성형 World Model로의 패러다임 전환
 
 ### 3D 장면 표현에 집중한다면
 1. [NeRF](./nerf-representing-scenes-as-neural-radiance-fields-for-view-synthesis) — 신경 렌더링 원리
-2. [Instant-NGP](./instant-ngp-multiresolution-hash-encoding) — NeRF 가속 핵심 기법
-3. [3DGS](./3d-gaussian-splatting) — 실시간 렌더링 혁신
-4. [4D-GS](./4d-gaussian-splatting) — 동적 장면으로 확장
-5. [3D Gaussian Ray Tracing](./3d-gaussian-ray-tracing) + [3DGUT](./3dgut-enabling-distorted-cameras-and-secondary-rays-in-gaussian-splatting) — 렌더링 품질 확장
-6. [DrivingGaussian](./driving-gaussian-composite-gaussian-splatting) + [HUGS](./hugs-holistic-urban-3d-scene-understanding) — AV 적용
-7. [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator) — 시뮬레이터 통합
+2. [Mip-NeRF 360](./mip-nerf-360) — 무한 야외 장면으로 확장
+3. [Instant-NGP](./instant-ngp-multiresolution-hash-encoding) — NeRF 가속 핵심 기법
+4. [3DGS](./3d-gaussian-splatting) — 실시간 렌더링 혁신
+5. [4D-GS](./4d-gaussian-splatting) — 동적 장면으로 확장
+6. [3D Gaussian Ray Tracing](./3d-gaussian-ray-tracing) + [3DGUT](./3dgut-enabling-distorted-cameras-and-secondary-rays-in-gaussian-splatting) — 렌더링 품질 확장
+7. [DrivingGaussian](./driving-gaussian-composite-gaussian-splatting) + [HUGS](./hugs-holistic-urban-3d-scene-understanding) — AV 적용
+8. [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator) — 시뮬레이터 통합
 
 ### 두 분야의 교차점을 빠르게 파악한다면
 [3DGS](./3d-gaussian-splatting) → [4D-GS](./4d-gaussian-splatting) → [DrivingGaussian](./driving-gaussian-composite-gaussian-splatting) → [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator) → [NAVSIM](./NAVSIM)
