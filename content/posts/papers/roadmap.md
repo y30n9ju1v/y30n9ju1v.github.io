@@ -1,6 +1,6 @@
 ---
 title: "논문 로드맵: 자율주행 & 3D 장면 표현"
-date: 2026-04-17T08:41:00+09:00
+date: 2026-04-17T08:55:00+09:00
 draft: false
 categories: ["Papers"]
 tags: ["Roadmap", "Autonomous Driving", "3DGS", "NeRF", "Overview"]
@@ -14,16 +14,45 @@ tags: ["Roadmap", "Autonomous Driving", "3DGS", "NeRF", "Overview"]
 ## 전체 흐름 요약
 
 ```
-[데이터/시뮬레이터]          [인식·표현]                          [예측·계획]
- nuScenes / Waymo  ──────►  OFT → LSS → BEVDepth → BEVFormer  ──►  UniAD / VAD
- CARLA             ──────►  TransFuser / BEVFusion              ──►  NAVSIM / nuPlan
-                                                                            │
-[강화학습 기반]                                                       [World Model]
- DQN (2013)  ──────────────────────────────────────────────────►  GAIA-1 (2023)
-                                                                            │
-[3D 장면 표현]                                                             ▼
- NeRF ──► Mip-NeRF 360 ──► Instant-NGP ──► 3DGS ──► 4D-GS ──► 3DGS-RT / 3DGUT ──► DrivingGaussian ──► HUGSIM
-                                               DIFIX3D+ / HUGS
+[데이터/시뮬레이터]
+ nuScenes / Waymo / CARLA / nuPlan
+         │
+         ▼
+[인식·표현: BEV]
+ OFT → Lift-Splat-Shoot → BEVDepth → BEVFormer
+         │
+         ▼
+[센서 융합 & E2E]
+ TransFuser / BEVFusion
+         │
+         ▼
+[예측·계획]
+ UniAD → VAD
+         │
+         ▼
+[평가 & 강화학습]
+ DQN (2013) / NAVSIM / nuPlan
+         │
+         ▼
+[World Model]
+ GAIA-1 (2023)
+         │
+         ▼
+[3D 장면 표현]
+ NeRF
+  └─► Mip-NeRF 360
+       └─► Instant-NGP
+            └─► 3DGS ──────────────────┐
+                 ├─► 4D-GS             │
+                 ├─► 3DGS-RT           │
+                 ├─► 3DGUT             │
+                 ├─► DIFIX3D+          │
+                 ├─► DrivingGaussian   │
+                 └─► HUGS              │
+                                       ▼
+                          [Neural Simulation]
+                           UniSim (2023) — NeRF 기반 멀티센서
+                           HUGSIM (2024) — 3DGS 기반 실시간
 ```
 
 ---
@@ -207,6 +236,7 @@ Instant-NGP (2022) ───────────────── Multireso
 **포토리얼리스틱 클로즈드루프 시뮬레이터**가 탄생합니다.
 
 ```
+NeRF 기반 장면 재구성 (UniSim)
 3DGS 기반 장면 재구성 (4D-GS, DrivingGaussian, HUGS)
          +
 자율주행 에이전트 (UniAD, VAD, TransFuser)
@@ -216,14 +246,15 @@ Instant-NGP (2022) ───────────────── Multireso
 생성형 World Model (GAIA-1)
          │
          ▼
-    HUGSIM (2024)                        GAIA-1 (2023)
-    ─ 3DGS 기반 포토리얼 시뮬레이터       ─ 생성형 신경 시뮬레이터
-    ─ 실시간 클로즈드루프 평가             ─ 무한 시나리오 생성
-    ─ 70+ 시퀀스 벤치마크                 ─ 텍스트/액션 제어 가능
+    UniSim (2023)                        HUGSIM (2024)                    GAIA-1 (2023)
+    ─ NeRF 기반 멀티센서 시뮬레이터       ─ 3DGS 기반 포토리얼 시뮬레이터   ─ 생성형 신경 시뮬레이터
+    ─ 카메라 + LiDAR 동시 합성            ─ 실시간 클로즈드루프 평가         ─ 무한 시나리오 생성
+    ─ 장면 편집 (액터 추가/제거)           ─ 70+ 시퀀스 벤치마크             ─ 텍스트/액션 제어 가능
 ```
 
 | 논문 | 역할 |
 |------|------|
+| [UniSim](./unisim-neural-closed-loop-sensor-simulator) | NeRF 기반 카메라+LiDAR 동시 시뮬, 장면 편집 지원 클로즈드루프 시뮬레이터 (CVPR 2023) |
 | [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator) | 3DGS 기반 실시간 포토리얼리스틱 클로즈드루프 AV 시뮬레이터 (CVPR 2024) |
 | [GAIA-1](./GAIA-1) | 비디오·텍스트·액션 토큰 기반 생성형 World Model, 신경 시뮬레이터 역할 (Wayve 2023) |
 
@@ -248,6 +279,7 @@ Instant-NGP (2022) ───────────────── Multireso
       3DGS ───────────────────────── 실시간 3D Gaussian 렌더링
       UniAD ───────────────────────── 계획 지향 통합 AV
       VAD ──────────────────────────── 벡터화 장면 표현
+      UniSim ──────────────────────── NeRF 기반 멀티센서 클로즈드루프 시뮬
       GAIA-1 ──────────────────────── 생성형 AV World Model (LLM 방식)
 2024  4D-GS ───────────────────────── 동적 장면 실시간 3DGS (ICLR)
       3D Gaussian Ray Tracing ────── 레이 트레이싱 3DGS
@@ -279,10 +311,11 @@ Instant-NGP (2022) ───────────────── Multireso
 5. [4D-GS](./4d-gaussian-splatting) — 동적 장면으로 확장
 6. [3D Gaussian Ray Tracing](./3d-gaussian-ray-tracing) + [3DGUT](./3dgut-enabling-distorted-cameras-and-secondary-rays-in-gaussian-splatting) — 렌더링 품질 확장
 7. [DrivingGaussian](./driving-gaussian-composite-gaussian-splatting) + [HUGS](./hugs-holistic-urban-3d-scene-understanding) — AV 적용
-8. [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator) — 시뮬레이터 통합
+8. [UniSim](./unisim-neural-closed-loop-sensor-simulator) — NeRF 기반 멀티센서 시뮬레이터
+9. [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator) — 시뮬레이터 통합
 
 ### 두 분야의 교차점을 빠르게 파악한다면
 [3DGS](./3d-gaussian-splatting) → [4D-GS](./4d-gaussian-splatting) → [DrivingGaussian](./driving-gaussian-composite-gaussian-splatting) → [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator) → [NAVSIM](./NAVSIM)
 
 ### World Model 계보를 따라간다면
-[DQN](./DQN-playing-atari-with-deep-reinforcement-learning) → [UniAD](./uniad-planning-oriented-autonomous-driving) → [GAIA-1](./GAIA-1) → [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator)
+[DQN](./DQN-playing-atari-with-deep-reinforcement-learning) → [UniAD](./uniad-planning-oriented-autonomous-driving) → [GAIA-1](./GAIA-1) → [UniSim](./unisim-neural-closed-loop-sensor-simulator) → [HUGSIM](./hugsim-real-time-photorealistic-closed-loop-simulator)
