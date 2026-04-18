@@ -5,65 +5,79 @@ theme = "PaperMod"
 paginate = 10
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+home = ["HTML", "RSS", "JSON"]
 
 [markup]
-  [markup.goldmark]
-    [markup.goldmark.extensions]
-      [markup.goldmark.extensions.passthrough]
-        enable = true
-        [markup.goldmark.extensions.passthrough.delimiters]
-          block = [['\[', '\]'], ['$$', '$$']]
-          inline = [['\(', '\)'], ['$', '$'], ['$$', '$$']]
+[markup.goldmark]
+[markup.goldmark.extensions]
+[markup.goldmark.extensions.passthrough]
+enable = true
+[markup.goldmark.extensions.passthrough.delimiters]
+block = [['\[', '\]'], ['$$', '$$']]
+inline = [['\(', '\)'], ['$', '$'], ['$$', '$$']]
 
 [params]
-  # PaperMod settings
-  env = "production"
-  title = "y30n9ju1v's Blog"
-  description = "Research paper summaries and AI/ML notes"
-  defaultTheme = "auto"
-  disableThemeToggle = false
+# PaperMod settings
+env = "production"
+title = "y30n9ju1v's Blog"
+description = "Research paper summaries and AI/ML notes"
+defaultTheme = "auto"
+disableThemeToggle = false
 
-  # Profile mode
-  profileMode.enabled = true
-  profileMode.title = "y30n9ju1v"
-  profileMode.subtitle = "Research paper summaries & AI/ML notes"
-  profileMode.imageUrl = "/images/profile.jpg"
-  profileMode.imageTitle = "avatar"
+# Profile mode
+profileMode.enabled = true
+profileMode.title = "y30n9ju1v"
+profileMode.subtitle = "Research paper summaries & AI/ML notes"
+profileMode.imageUrl = "/images/profile.jpg"
+profileMode.imageTitle = "avatar"
 
-  [[params.profileMode.buttons]]
-  name = "Blog"
-  url = "/posts"
+# Home info mode (alternative to profile mode)
+homeInfoParams.Title = "y30n9ju1v's Blog"
+homeInfoParams.Content = "Research paper summaries and AI/ML notes"
 
-  [[params.profileMode.buttons]]
-  name = "Archives"
-  url = "/archives"
+# Social icons
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/y30n9ju1v"
 
-  # Home info mode (alternative to profile mode)
-  homeInfoParams.Title = "y30n9ju1v's Blog"
-  homeInfoParams.Content = "Research paper summaries and AI/ML notes"
+[[params.socialIcons]]
+name = "linkedin"
+url = "https://linkedin.com"
 
-  # Social icons
-  [[params.socialIcons]]
-  name = "github"
-  url = "https://github.com/y30n9ju1v"
+# Search
+params.fuseOpts.isCaseSensitive = false
+params.fuseOpts.shouldSort = true
+params.fuseOpts.location = 0
+params.fuseOpts.distance = 1000
+params.fuseOpts.threshold = 0.4
+params.fuseOpts.minMatchCharLength = 0
+params.fuseOpts.keys = ["title", "permalink", "summary", "content"]
 
-  [[params.socialIcons]]
-  name = "linkedin"
-  url = "https://linkedin.com"
+# Math
+math = true
 
-  # Search
-  params.fuseOpts.isCaseSensitive = false
-  params.fuseOpts.shouldSort = true
-  params.fuseOpts.location = 0
-  params.fuseOpts.distance = 1000
-  params.fuseOpts.threshold = 0.4
-  params.fuseOpts.minMatchCharLength = 0
-  params.fuseOpts.keys = ["title", "permalink", "summary", "content"]
+# Show reading time
+showReadingTime = true
+showToc = true
 
-  # Math
-  math = true
-
-  # Show reading time
-  showReadingTime = true
-  showToc = true
+[menu]
+[[menu.main]]
+name = "Blog"
+url = "/posts"
+weight = 1
+[[menu.main]]
+name = "Categories"
+url = "/categories"
+weight = 2
+[[menu.main]]
+name = "Tags"
+url = "/tags"
+weight = 3
+[[menu.main]]
+name = "Archives"
+url = "/archives"
+weight = 4
+[[menu.main]]
+name = "Search"
+url = "/search"
+weight = 5
