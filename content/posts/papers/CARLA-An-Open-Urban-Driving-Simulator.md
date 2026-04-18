@@ -2,7 +2,8 @@
 title: "CARLA: An Open Urban Driving Simulator"
 date: 2026-04-10T09:00:00+09:00
 draft: false
-categories: ["Papers"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["Autonomous Driving", "Simulation", "CARLA", "Benchmark"]
 ---
 
 ## 개요

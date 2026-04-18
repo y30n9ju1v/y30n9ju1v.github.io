@@ -2,8 +2,8 @@
 title: "TransFuser: Imitation with Transformer-Based Sensor Fusion for Autonomous Driving"
 date: 2026-04-14T00:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "Transformer", "Sensor Fusion", "Imitation Learning", "CARLA", "LiDAR", "Camera"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["Autonomous Driving", "Transformer", "Sensor Fusion", "Imitation Learning", "LiDAR"]
 ---
 
 ## 개요

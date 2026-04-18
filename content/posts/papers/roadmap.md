@@ -2,8 +2,8 @@
 title: "논문 로드맵: 자율주행 & 3D 장면 표현"
 date: 2026-04-18T10:40:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Roadmap", "Autonomous Driving", "3DGS", "NeRF", "Overview"]
+categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
+tags: ["Roadmap", "Autonomous Driving", "3D Gaussian Splatting", "NeRF"]
 ---
 
 이 포스트는 블로그에 정리된 논문들이 서로 어떻게 연결되는지를 보여주는 로드맵입니다.  

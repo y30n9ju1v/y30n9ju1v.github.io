@@ -2,8 +2,8 @@
 title: "Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields"
 date: 2026-04-17T08:40:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["NeRF", "3D Reconstruction", "Novel View Synthesis", "Computer Vision", "Neural Rendering"]
+categories: ["Papers", "Novel View Synthesis"]
+tags: ["NeRF", "Novel View Synthesis", "Neural Rendering", "3D Reconstruction"]
 ---
 
 ## 개요

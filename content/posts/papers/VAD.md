@@ -2,8 +2,8 @@
 title: "VAD: Vectorized Scene Representation for Efficient Autonomous Driving"
 date: 2026-04-10T08:30:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "End-to-End Planning", "Vectorized Representation", "BEV"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["Autonomous Driving", "End-to-End Planning", "BEV", "Vectorized Representation"]
 ---
 
 ## 개요

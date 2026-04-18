@@ -2,8 +2,8 @@
 title: "BEVDet: High-Performance Multi-Camera 3D Object Detection in Bird-Eye-View"
 date: 2026-04-18T10:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["3D Object Detection", "Autonomous Driving", "BEV", "Multi-Camera", "Computer Vision"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["3D Object Detection", "Autonomous Driving", "BEV", "Multi-Camera"]
 ---
 
 ## 개요

@@ -2,8 +2,8 @@
 title: "3D Gaussian Splatting for Real-Time Radiance Field Rendering"
 date: 2026-04-10T10:00:00+09:00
 draft: false
-categories: ["Papers", "Computer Graphics", "3D Rendering"]
-tags: ["novel-view-synthesis", "gaussian-splatting", "radiance-fields", "real-time-rendering"]
+categories: ["Papers", "Novel View Synthesis"]
+tags: ["3D Gaussian Splatting", "Novel View Synthesis", "Real-Time Rendering", "Neural Rendering"]
 ---
 
 ## 개요

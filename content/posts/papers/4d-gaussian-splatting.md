@@ -2,8 +2,8 @@
 title: "4D Gaussian Splatting for Real-Time Dynamic Scene Rendering"
 date: 2026-04-14T16:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["4DGS", "Gaussian Splatting", "Dynamic Scene", "Novel View Synthesis", "Real-Time Rendering", "HexPlane", "Deformation Field"]
+categories: ["Papers", "Novel View Synthesis"]
+tags: ["3D Gaussian Splatting", "Dynamic Scene", "Novel View Synthesis", "Real-Time Rendering"]
 ---
 
 ## 개요

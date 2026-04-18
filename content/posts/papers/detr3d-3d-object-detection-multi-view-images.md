@@ -2,8 +2,8 @@
 title: "DETR3D: 3D Object Detection from Multi-view Images via 3D-to-2D Queries"
 date: 2026-04-18T09:00:00+09:00
 draft: false
-tags: ["3D Object Detection", "Multi-view Camera", "Transformer", "Autonomous Driving", "nuScenes"]
-categories: ["Papers"]
+tags: ["3D Object Detection", "Multi-Camera", "Transformer", "Autonomous Driving"]
+categories: ["Papers", "Autonomous Driving"]
 description: "카메라 이미지만으로 3D 바운딩 박스를 예측하는 top-down 방식의 멀티뷰 3D 객체 검출 프레임워크"
 math: true
 ---

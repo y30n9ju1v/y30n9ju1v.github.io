@@ -2,7 +2,8 @@
 title: "UniAD: Planning-oriented Autonomous Driving"
 date: 2026-04-10T09:00:00+09:00
 draft: false
-categories: ["Papers"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["Autonomous Driving", "End-to-End Planning", "Transformer", "Multi-Task Learning"]
 ---
 
 ## 개요

@@ -2,8 +2,8 @@
 title: "nuPlan: A closed-loop ML-based planning benchmark for autonomous vehicles"
 date: 2026-04-14T00:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "Benchmark", "Closed-Loop", "Planning", "Dataset", "nuPlan"]
+categories: ["Papers", "Autonomous Driving", "Benchmark & Dataset"]
+tags: ["Autonomous Driving", "Benchmark", "Closed-Loop", "Planning", "Dataset"]
 ---
 
 ## 개요

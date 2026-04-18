@@ -2,8 +2,8 @@
 title: "EmerNeRF: Emergent Spatial-Temporal Scene Decomposition via Self-Supervision"
 date: 2026-04-18T10:30:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["NeRF", "Autonomous Driving", "Dynamic Scene Reconstruction", "Self-Supervised Learning", "Scene Flow"]
+categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
+tags: ["NeRF", "Autonomous Driving", "Dynamic Scene", "Self-Supervised Learning", "Neural Rendering"]
 ---
 
 ## 개요

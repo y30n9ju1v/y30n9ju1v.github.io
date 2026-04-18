@@ -2,8 +2,8 @@
 title: "UniSim: A Neural Closed-Loop Sensor Simulator"
 date: 2026-04-17T08:45:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["autonomous-driving", "neural-rendering", "sensor-simulation", "NeRF", "LiDAR", "closed-loop"]
+categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
+tags: ["Autonomous Driving", "Neural Rendering", "Simulation", "NeRF", "LiDAR", "Closed-Loop"]
 ---
 
 ## 개요

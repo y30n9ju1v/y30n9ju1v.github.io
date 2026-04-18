@@ -2,8 +2,8 @@
 title: "Occ3D: A Large-Scale 3D Occupancy Prediction Benchmark for Autonomous Driving"
 date: 2026-04-17T09:10:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["3D Occupancy Prediction", "Autonomous Driving", "LiDAR", "Dataset", "Benchmark", "NeurIPS 2023"]
+categories: ["Papers", "Autonomous Driving", "Benchmark & Dataset"]
+tags: ["Autonomous Driving", "3D Occupancy Prediction", "LiDAR", "Dataset", "Benchmark"]
 ---
 
 ## 개요

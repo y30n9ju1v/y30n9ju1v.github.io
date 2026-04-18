@@ -2,8 +2,8 @@
 title: "HUGSIM: A Real-Time, Photo-Realistic and Closed-Loop Simulator for Autonomous Driving"
 date: 2026-04-10T09:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "Gaussian Splatting", "Simulation", "Closed-Loop", "3DGS"]
+categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
+tags: ["3D Gaussian Splatting", "Autonomous Driving", "Simulation", "Closed-Loop"]
 ---
 
 ## 개요

@@ -2,8 +2,8 @@
 title: "Scalability in Perception for Autonomous Driving: Waymo Open Dataset"
 date: 2026-04-10T09:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["autonomous driving", "dataset", "LiDAR", "object detection", "3D detection", "multi-object tracking"]
+categories: ["Papers", "Autonomous Driving", "Benchmark & Dataset"]
+tags: ["Autonomous Driving", "Dataset", "LiDAR", "3D Object Detection", "Multi-Object Tracking"]
 ---
 
 ## 개요

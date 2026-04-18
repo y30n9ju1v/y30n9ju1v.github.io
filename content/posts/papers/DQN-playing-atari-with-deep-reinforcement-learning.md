@@ -2,8 +2,8 @@
 title: "Playing Atari with Deep Reinforcement Learning"
 date: 2026-04-14T09:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Reinforcement Learning", "Deep Learning", "DQN", "Q-Learning", "Atari", "DeepMind"]
+categories: ["Papers", "Deep Learning"]
+tags: ["Reinforcement Learning", "Deep Learning", "DQN", "Q-Learning"]
 ---
 
 ## 개요

@@ -2,8 +2,8 @@
 title: "HUGS: Holistic Urban 3D Scene Understanding via Gaussian Splatting"
 date: 2026-04-10T09:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["3D Gaussian Splatting", "Autonomous Driving", "Scene Understanding", "Novel View Synthesis", "Semantic Segmentation"]
+categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
+tags: ["3D Gaussian Splatting", "Autonomous Driving", "Novel View Synthesis", "Semantic Segmentation"]
 ---
 
 ## 개요

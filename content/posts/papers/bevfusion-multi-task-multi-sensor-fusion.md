@@ -2,8 +2,8 @@
 title: "BEVFusion: Multi-Task Multi-Sensor Fusion with Unified Bird's-Eye View Representation"
 date: 2026-04-17T08:30:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "Sensor Fusion", "BEV", "LiDAR", "Camera", "3D Object Detection", "Segmentation"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["Autonomous Driving", "Sensor Fusion", "BEV", "LiDAR", "3D Object Detection"]
 ---
 
 ## 개요

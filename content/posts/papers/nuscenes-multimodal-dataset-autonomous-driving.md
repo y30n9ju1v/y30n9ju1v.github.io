@@ -2,8 +2,8 @@
 title: "nuScenes: A Multimodal Dataset for Autonomous Driving"
 date: 2026-04-10T09:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["autonomous driving", "dataset", "3D object detection", "multi-modal", "lidar", "radar", "camera"]
+categories: ["Papers", "Autonomous Driving", "Benchmark & Dataset"]
+tags: ["Autonomous Driving", "Dataset", "3D Object Detection", "Multi-Modal", "LiDAR"]
 ---
 
 ## 개요

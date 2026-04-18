@@ -2,8 +2,8 @@
 title: "NAVSIM: Data-Driven Non-Reactive Autonomous Vehicle Simulation and Benchmarking"
 date: 2026-04-14T00:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "Benchmark", "Simulation", "End-to-End Planning", "BEV", "nuPlan"]
+categories: ["Papers", "Autonomous Driving", "Benchmark & Dataset"]
+tags: ["Autonomous Driving", "Benchmark", "Simulation", "End-to-End Planning", "BEV"]
 ---
 
 ## 개요

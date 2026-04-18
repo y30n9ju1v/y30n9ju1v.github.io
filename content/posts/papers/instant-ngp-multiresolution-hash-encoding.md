@@ -2,7 +2,8 @@
 title: "Instant Neural Graphics Primitives with a Multiresolution Hash Encoding"
 date: 2026-04-17T08:00:00+09:00
 draft: false
-categories: ["Papers"]
+categories: ["Papers", "Novel View Synthesis"]
+tags: ["NeRF", "Novel View Synthesis", "Neural Rendering", "Hash Encoding", "Real-Time Rendering"]
 ---
 
 ## 개요

@@ -2,8 +2,8 @@
 title: "BEVFormer: Learning Bird's-Eye-View Representation from Multi-Camera Images via Spatiotemporal Transformers"
 date: 2026-04-14T00:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "BEV", "Transformer", "3D Detection", "Multi-Camera"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["Autonomous Driving", "BEV", "Transformer", "3D Object Detection", "Multi-Camera"]
 ---
 
 ## 개요

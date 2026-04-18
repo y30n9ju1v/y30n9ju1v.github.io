@@ -2,8 +2,8 @@
 title: "Bench2Drive: Towards Multi-Ability Benchmarking of Closed-Loop End-To-End Autonomous Driving"
 date: 2026-04-18T10:40:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "Benchmark", "End-to-End", "CARLA", "Closed-Loop"]
+categories: ["Papers", "Autonomous Driving", "Benchmark & Dataset"]
+tags: ["Autonomous Driving", "Benchmark", "End-to-End Planning", "Closed-Loop", "Simulation"]
 ---
 
 ## 개요

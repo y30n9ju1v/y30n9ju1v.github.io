@@ -2,8 +2,8 @@
 title: "DrivingGaussian: Composite Gaussian Splatting for Surrounding Dynamic Autonomous Driving Scenes"
 date: 2026-04-10T10:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Gaussian Splatting", "Autonomous Driving", "3D Reconstruction", "Novel View Synthesis", "LiDAR"]
+categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
+tags: ["3D Gaussian Splatting", "Autonomous Driving", "Novel View Synthesis", "LiDAR"]
 ---
 
 ## 개요

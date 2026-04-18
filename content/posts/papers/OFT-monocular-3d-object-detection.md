@@ -2,8 +2,8 @@
 title: "Orthographic Feature Transform for Monocular 3D Object Detection"
 date: 2026-04-10T09:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["3D Object Detection", "Autonomous Driving", "Birds-Eye-View", "Monocular Camera", "KITTI"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["3D Object Detection", "Autonomous Driving", "BEV", "Monocular Camera"]
 ---
 
 ## 개요

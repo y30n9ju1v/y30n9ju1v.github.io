@@ -2,8 +2,8 @@
 title: "BEVDepth: Acquisition of Reliable Depth for Multi-view 3D Object Detection"
 date: 2026-04-17T00:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["3D Object Detection", "BEV", "Depth Estimation", "Autonomous Driving", "Computer Vision"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["3D Object Detection", "BEV", "Depth Estimation", "Autonomous Driving"]
 ---
 
 ## 개요

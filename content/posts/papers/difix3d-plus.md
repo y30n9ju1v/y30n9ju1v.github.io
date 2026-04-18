@@ -2,8 +2,8 @@
 title: "DIFIX3D+: Improving 3D Reconstructions with Single-Step Diffusion Models"
 date: 2026-04-10T09:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["3D Reconstruction", "Diffusion Models", "NeRF", "3DGS", "Novel View Synthesis"]
+categories: ["Papers", "Novel View Synthesis"]
+tags: ["3D Gaussian Splatting", "NeRF", "Novel View Synthesis", "Diffusion", "3D Reconstruction"]
 ---
 
 ## 개요

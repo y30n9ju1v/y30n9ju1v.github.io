@@ -2,8 +2,8 @@
 title: "Lift, Splat, Shoot: Encoding Images from Arbitrary Camera Rigs by Implicitly Unprojecting to 3D"
 date: 2026-04-17T08:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["autonomous-driving", "BEV", "multi-view", "3D perception", "motion planning"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["Autonomous Driving", "BEV", "Multi-Camera", "3D Object Detection"]
 ---
 
 ## 개요

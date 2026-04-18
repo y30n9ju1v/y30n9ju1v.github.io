@@ -2,8 +2,8 @@
 title: "GAIA-1: A Generative World Model for Autonomous Driving"
 date: 2026-04-14T14:00:00+09:00
 draft: false
-categories: ["Papers"]
-tags: ["Autonomous Driving", "World Model", "Generative Model", "Video Generation", "Diffusion", "Transformer", "Wayve"]
+categories: ["Papers", "Autonomous Driving"]
+tags: ["Autonomous Driving", "World Model", "Generative Model", "Video Generation", "Diffusion"]
 ---
 
 ## 개요
