@@ -1,6 +1,6 @@
 ---
 title: "논문 로드맵: 자율주행 & 3D 장면 표현"
-date: 2026-04-19T11:30:00+09:00
+date: 2026-04-19T12:00:00+09:00
 draft: false
 categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
 tags: ["Roadmap", "Autonomous Driving", "3D Gaussian Splatting", "NeRF"]
