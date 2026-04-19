@@ -1,27 +1,34 @@
 ---
 title: "논문 로드맵: 자율주행 & 3D 장면 표현"
-date: 2027-04-19T18:30:00+09:00
+date: 2026-04-20T18:30:00+09:00
 draft: false
 categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
 tags: ["Roadmap", "Autonomous Driving", "3D Gaussian Splatting", "NeRF"]
 ---
 
 이 포스트는 블로그에 정리된 논문들이 서로 어떻게 연결되는지를 보여주는 로드맵입니다.  
-크게 두 줄기—**자율주행 스택**과 **3D 장면 표현**—가 최근 **Neural Simulation**이라는 교차점에서 만납니다.
+크게 두 줄기—**자율주행 스택**과 **3D 장면 표현**—가 최근 **Neural Simulation**이라는 교차점에서 만납니다.  
+두 줄기 모두 **Transformer**와 **Latent Diffusion**이라는 공통 기반 기술 위에 서 있습니다.
 
 ---
 
 ## 전체 흐름 요약
 
 ```
+[기반 기술]
+ Transformer (2017) ─────────────────────── Self-Attention, 모든 Transformer 계열의 원류
+ LDM (2022) ──────────────────────────────── Latent Space Diffusion + Cross-Attention, 생성 모델 계열의 원류
+         │
+         ▼
 [데이터/시뮬레이터]
  nuScenes / Waymo / CARLA / nuPlan
          │
          ▼
 [인식: BEV 카메라 계보]                    [인식: LiDAR 포인트 클라우드 계보]
  OFT → Lift-Splat-Shoot                    PointNet (2017)
-  → BEVDet → BEVDepth → BEVFormer          → VoxelNet (2018)
- DETR3D (top-down query, 별개)              → PointPillars (2019)
+  → BEVDet → BEVDepth → BEVFormer ◄──────── Transformer 기반 BEV Attention
+ DETR3D (top-down query, 별개)              → VoxelNet (2018)
+         │                                  → PointPillars (2019)
          │                                  → CenterPoint (2021)
          └──────────────────┬───────────────┘
                             ▼
@@ -32,8 +39,8 @@ tags: ["Roadmap", "Autonomous Driving", "3D Gaussian Splatting", "NeRF"]
               ▼                           ▼
      [점유 예측]                    [예측·계획]
   MonoScene → Occ3D               UniAD → VAD
-  TPVFormer / SurroundOcc
-  OccFormer
+  TPVFormer / SurroundOcc          ▲
+  OccFormer                        └─── Transformer Query 기반
               │                           │
               └─────────────┬─────────────┘
                             ▼
@@ -42,7 +49,8 @@ tags: ["Roadmap", "Autonomous Driving", "3D Gaussian Splatting", "NeRF"]
                             │
                             ▼
           [World Model & 생성형 시뮬레이션]
-           DDPM → GAIA-1 / DriveDreamer / MagicDrive / DriveArena
+           DDPM → LDM → DriveDreamer / MagicDrive / DriveArena
+                   └──► GAIA-1 (Transformer 기반 World Model, 별개 계보)
                             │
           ┌─────────────────┴──────────────────────┐
           ▼                                        ▼
@@ -59,6 +67,33 @@ tags: ["Roadmap", "Autonomous Driving", "3D Gaussian Splatting", "NeRF"]
                                DrivingGaussian
                                HUGS → OmniRe (2025)
 ```
+
+---
+
+## 0. 기반 기술: Transformer & Latent Diffusion
+
+자율주행 스택과 생성형 시뮬레이션 양쪽 모두의 **공통 기반**이 되는 두 논문입니다.
+
+```
+Transformer (NeurIPS 2017)
+ ├─► BEVFormer, DETR3D, TPVFormer, OccFormer — BEV 인식 계열
+ ├─► UniAD, VAD — 통합 계획 계열
+ ├─► TransFuser, BEVFusion — 센서 융합 계열
+ └─► GAIA-1 — Decoder-only Transformer 기반 World Model
+
+LDM — Latent Diffusion Models (CVPR 2022)
+ ├─► DDPM의 픽셀 공간 한계 → Latent Space Diffusion으로 해결
+ ├─► Cross-Attention 조건부 생성 메커니즘 확립
+ └─► DriveDreamer, MagicDrive, DriveArena의 직접 기반
+```
+
+| 논문 | 역할 |
+|------|------|
+| [Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) | Self-Attention만으로 RNN·CNN을 대체, 현대 딥러닝의 기반 아키텍처 (NeurIPS 2017) |
+| [LDM](https://y30n9ju1v.github.io/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models) | Autoencoder 잠재 공간에서 Diffusion 수행, Cross-Attention 조건부 생성 확립 — Stable Diffusion의 기반 (CVPR 2022) |
+
+> **흐름**: Transformer는 **인식·계획·World Model** 전반에 적용되고,  
+> LDM은 **DDPM → 조건부 이미지/비디오 생성** 계열의 핵심 연결 고리입니다.
 
 ---
 
@@ -340,7 +375,8 @@ Instant-NGP (2022) ───────────────── Multireso
 
 ```
 2013  DQN ──────────────────────────── 딥 강화학습의 출발 (value-based)
-2017  CARLA ───────────────────────── 자율주행 오픈 시뮬레이터
+2017  Transformer ──────────────────── Self-Attention만으로 RNN·CNN 대체, 현대 딥러닝 패러다임 전환 (NeurIPS)
+      CARLA ───────────────────────── 자율주행 오픈 시뮬레이터
       PointNet ────────────────────── 포인트 클라우드 직접 처리 최초 딥러닝, MaxPooling 순열 불변성 (CVPR)
       PPO ─────────────────────────── Clipped Policy Gradient, CARLA AV policy 학습 표준 (OpenAI)
 2018  OFT ────────────────────────── 단안 BEV 탐지
@@ -353,7 +389,8 @@ Instant-NGP (2022) ───────────────── Multireso
 2021  DETR3D ──────────────────────── top-down 3D query 기반 멀티뷰 탐지
       CenterPoint ────────────────── LiDAR 중심점 탐지 + velocity 기반 1ms 추적 (CVPR)
       nuPlan ──────────────────────── 클로즈드루프 ML 계획 벤치마크 (NeurIPS)
-2022  MonoScene ───────────────────── 단일 RGB → 3D SSC 최초, FLoSP + 3D CRP (CVPR)
+2022  LDM ────────────────────────── Latent Space Diffusion + Cross-Attention, Stable Diffusion 기반 (CVPR)
+      MonoScene ───────────────────── 단일 RGB → 3D SSC 최초, FLoSP + 3D CRP (CVPR)
       Mip-NeRF 360 ───────────────── 무한 야외 장면을 위한 NeRF 확장
       Instant-NGP ────────────────── Hash Encoding으로 NeRF 1000배 가속
       BEVDet ──────────────────────── BEV 패러다임 확립, BEV 전용 데이터 증강
@@ -393,6 +430,7 @@ Instant-NGP (2022) ───────────────── Multireso
 ## 6. 추천 읽기 순서
 
 ### 자율주행 스택에 집중한다면
+0. [Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) — Self-Attention·Multi-Head Attention·Positional Encoding 이해 (필수 선행)
 1. [nuScenes](https://y30n9ju1v.github.io/posts/papers/nuscenes-multimodal-dataset-autonomous-driving) — 데이터 기반 이해
 2. [OFT](https://y30n9ju1v.github.io/posts/papers/OFT-orthographic-feature-transform) → [Lift-Splat-Shoot](https://y30n9ju1v.github.io/posts/papers/lift-splat-shoot) → [BEVDet](https://y30n9ju1v.github.io/posts/papers/bevdet-high-performance-multi-camera-3d-object-detection) → [BEVDepth](https://y30n9ju1v.github.io/posts/papers/bevdepth) → [BEVFormer](https://y30n9ju1v.github.io/posts/papers/BEVFormer) — BEV 카메라 인식 계보
 3. [DETR3D](https://y30n9ju1v.github.io/posts/papers/detr3d-3d-object-detection-multi-view-images) — top-down query 계보
@@ -406,10 +444,11 @@ Instant-NGP (2022) ───────────────── Multireso
 8. [DQN](https://y30n9ju1v.github.io/posts/papers/DQN-playing-atari-with-deep-reinforcement-learning) → [PPO](https://y30n9ju1v.github.io/posts/papers/proximal-policy-optimization) — 강화학습 원류 (DQN: value-based, PPO: policy gradient)
 9. [nuPlan](https://y30n9ju1v.github.io/posts/papers/nuPlan) → [NAVSIM](https://y30n9ju1v.github.io/posts/papers/NAVSIM) → [Bench2Drive](https://y30n9ju1v.github.io/posts/papers/bench2drive-multi-ability-benchmarking-e2e-autonomous-driving) — 평가 체계
 10. [DDPM](https://y30n9ju1v.github.io/posts/papers/denoising-diffusion-probabilistic-models) — Diffusion 생성 모델 기반
-11. [GAIA-1](https://y30n9ju1v.github.io/posts/papers/GAIA-1) — 생성형 World Model로의 패러다임 전환
-12. [DriveDreamer](https://y30n9ju1v.github.io/posts/papers/DriveDreamer) — 실제 데이터 기반 합성 데이터 생성
-13. [MagicDrive](https://y30n9ju1v.github.io/posts/papers/magicdrive-street-view-generation-3d-geometry-control) — 3D 기하 조건 기반 멀티카메라 생성
-14. [DriveArena](https://y30n9ju1v.github.io/posts/papers/DriveArena) — 생성형 폐루프 시뮬레이션의 통합
+11. [LDM](https://y30n9ju1v.github.io/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models) — DDPM의 픽셀 공간 한계 극복, Cross-Attention 조건부 생성 (DriveDreamer·MagicDrive 직접 기반)
+12. [GAIA-1](https://y30n9ju1v.github.io/posts/papers/GAIA-1) — 생성형 World Model로의 패러다임 전환
+13. [DriveDreamer](https://y30n9ju1v.github.io/posts/papers/DriveDreamer) — 실제 데이터 기반 합성 데이터 생성
+14. [MagicDrive](https://y30n9ju1v.github.io/posts/papers/magicdrive-street-view-generation-3d-geometry-control) — 3D 기하 조건 기반 멀티카메라 생성
+15. [DriveArena](https://y30n9ju1v.github.io/posts/papers/DriveArena) — 생성형 폐루프 시뮬레이션의 통합
 
 ### 3D 장면 표현에 집중한다면
 1. [NeRF](https://y30n9ju1v.github.io/posts/papers/nerf-representing-scenes-as-neural-radiance-fields-for-view-synthesis) — 신경 렌더링 원리
@@ -425,7 +464,9 @@ Instant-NGP (2022) ───────────────── Multireso
 11. [HUGSIM](https://y30n9ju1v.github.io/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator) — 시뮬레이터 통합
 
 ### 두 분야의 교차점을 빠르게 파악한다면
-[3DGS](https://y30n9ju1v.github.io/posts/papers/3d-gaussian-splatting) → [4D-GS](https://y30n9ju1v.github.io/posts/papers/4d-gaussian-splatting) → [Street Gaussians](https://y30n9ju1v.github.io/posts/papers/street-gaussians-modeling-dynamic-urban-scenes) → [DrivingGaussian](https://y30n9ju1v.github.io/posts/papers/driving-gaussian-composite-gaussian-splatting) → [HUGSIM](https://y30n9ju1v.github.io/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator) → [NAVSIM](https://y30n9ju1v.github.io/posts/papers/NAVSIM)
+[Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) → [BEVFormer](https://y30n9ju1v.github.io/posts/papers/BEVFormer) → [3DGS](https://y30n9ju1v.github.io/posts/papers/3d-gaussian-splatting) → [4D-GS](https://y30n9ju1v.github.io/posts/papers/4d-gaussian-splatting) → [Street Gaussians](https://y30n9ju1v.github.io/posts/papers/street-gaussians-modeling-dynamic-urban-scenes) → [HUGSIM](https://y30n9ju1v.github.io/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator) → [NAVSIM](https://y30n9ju1v.github.io/posts/papers/NAVSIM)
 
 ### World Model 계보를 따라간다면
-[DQN](https://y30n9ju1v.github.io/posts/papers/DQN-playing-atari-with-deep-reinforcement-learning) → [PPO](https://y30n9ju1v.github.io/posts/papers/proximal-policy-optimization) → [UniAD](https://y30n9ju1v.github.io/posts/papers/uniad-planning-oriented-autonomous-driving) → [GAIA-1](https://y30n9ju1v.github.io/posts/papers/GAIA-1) → [DDPM](https://y30n9ju1v.github.io/posts/papers/denoising-diffusion-probabilistic-models) → [DriveDreamer](https://y30n9ju1v.github.io/posts/papers/DriveDreamer) → [MagicDrive](https://y30n9ju1v.github.io/posts/papers/magicdrive-street-view-generation-3d-geometry-control) → [DriveArena](https://y30n9ju1v.github.io/posts/papers/DriveArena) → [UniSim](https://y30n9ju1v.github.io/posts/papers/unisim-neural-closed-loop-sensor-simulator) → [HUGSIM](https://y30n9ju1v.github.io/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator)
+**RL 원류**: [DQN](https://y30n9ju1v.github.io/posts/papers/DQN-playing-atari-with-deep-reinforcement-learning) → [PPO](https://y30n9ju1v.github.io/posts/papers/proximal-policy-optimization) → [UniAD](https://y30n9ju1v.github.io/posts/papers/uniad-planning-oriented-autonomous-driving) → [GAIA-1](https://y30n9ju1v.github.io/posts/papers/GAIA-1)
+
+**생성형 계보**: [Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) → [DDPM](https://y30n9ju1v.github.io/posts/papers/denoising-diffusion-probabilistic-models) → [LDM](https://y30n9ju1v.github.io/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models) → [DriveDreamer](https://y30n9ju1v.github.io/posts/papers/DriveDreamer) → [MagicDrive](https://y30n9ju1v.github.io/posts/papers/magicdrive-street-view-generation-3d-geometry-control) → [DriveArena](https://y30n9ju1v.github.io/posts/papers/DriveArena) → [UniSim](https://y30n9ju1v.github.io/posts/papers/unisim-neural-closed-loop-sensor-simulator) → [HUGSIM](https://y30n9ju1v.github.io/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator)
