@@ -3,6 +3,7 @@ languageCode = 'en-us'
 title = "y30n9ju1v's Blog"
 theme = "PaperMod"
 paginate = 10
+buildFuture = true
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]
