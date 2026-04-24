@@ -2,7 +2,7 @@
 title: "VectorMapNet: End-to-end Vectorized HD Map Learning"
 date: 2026-04-20T20:00:00+09:00
 draft: false
-categories: ["Papers"]
+categories: ["Papers", "Autonomous Driving", "HD Map"]
 tags: ["Autonomous Driving", "HD Map", "BEV", "Transformer", "DETR", "Polyline"]
 ---
 

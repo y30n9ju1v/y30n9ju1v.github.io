@@ -2,7 +2,7 @@
 title: "ViT: An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale"
 date: 2027-04-24T12:00:00+09:00
 draft: false
-categories: ["Papers"]
+categories: ["Papers", "Computer Vision", "Deep Learning"]
 tags: ["Vision Transformer", "ViT", "Image Classification", "Self-Attention", "ICLR 2021"]
 ---
 

@@ -2,7 +2,8 @@
 title: "PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation"
 date: 2026-04-19T22:56:00+09:00
 draft: false
-categories: ["Papers"]
+categories: ["Papers", "Computer Vision"]
+tags: ["Point Cloud", "3D Classification", "3D Segmentation", "Deep Learning"]
 ---
 
 ## 개요

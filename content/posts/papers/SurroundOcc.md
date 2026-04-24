@@ -2,7 +2,7 @@
 title: "SurroundOcc: Multi-Camera 3D Occupancy Prediction for Autonomous Driving"
 date: 2026-04-19T10:00:00+09:00
 draft: false
-categories: ["Papers"]
+categories: ["Papers", "Autonomous Driving", "3D Occupancy"]
 tags: ["3D Occupancy", "Autonomous Driving", "Multi-Camera", "Scene Understanding"]
 ---
 

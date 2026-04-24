@@ -3,7 +3,7 @@ title: "MagicDrive: Street View Generation with Diverse 3D Geometry Control"
 date: 2026-04-19T10:00:00+09:00
 draft: false
 tags: ["Street View Generation", "Diffusion Model", "3D Geometry", "Autonomous Driving", "Data Synthesis", "nuScenes", "ControlNet"]
-categories: ["Papers"]
+categories: ["Papers", "Autonomous Driving", "Generative Models"]
 ---
 
 ## 개요
