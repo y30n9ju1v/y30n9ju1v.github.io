@@ -2,13 +2,11 @@
 title: "논문 로드맵: 자율주행 & 3D 장면 표현"
 date: 2027-04-20T18:30:00+09:00
 draft: false
-categories: ["Papers", "Autonomous Driving", "Novel View Synthesis"]
-tags: ["Roadmap", "Autonomous Driving", "3D Gaussian Splatting", "NeRF"]
 ---
 
 이 포스트는 블로그에 정리된 논문들이 서로 어떻게 연결되는지를 보여주는 로드맵입니다.  
 크게 두 줄기—**자율주행 스택**과 **3D 장면 표현**—가 최근 **Neural Simulation**이라는 교차점에서 만납니다.  
-두 줄기 모두 **Transformer**와 **Latent Diffusion**이라는 공통 기반 기술 위에 서 있습니다.  
+두 줄기 모두 **Transformer**와 **Latent Diffusion**, 그리고 **ViT**라는 공통 기반 기술 위에 서 있습니다.  
 여기에 **온라인 벡터화 HD 맵** 계보가 BEV 인식과 계획 사이를 잇는 새로운 흐름으로 추가됩니다.
 
 ---
@@ -18,6 +16,7 @@ tags: ["Roadmap", "Autonomous Driving", "3D Gaussian Splatting", "NeRF"]
 ```
 [기반 기술]
  Transformer (2017) ─────────────────────── Self-Attention, 모든 Transformer 계열의 원류
+ ViT (2021) ──────────────────────────────── 이미지를 패치 시퀀스로 처리, BEV 인식 계열의 표준 backbone
  LDM (2022) ──────────────────────────────── Latent Space Diffusion + Cross-Attention, 생성 모델 계열의 원류
          │
          ▼
@@ -84,6 +83,12 @@ Transformer (NeurIPS 2017)
  ├─► TransFuser, BEVFusion — 센서 융합 계열
  └─► GAIA-1 — Decoder-only Transformer 기반 World Model
 
+ViT — An Image is Worth 16x16 Words (ICLR 2021)
+ ├─► 이미지를 16×16 패치 시퀀스로 처리, CNN 없이 순수 Transformer로 SOTA 달성
+ ├─► 대규모 사전학습(JFT-300M)으로 CNN의 귀납적 편향 없이도 능가
+ ├─► BEVFormer, SurroundOcc, TPVFormer 등 BEV 인식 계열의 표준 backbone
+ └─► 카메라 피처 추출기가 ResNet에서 ViT 계열로 전환되는 계기
+
 DETR — End-to-End Object Detection with Transformers (ECCV 2020)
  ├─► 이분 매칭(Hungarian) 기반 집합 예측으로 NMS·anchor 완전 제거
  ├─► Encoder-Decoder Transformer + learned object query 패러다임 확립
@@ -99,10 +104,12 @@ LDM — Latent Diffusion Models (CVPR 2022)
 | 논문 | 역할 |
 |------|------|
 | [Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) | Self-Attention만으로 RNN·CNN을 대체, 현대 딥러닝의 기반 아키텍처 (NeurIPS 2017) |
+| [ViT](https://y30n9ju1v.github.io/posts/papers/vit-an-image-is-worth-16x16-words) | 이미지를 16×16 패치 시퀀스로 처리하는 순수 Transformer, 대규모 사전학습으로 CNN 능가 — BEV 인식 계열의 표준 backbone (ICLR 2021) |
 | [DETR](https://y30n9ju1v.github.io/posts/papers/detr-end-to-end-object-detection-with-transformers) | 이분 매칭 기반 집합 예측으로 NMS·anchor 제거, object query 패러다임 확립 — DETR3D·MapTR의 직접 기반 (ECCV 2020) |
 | [LDM](https://y30n9ju1v.github.io/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models) | Autoencoder 잠재 공간에서 Diffusion 수행, Cross-Attention 조건부 생성 확립 — Stable Diffusion의 기반 (CVPR 2022) |
 
 > **흐름**: Transformer는 **인식·계획·World Model** 전반에 적용되고,  
+> ViT는 **카메라 피처 추출기의 표준**으로 BEV 인식 계열 전반에 사용되며,  
 > LDM은 **DDPM → 조건부 이미지/비디오 생성** 계열의 핵심 연결 고리입니다.
 
 ---
@@ -130,6 +137,10 @@ LDM — Latent Diffusion Models (CVPR 2022)
 카메라 이미지를 **Bird's-Eye-View(BEV)** 공간으로 변환하는 것이 핵심 과제입니다.
 
 ```
+공통 backbone
+ViT (2021) ─── 이미지 패치 → Transformer Encoder, BEV 인식 계열의 표준 피처 추출기
+    │
+    ▼
 다중 카메라 (Lift 계보)
 Lift-Splat-Shoot (2020) ──► BEVDepth (2022) ──► BEVFormer (2022)
 (Latent Depth Distribution)  (명시적 깊이 감독)   (Spatial + Temporal Attention)
@@ -382,7 +393,7 @@ Instant-NGP (2022) ───────────────── Multireso
   → NeuRAD (5개 데이터셋 범용)
  3DGS 장면 재구성
   → 4D-GS / Street Gaussians
-  → DrivingGaussian / HUGS / OmniRe
+  → DrivingGaussian / OmniRe
   → HUGSIM (실시간 클로즈드루프)
          │                                           │
          └──────────────┬────────────────────────────┘
@@ -421,7 +432,8 @@ Instant-NGP (2022) ───────────────── Multireso
       DETR ────────────────────────── 이분 매칭 기반 집합 예측, NMS·anchor 제거, object query 패러다임 확립 (ECCV)
       DDPM ────────────────────────── Diffusion 생성 모델 원본, DriveDreamer·MagicDrive 기반 (NeurIPS)
       LiDARsim ───────────────────── 실제 데이터 기반 LiDAR 시뮬, 레이캐스팅 + ML raydrop (CVPR)
-2021  DETR3D ──────────────────────── top-down 3D query 기반 멀티뷰 탐지
+2021  ViT ─────────────────────────── 이미지를 패치 시퀀스로 처리하는 순수 Transformer, BEV 인식 backbone 표준 (ICLR)
+      DETR3D ──────────────────────── top-down 3D query 기반 멀티뷰 탐지
       CenterPoint ────────────────── LiDAR 중심점 탐지 + velocity 기반 1ms 추적 (CVPR)
       nuPlan ──────────────────────── 클로즈드루프 ML 계획 벤치마크 (NeurIPS)
 2022  LDM ────────────────────────── Latent Space Diffusion + Cross-Attention, Stable Diffusion 기반 (CVPR)
@@ -467,6 +479,7 @@ Instant-NGP (2022) ───────────────── Multireso
 
 ### 자율주행 스택에 집중한다면
 0. [Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) — Self-Attention·Multi-Head Attention·Positional Encoding 이해 (필수 선행)
+   → [ViT](https://y30n9ju1v.github.io/posts/papers/vit-an-image-is-worth-16x16-words) — Transformer를 이미지에 적용, BEV 인식 계열의 표준 backbone 이해
 1. [nuScenes](https://y30n9ju1v.github.io/posts/papers/nuscenes-multimodal-dataset-autonomous-driving) — 데이터 기반 이해
 2. [Lift-Splat-Shoot](https://y30n9ju1v.github.io/posts/papers/lift-splat-shoot) → [BEVDepth](https://y30n9ju1v.github.io/posts/papers/bevdepth) → [BEVFormer](https://y30n9ju1v.github.io/posts/papers/bevformer) — BEV 카메라 인식 계보
 3. [DETR](https://y30n9ju1v.github.io/posts/papers/detr-end-to-end-object-detection-with-transformers) — object query 패러다임 원형 (NMS·anchor 제거, 이분 매칭)
@@ -507,7 +520,7 @@ Instant-NGP (2022) ───────────────── Multireso
 4. [HUGSIM](https://y30n9ju1v.github.io/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator) — 3DGS 기반 실시간 클로즈드루프 시뮬레이터 통합
 
 ### 두 분야의 교차점을 빠르게 파악한다면
-[Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) → [BEVFormer](https://y30n9ju1v.github.io/posts/papers/bevformer) → [3DGS](https://y30n9ju1v.github.io/posts/papers/3d-gaussian-splatting) → [4D-GS](https://y30n9ju1v.github.io/posts/papers/4d-gaussian-splatting) → [Street Gaussians](https://y30n9ju1v.github.io/posts/papers/street-gaussians-modeling-dynamic-urban-scenes) → [HUGSIM](https://y30n9ju1v.github.io/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator) → [NAVSIM](https://y30n9ju1v.github.io/posts/papers/navsim)
+[Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) → [ViT](https://y30n9ju1v.github.io/posts/papers/vit-an-image-is-worth-16x16-words) → [BEVFormer](https://y30n9ju1v.github.io/posts/papers/bevformer) → [3DGS](https://y30n9ju1v.github.io/posts/papers/3d-gaussian-splatting) → [4D-GS](https://y30n9ju1v.github.io/posts/papers/4d-gaussian-splatting) → [Street Gaussians](https://y30n9ju1v.github.io/posts/papers/street-gaussians-modeling-dynamic-urban-scenes) → [HUGSIM](https://y30n9ju1v.github.io/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator) → [NAVSIM](https://y30n9ju1v.github.io/posts/papers/navsim)
 
 ### World Model 계보를 따라간다면
 **RL 원류**: [DQN](https://y30n9ju1v.github.io/posts/papers/dqn-playing-atari-with-deep-reinforcement-learning) → [PPO](https://y30n9ju1v.github.io/posts/papers/proximal-policy-optimization) → [UniAD](https://y30n9ju1v.github.io/posts/papers/uniad-planning-oriented-autonomous-driving) → [GAIA-1](https://y30n9ju1v.github.io/posts/papers/gaia-1)
