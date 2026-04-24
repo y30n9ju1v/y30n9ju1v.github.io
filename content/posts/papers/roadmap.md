@@ -6,7 +6,7 @@ draft: false
 
 이 포스트는 블로그에 정리된 논문들이 서로 어떻게 연결되는지를 보여주는 로드맵입니다.  
 크게 두 줄기—**자율주행 스택**과 **3D 장면 표현**—가 최근 **Neural Simulation**이라는 교차점에서 만납니다.  
-두 줄기 모두 **Transformer**와 **Latent Diffusion**, 그리고 **ViT**라는 공통 기반 기술 위에 서 있습니다.  
+두 줄기 모두 **Transformer**와 **Latent Diffusion**, 그리고 **ViT**라는 공통 기반 기술 위에 서 있습니다. **ResNet**은 ViT 이전 CNN backbone의 표준으로, 이 계보의 출발점입니다.  
 여기에 **온라인 벡터화 HD 맵** 계보가 BEV 인식과 계획 사이를 잇는 새로운 흐름으로 추가됩니다.
 
 ---
@@ -15,8 +15,9 @@ draft: false
 
 ```
 [기반 기술]
+ ResNet (2016) ───────────────────────────── Skip Connection으로 깊은 CNN 학습, ViT 이전 backbone 표준
  Transformer (2017) ─────────────────────── Self-Attention, 모든 Transformer 계열의 원류
- ViT (2021) ──────────────────────────────── 이미지를 패치 시퀀스로 처리, BEV 인식 계열의 표준 backbone
+ ViT (2021) ──────────────────────────────── 이미지를 패치 시퀀스로 처리, ResNet을 대체한 BEV 인식 backbone 표준
  LDM (2022) ──────────────────────────────── Latent Space Diffusion + Cross-Attention, 생성 모델 계열의 원류
          │
          ▼
@@ -77,6 +78,11 @@ draft: false
 자율주행 스택과 생성형 시뮬레이션 양쪽 모두의 **공통 기반**이 되는 두 논문입니다.
 
 ```
+ResNet — Deep Residual Learning (CVPR 2016)
+ ├─► Skip Connection으로 Degradation Problem 해결, 수백 레이어 학습 가능
+ ├─► ILSVRC 2015 1위, VGG·AlexNet 계보를 넘어 CNN backbone의 표준 확립
+ └─► ViT 이전까지 BEVDepth·BEVFormer 등 인식 계열 backbone으로 광범위하게 사용
+
 Transformer (NeurIPS 2017)
  ├─► BEVFormer, DETR3D, TPVFormer — BEV 인식 계열
  ├─► UniAD, VAD — 통합 계획 계열
@@ -85,7 +91,7 @@ Transformer (NeurIPS 2017)
 
 ViT — An Image is Worth 16x16 Words (ICLR 2021)
  ├─► 이미지를 16×16 패치 시퀀스로 처리, CNN 없이 순수 Transformer로 SOTA 달성
- ├─► 대규모 사전학습(JFT-300M)으로 CNN의 귀납적 편향 없이도 능가
+ ├─► 대규모 사전학습(JFT-300M)으로 CNN(ResNet)의 귀납적 편향 없이도 능가
  ├─► BEVFormer, SurroundOcc, TPVFormer 등 BEV 인식 계열의 표준 backbone
  └─► 카메라 피처 추출기가 ResNet에서 ViT 계열로 전환되는 계기
 
@@ -103,13 +109,15 @@ LDM — Latent Diffusion Models (CVPR 2022)
 
 | 논문 | 역할 |
 |------|------|
+| [ResNet](https://y30n9ju1v.github.io/posts/papers/resnet-deep-residual-learning-for-image-recognition) | Skip Connection으로 Degradation Problem 해결, 수백 레이어 학습 가능 — ViT 이전 CNN backbone 표준 (CVPR 2016) |
 | [Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) | Self-Attention만으로 RNN·CNN을 대체, 현대 딥러닝의 기반 아키텍처 (NeurIPS 2017) |
-| [ViT](https://y30n9ju1v.github.io/posts/papers/vit-an-image-is-worth-16x16-words) | 이미지를 16×16 패치 시퀀스로 처리하는 순수 Transformer, 대규모 사전학습으로 CNN 능가 — BEV 인식 계열의 표준 backbone (ICLR 2021) |
+| [ViT](https://y30n9ju1v.github.io/posts/papers/vit-an-image-is-worth-16x16-words) | 이미지를 16×16 패치 시퀀스로 처리하는 순수 Transformer, 대규모 사전학습으로 ResNet 능가 — BEV 인식 계열의 표준 backbone (ICLR 2021) |
 | [DETR](https://y30n9ju1v.github.io/posts/papers/detr-end-to-end-object-detection-with-transformers) | 이분 매칭 기반 집합 예측으로 NMS·anchor 제거, object query 패러다임 확립 — DETR3D·MapTR의 직접 기반 (ECCV 2020) |
 | [LDM](https://y30n9ju1v.github.io/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models) | Autoencoder 잠재 공간에서 Diffusion 수행, Cross-Attention 조건부 생성 확립 — Stable Diffusion의 기반 (CVPR 2022) |
 
-> **흐름**: Transformer는 **인식·계획·World Model** 전반에 적용되고,  
-> ViT는 **카메라 피처 추출기의 표준**으로 BEV 인식 계열 전반에 사용되며,  
+> **흐름**: ResNet은 **CNN backbone의 표준**으로 ViT 이전까지 인식 계열 전반에 사용되고,  
+> Transformer는 **인식·계획·World Model** 전반에 적용되며,  
+> ViT는 **카메라 피처 추출기의 표준**으로 ResNet을 대체하고,  
 > LDM은 **DDPM → 조건부 이미지/비디오 생성** 계열의 핵심 연결 고리입니다.
 
 ---
@@ -138,7 +146,10 @@ LDM — Latent Diffusion Models (CVPR 2022)
 
 ```
 공통 backbone
-ViT (2021) ─── 이미지 패치 → Transformer Encoder, BEV 인식 계열의 표준 피처 추출기
+ResNet (2016) ─── Skip Connection 기반 deep CNN, ViT 이전의 표준 피처 추출기
+    │ → ViT 등장 이후 대부분의 BEV 인식 계열에서 ViT로 교체됨
+    ▼
+ViT (2021) ─── 이미지 패치 → Transformer Encoder, BEV 인식 계열의 현재 표준 피처 추출기
     │
     ▼
 다중 카메라 (Lift 계보)
@@ -421,6 +432,7 @@ Instant-NGP (2022) ───────────────── Multireso
 
 ```
 2013  DQN ──────────────────────────── 딥 강화학습의 출발 (value-based)
+2015  ResNet ──────────────────────── Skip Connection으로 Degradation Problem 해결, 수백 레이어 학습 가능 · ILSVRC 2015 1위 (CVPR 2016 발표)
 2017  Transformer ──────────────────── Self-Attention만으로 RNN·CNN 대체, 현대 딥러닝 패러다임 전환 (NeurIPS)
       CARLA ───────────────────────── 자율주행 오픈 시뮬레이터
       PointNet ────────────────────── 포인트 클라우드 직접 처리 최초 딥러닝, MaxPooling 순열 불변성 (CVPR)
@@ -478,8 +490,9 @@ Instant-NGP (2022) ───────────────── Multireso
 ## 6. 추천 읽기 순서
 
 ### 자율주행 스택에 집중한다면
-0. [Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) — Self-Attention·Multi-Head Attention·Positional Encoding 이해 (필수 선행)
-   → [ViT](https://y30n9ju1v.github.io/posts/papers/vit-an-image-is-worth-16x16-words) — Transformer를 이미지에 적용, BEV 인식 계열의 표준 backbone 이해
+0. [ResNet](https://y30n9ju1v.github.io/posts/papers/resnet-deep-residual-learning-for-image-recognition) — Skip Connection·잔차 학습·깊은 CNN backbone 이해 (ViT 이전 표준)
+   → [Transformer](https://y30n9ju1v.github.io/posts/papers/attention-is-all-you-need) — Self-Attention·Multi-Head Attention·Positional Encoding 이해 (필수 선행)
+   → [ViT](https://y30n9ju1v.github.io/posts/papers/vit-an-image-is-worth-16x16-words) — Transformer를 이미지에 적용, ResNet을 대체한 BEV 인식 계열 표준 backbone 이해
 1. [nuScenes](https://y30n9ju1v.github.io/posts/papers/nuscenes-multimodal-dataset-autonomous-driving) — 데이터 기반 이해
 2. [Lift-Splat-Shoot](https://y30n9ju1v.github.io/posts/papers/lift-splat-shoot) → [BEVDepth](https://y30n9ju1v.github.io/posts/papers/bevdepth) → [BEVFormer](https://y30n9ju1v.github.io/posts/papers/bevformer) — BEV 카메라 인식 계보
 3. [DETR](https://y30n9ju1v.github.io/posts/papers/detr-end-to-end-object-detection-with-transformers) — object query 패러다임 원형 (NMS·anchor 제거, 이분 매칭)
