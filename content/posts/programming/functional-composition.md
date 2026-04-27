@@ -1,6 +1,6 @@
 ---
 title: "함수형 프로그래밍의 심장: 함수 컴포지션"
-date: 2026-04-28T11:00:00+09:00
+date: 2026-04-28T07:00:00+09:00
 draft: false
 tags: ["함수형 프로그래밍", "Rust", "설계", "Grokking Simplicity"]
 categories: ["프로그래밍"]
@@ -456,7 +456,7 @@ Result<f64> → Result<f64>    모나딕 컴포지션  (실패 전파)
 
 컴포지션을 더 깊이 파고들면 이런 주제들로 이어집니다.
 
-- **계층형 설계**: 어떤 함수가 어떤 함수 위에 쌓여야 하는가
+- **계층형 설계**: 어떤 함수가 어떤 함수 위에 쌓여야 하는가 → [계층형 설계](/posts/programming/functional-stratified-design/)
 - **`bind`와 모나드 법칙**: 모나딕 컴포지션의 수학적 배경 → [모나드로 배우는 함수형 에러 처리](/posts/programming/monad-intro-error-handling/)
 
 ---
