@@ -7,7 +7,8 @@ draft: false
 이 포스트는 블로그에 정리된 논문들이 서로 어떻게 연결되는지를 보여주는 로드맵입니다.  
 크게 두 줄기—**자율주행 스택**과 **3D 장면 표현**—가 최근 **Neural Simulation**이라는 교차점에서 만납니다.  
 두 줄기 모두 **Transformer**와 **Latent Diffusion**, 그리고 **ViT**라는 공통 기반 기술 위에 서 있습니다. **ResNet**은 ViT 이전 CNN backbone의 표준으로, 이 계보의 출발점입니다.  
-여기에 **온라인 벡터화 HD 맵** 계보가 BEV 인식과 계획 사이를 잇는 새로운 흐름으로 추가됩니다.
+여기에 **온라인 벡터화 HD 맵** 계보가 BEV 인식과 계획 사이를 잇는 새로운 흐름으로 추가됩니다.  
+**CLIP**은 자연어-이미지 멀티모달 기반으로 생성형 시뮬레이션(MagicDrive, DriveArena 등)의 텍스트 조건화 핵심 기반이 됩니다.
 
 ---
 
@@ -28,7 +29,8 @@ draft: false
 [인식: BEV 카메라 계보]                    [인식: LiDAR 포인트 클라우드 계보]
  Lift-Splat-Shoot                          PointNet (2017)
   → BEVDepth → BEVFormer ◄─────────────── Transformer 기반 BEV Attention
- DETR → DETR3D (top-down query, 별개)      → PointPillars (2019)
+ DETR → DETR3D (top-down query, 별개)      → PointNet++ (2017) — 계층적 로컬 특징
+         │                                  → PointPillars (2019)
          │                                  → CenterPoint (2021)
          └──────────────────┬───────────────┘
                             ▼
@@ -52,6 +54,7 @@ draft: false
           [World Model & 생성형 시뮬레이션]
            DDPM → LDM → DriveDreamer / MagicDrive / DriveArena
                    └──► GAIA-1 (Transformer 기반 World Model, 별개 계보)
+           CLIP (2021) ─ 텍스트 조건화 기반 (MagicDrive·DriveArena text embedding)
                             │
           ┌─────────────────┴──────────────────────┐
           ▼                                        ▼
@@ -105,6 +108,12 @@ LDM — Latent Diffusion Models (CVPR 2022)
  ├─► DDPM의 픽셀 공간 한계 → Latent Space Diffusion으로 해결
  ├─► Cross-Attention 조건부 생성 메커니즘 확립
  └─► DriveDreamer, MagicDrive, DriveArena의 직접 기반
+
+CLIP — Learning Transferable Visual Models From Natural Language Supervision (ICML 2021)
+ ├─► 4억 쌍 (이미지, 텍스트)을 대조 학습으로 이미지·텍스트 임베딩 공간 정렬
+ ├─► 클래스 이름을 텍스트로 표현해 추가 학습 없이 30개+ 태스크 zero-shot 전이
+ ├─► MagicDrive, DriveArena 등 생성 모델의 텍스트 조건화(text embedding) 기반
+ └─► 분포 이동(distribution shift)에 강인한 표현 — 시뮬→실세계 도메인 갭 완화
 ```
 
 | 논문 | 역할 |
@@ -114,11 +123,13 @@ LDM — Latent Diffusion Models (CVPR 2022)
 | [ViT](https://y30n9ju1v.github.io/posts/papers/vit-an-image-is-worth-16x16-words) | 이미지를 16×16 패치 시퀀스로 처리하는 순수 Transformer, 대규모 사전학습으로 ResNet 능가 — BEV 인식 계열의 표준 backbone (ICLR 2021) |
 | [DETR](https://y30n9ju1v.github.io/posts/papers/detr-end-to-end-object-detection-with-transformers) | 이분 매칭 기반 집합 예측으로 NMS·anchor 제거, object query 패러다임 확립 — DETR3D·MapTR의 직접 기반 (ECCV 2020) |
 | [LDM](https://y30n9ju1v.github.io/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models) | Autoencoder 잠재 공간에서 Diffusion 수행, Cross-Attention 조건부 생성 확립 — Stable Diffusion의 기반 (CVPR 2022) |
+| [CLIP](https://y30n9ju1v.github.io/posts/papers/clip-learning-transferable-visual-models-from-natural-language-supervision) | 4억 쌍 대조 학습으로 이미지·텍스트 공간 정렬, zero-shot 전이 및 생성 모델 텍스트 조건화 기반 (ICML 2021) |
 
 > **흐름**: ResNet은 **CNN backbone의 표준**으로 ViT 이전까지 인식 계열 전반에 사용되고,  
 > Transformer는 **인식·계획·World Model** 전반에 적용되며,  
 > ViT는 **카메라 피처 추출기의 표준**으로 ResNet을 대체하고,  
-> LDM은 **DDPM → 조건부 이미지/비디오 생성** 계열의 핵심 연결 고리입니다.
+> LDM은 **DDPM → 조건부 이미지/비디오 생성** 계열의 핵심 연결 고리이며,  
+> CLIP은 **자연어-이미지 정렬**로 생성형 시뮬레이션의 텍스트 조건화와 zero-shot 인식을 가능케 합니다.
 
 ---
 
@@ -171,9 +182,22 @@ DETR3D (2021) ─── 3D object query → 2D back-projection (depth 예측 없
 
 **LiDAR 포인트 클라우드에서 직접 3D 객체를 탐지**하는 계보입니다. BEVFusion의 LiDAR 브랜치 기반이 됩니다.
 
+```
+PointNet (2017) ─── 포인트 클라우드 직접 처리, 글로벌 MaxPooling
+    │ 로컬 구조를 학습하지 못하는 한계
+    ▼
+PointNet++ (2017) ── FPS + Ball Query + mini-PointNet 계층 구조
+    │ CNN의 receptive field 확장을 비정형 포인트 클라우드에 이식
+    ▼
+PointPillars (2019) ─ Pillar + PointNet 인코딩 → 2D CNN, 62Hz 실시간
+    ▼
+CenterPoint (2021) ── 중심점 heatmap + velocity 회귀, 1ms 추적
+```
+
 | 논문 | 핵심 아이디어 |
 |------|-------------|
 | [PointNet](https://y30n9ju1v.github.io/posts/papers/pointnet-deep-learning-on-point-sets-for-3d-classification-and-segmentation) | 포인트 클라우드를 raw 형태로 직접 처리하는 최초의 딥러닝, MaxPooling으로 순열 불변성 보장 (CVPR 2017) |
+| [PointNet++](https://y30n9ju1v.github.io/posts/papers/pointnet-plus-plus-deep-hierarchical-feature-learning) | FPS + Ball Query + mini-PointNet 계층 구조로 로컬 기하 특징 학습, 밀도 불균일 강인성(MSG/MRG) (NeurIPS 2017) |
 | [PointPillars](https://y30n9ju1v.github.io/posts/papers/pointpillars-fast-encoders-object-detection-point-clouds) | 포인트 클라우드를 수직 pillar로 조직화 + PointNet 인코딩 → 2D CNN만으로 62Hz 실시간 3D 탐지 (CVPR 2019) |
 | [CenterPoint](https://y30n9ju1v.github.io/posts/papers/centerpoint-center-based-3d-object-detection-and-tracking) | 3D 객체를 중심점(heatmap)으로 표현, anchor 불필요·방향 불변, velocity 회귀로 1ms 추적 (CVPR 2021) |
 
@@ -436,6 +460,7 @@ Instant-NGP (2022) ───────────────── Multireso
 2017  Transformer ──────────────────── Self-Attention만으로 RNN·CNN 대체, 현대 딥러닝 패러다임 전환 (NeurIPS)
       CARLA ───────────────────────── 자율주행 오픈 시뮬레이터
       PointNet ────────────────────── 포인트 클라우드 직접 처리 최초 딥러닝, MaxPooling 순열 불변성 (CVPR)
+      PointNet++ ──────────────────── FPS + Ball Query + 계층적 Set Abstraction, 로컬 기하 학습 + 밀도 불균일 강인성 (NeurIPS)
       PPO ─────────────────────────── Clipped Policy Gradient, CARLA AV policy 학습 표준 (OpenAI)
 2019  PointPillars ───────────────── Pillar + PointNet + 2D CNN, 62Hz 실시간 LiDAR 탐지 (CVPR)
 2020  NeRF ──────────────────────── 신경 장면 표현
@@ -445,6 +470,7 @@ Instant-NGP (2022) ───────────────── Multireso
       DDPM ────────────────────────── Diffusion 생성 모델 원본, DriveDreamer·MagicDrive 기반 (NeurIPS)
       LiDARsim ───────────────────── 실제 데이터 기반 LiDAR 시뮬, 레이캐스팅 + ML raydrop (CVPR)
 2021  ViT ─────────────────────────── 이미지를 패치 시퀀스로 처리하는 순수 Transformer, BEV 인식 backbone 표준 (ICLR)
+      CLIP ────────────────────────── 4억 쌍 대조 학습으로 이미지·텍스트 공간 정렬, zero-shot 전이 + 생성 모델 텍스트 조건화 기반 (ICML)
       DETR3D ──────────────────────── top-down 3D query 기반 멀티뷰 탐지
       CenterPoint ────────────────── LiDAR 중심점 탐지 + velocity 기반 1ms 추적 (CVPR)
       nuPlan ──────────────────────── 클로즈드루프 ML 계획 벤치마크 (NeurIPS)
@@ -498,7 +524,7 @@ Instant-NGP (2022) ───────────────── Multireso
 3. [DETR](https://y30n9ju1v.github.io/posts/papers/detr-end-to-end-object-detection-with-transformers) — object query 패러다임 원형 (NMS·anchor 제거, 이분 매칭)
    → [DETR3D](https://y30n9ju1v.github.io/posts/papers/detr3d-3d-object-detection-multi-view-images) — top-down 3D query 계보
    → [VectorMapNet](https://y30n9ju1v.github.io/posts/papers/vectormapnet-end-to-end-vectorized-hd-map-learning) → [MapTR](https://y30n9ju1v.github.io/posts/papers/maptr-structured-modeling-online-vectorized-hd-map-construction) → [StreamMapNet](https://y30n9ju1v.github.io/posts/papers/streammapnet-streaming-mapping-network-vectorized-online-hd-map-construction) — HD 맵 계보
-4. [PointNet](https://y30n9ju1v.github.io/posts/papers/pointnet-deep-learning-on-point-sets-for-3d-classification-and-segmentation) → [PointPillars](https://y30n9ju1v.github.io/posts/papers/pointpillars-fast-encoders-object-detection-point-clouds) → [CenterPoint](https://y30n9ju1v.github.io/posts/papers/centerpoint-center-based-3d-object-detection-and-tracking) — LiDAR 탐지 계보
+4. [PointNet](https://y30n9ju1v.github.io/posts/papers/pointnet-deep-learning-on-point-sets-for-3d-classification-and-segmentation) → [PointNet++](https://y30n9ju1v.github.io/posts/papers/pointnet-plus-plus-deep-hierarchical-feature-learning) → [PointPillars](https://y30n9ju1v.github.io/posts/papers/pointpillars-fast-encoders-object-detection-point-clouds) → [CenterPoint](https://y30n9ju1v.github.io/posts/papers/centerpoint-center-based-3d-object-detection-and-tracking) — LiDAR 탐지 계보
 5. [MonoScene](https://y30n9ju1v.github.io/posts/papers/monoscene-monocular-3d-semantic-scene-completion) — 카메라 전용 3D SSC 패러다임 확립
    → [Occ3D](https://y30n9ju1v.github.io/posts/papers/occ3d-large-scale-3d-occupancy-prediction-benchmark) — 점유 예측 벤치마크
    → [TPVFormer](https://y30n9ju1v.github.io/posts/papers/tpvformer-tri-perspective-view-3d-semantic-occupancy) — BEV를 세 평면으로 일반화, 카메라 전용 3D 점유 예측
@@ -508,12 +534,13 @@ Instant-NGP (2022) ───────────────── Multireso
 7. [UniAD](https://y30n9ju1v.github.io/posts/papers/uniad-planning-oriented-autonomous-driving) → [VAD](https://y30n9ju1v.github.io/posts/papers/vad) — 통합 계획
 8. [DQN](https://y30n9ju1v.github.io/posts/papers/dqn-playing-atari-with-deep-reinforcement-learning) → [PPO](https://y30n9ju1v.github.io/posts/papers/proximal-policy-optimization) — 강화학습 원류 (DQN: value-based, PPO: policy gradient)
 9. [nuPlan](https://y30n9ju1v.github.io/posts/papers/nuplan) → [NAVSIM](https://y30n9ju1v.github.io/posts/papers/navsim) → [Bench2Drive](https://y30n9ju1v.github.io/posts/papers/bench2drive-multi-ability-benchmarking-e2e-autonomous-driving) — 평가 체계
-10. [DDPM](https://y30n9ju1v.github.io/posts/papers/denoising-diffusion-probabilistic-models) — Diffusion 생성 모델 기반
-11. [LDM](https://y30n9ju1v.github.io/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models) — DDPM의 픽셀 공간 한계 극복, Cross-Attention 조건부 생성 (DriveDreamer·MagicDrive 직접 기반)
-12. [GAIA-1](https://y30n9ju1v.github.io/posts/papers/gaia-1) — 생성형 World Model로의 패러다임 전환
-13. [DriveDreamer](https://y30n9ju1v.github.io/posts/papers/drivedreamer) — 실제 데이터 기반 합성 데이터 생성
-14. [MagicDrive](https://y30n9ju1v.github.io/posts/papers/magicdrive-street-view-generation-3d-geometry-control) — 3D 기하 조건 기반 멀티카메라 생성
-15. [DriveArena](https://y30n9ju1v.github.io/posts/papers/drivearena) — 생성형 폐루프 시뮬레이션의 통합
+10. [CLIP](https://y30n9ju1v.github.io/posts/papers/clip-learning-transferable-visual-models-from-natural-language-supervision) — 이미지·텍스트 대조 학습, zero-shot 전이 + 생성 모델 텍스트 조건화 기반
+11. [DDPM](https://y30n9ju1v.github.io/posts/papers/denoising-diffusion-probabilistic-models) — Diffusion 생성 모델 기반
+12. [LDM](https://y30n9ju1v.github.io/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models) — DDPM의 픽셀 공간 한계 극복, Cross-Attention 조건부 생성 (DriveDreamer·MagicDrive 직접 기반)
+13. [GAIA-1](https://y30n9ju1v.github.io/posts/papers/gaia-1) — 생성형 World Model로의 패러다임 전환
+14. [DriveDreamer](https://y30n9ju1v.github.io/posts/papers/drivedreamer) — 실제 데이터 기반 합성 데이터 생성
+15. [MagicDrive](https://y30n9ju1v.github.io/posts/papers/magicdrive-street-view-generation-3d-geometry-control) — 3D 기하 조건 기반 멀티카메라 생성 (CLIP text embedding 활용)
+16. [DriveArena](https://y30n9ju1v.github.io/posts/papers/drivearena) — 생성형 폐루프 시뮬레이션의 통합
 
 ### 3D 장면 표현에 집중한다면
 1. [NeRF](https://y30n9ju1v.github.io/posts/papers/nerf-representing-scenes-as-neural-radiance-fields-for-view-synthesis) — 신경 렌더링 원리
