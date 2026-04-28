@@ -2,7 +2,7 @@
 title: "모나드로 배우는 함수형 에러 처리"
 date: 2026-04-17T17:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "모나드", "Haskell", "Rust"]
+tags: ["함수형 프로그래밍", "Rust", "모나드", "설계"]
 categories: ["프로그래밍"]
 description: "try-catch 없이 에러를 처리하는 함수형 프로그래밍의 방식, 모나드를 처음부터 차근차근 설명합니다."
 math: true
