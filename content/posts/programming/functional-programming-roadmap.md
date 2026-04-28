@@ -1,6 +1,6 @@
 ---
 title: "함수형 프로그래밍 시리즈 로드맵"
-date: 2026-04-28T16:00:00+09:00
+date: 2029-04-28T16:00:00+09:00
 draft: false
 tags: ["함수형 프로그래밍", "Rust", "설계", "Grokking Simplicity", "로드맵"]
 categories: ["프로그래밍"]
