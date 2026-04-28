@@ -2,7 +2,7 @@
 title: "함수형 프로그래밍의 심장: 함수 컴포지션"
 date: 2026-04-28T07:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "Rust", "설계", "Grokking Simplicity"]
+tags: ["함수형 프로그래밍", "Rust", "설계", "컴포지션", "Grokking Simplicity"]
 categories: ["프로그래밍"]
 description: "액션/계산/데이터 구분 위에서 작은 함수들을 조합해 복잡한 로직을 만드는 방법을 Rust 예제로 설명합니다."
 ---

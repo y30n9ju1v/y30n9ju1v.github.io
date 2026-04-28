@@ -2,7 +2,7 @@
 title: "타임라인 다이어그램: 액션의 실행 순서를 추론하는 법"
 date: 2026-04-28T09:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "Rust", "설계", "Grokking Simplicity"]
+tags: ["함수형 프로그래밍", "Rust", "설계", "타임라인", "Grokking Simplicity"]
 categories: ["프로그래밍"]
 description: "액션들이 언제, 어떤 순서로 실행되는지 시각화하면 동시성 버그를 코드를 짜기 전에 발견할 수 있습니다."
 ---
