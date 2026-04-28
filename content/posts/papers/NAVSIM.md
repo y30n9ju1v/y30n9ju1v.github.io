@@ -205,3 +205,8 @@ NAVSIM은 자율주행 평가의 두 가지 핵심 문제를 동시에 해결하
 - 교통 법규(신호등, 정지선 등)를 PDMS가 직접 다루지 않음
 
 **실무적 시사점**: NAVSIM은 HuggingFace를 통한 공개 평가 서버를 제공하여 재현성과 공정한 비교를 보장한다. 자율주행 연구자들이 CARLA와 nuScenes 사이의 갭을 메우는 새로운 표준 벤치마크로 자리잡을 잠재력이 있다.
+
+
+---
+
+*관련 논문: [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/), [nuPlan](/posts/papers/nuPlan/), [CARLA](/posts/papers/CARLA-An-Open-Urban-Driving-Simulator/), [Bench2Drive](/posts/papers/bench2drive-multi-ability-benchmarking-e2e-autonomous-driving/), [TransFuser](/posts/papers/TransFuser/), [UniAD](/posts/papers/uniad-planning-oriented-autonomous-driving/)*

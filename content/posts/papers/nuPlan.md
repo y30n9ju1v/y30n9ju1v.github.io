@@ -181,3 +181,8 @@ nuPlan은 자율주행 ML 계획 연구에 필요한 세 가지를 한꺼번에 
 - 비반응형 설정에서 대부분의 개입이 단순 충돌로 나타나 장기 상호작용 평가 어려움
 - 200+ TB 전체 데이터셋 사용이 현실적으로 어려움 → OpenScene(2TB→450GB)으로 축소 재배포
 - 초기 지표 정의가 커뮤니티 피드백을 반영한 개선 필요 (이후 nuPlan 1.1, 1.2 등으로 업데이트)
+
+
+---
+
+*관련 논문: [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/), [CARLA](/posts/papers/CARLA-An-Open-Urban-Driving-Simulator/), [NAVSIM](/posts/papers/NAVSIM/), [Bench2Drive](/posts/papers/bench2drive-multi-ability-benchmarking-e2e-autonomous-driving/)*

@@ -329,3 +329,8 @@ $$\mathcal{L} = |\tilde{I} - I| + \mathcal{L}_{tv}$$
 - 향후 자율주행 World Model(GAIA-1 등)과 결합 시 포토리얼리스틱 신경 시뮬레이터 구축 가능
 
 > **로드맵 상의 위치**: `3DGS (2023)` → **4D-GS (ICLR 2024)** → `DrivingGaussian / HUGS (2024)` → `HUGSIM (2024)`
+
+
+---
+
+*관련 논문: [3D Gaussian Splatting](/posts/papers/3d-gaussian-splatting/), [Street Gaussians](/posts/papers/street-gaussians-modeling-dynamic-urban-scenes/), [DrivingGaussian](/posts/papers/driving-gaussian-composite-gaussian-splatting/), [HUGSIM](/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator/)*

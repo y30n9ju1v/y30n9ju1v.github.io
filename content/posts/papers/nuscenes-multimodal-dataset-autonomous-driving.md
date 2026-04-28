@@ -245,3 +245,8 @@ nuScenes는 자율주행 연구를 위한 대규모 멀티모달 데이터셋을
 - **센서 융합의 실질적 가치**: 단일 센서 대비 멀티모달 접근이 어려운 조건(야간, 비)에서 강인성 제공
 - **대규모 데이터의 중요성**: KITTI 수준의 데이터에서 최적처럼 보이는 알고리즘이 더 큰 nuScenes에서 순위가 바뀜 → 데이터 규모가 알고리즘 평가의 신뢰성에 직접 영향
 - **레이더 활용 가능성**: 현재 베이스라인들은 레이더를 충분히 활용하지 못하고 있어, 레이더 기반 fusion 연구가 유망한 미래 방향
+
+
+---
+
+*관련 논문: [Waymo Open Dataset](/posts/papers/waymo-open-dataset/), [nuPlan](/posts/papers/nuPlan/), [CARLA](/posts/papers/CARLA-An-Open-Urban-Driving-Simulator/), [BEVFormer](/posts/papers/BEVFormer/), [UniAD](/posts/papers/uniad-planning-oriented-autonomous-driving/)*

@@ -335,3 +335,8 @@ DrivingGaussian은 자율주행 씬 재구성에서 다음을 달성합니다:
 5. **확장성**: 코너 케이스 시뮬레이션으로 안전 검증까지 지원
 
 **실무적 시사점**: 자율주행 시뮬레이터 구축 시 NeRF 기반 방법 대신 Gaussian Splatting 기반 복합 표현을 채택하면 렌더링 속도와 품질 모두 향상 가능. 특히 LiDAR-카메라 융합 방식이 멀티카메라 일관성 문제 해결에 효과적.
+
+
+---
+
+*관련 논문: [3D Gaussian Splatting](/posts/papers/3d-gaussian-splatting/), [4D Gaussian Splatting](/posts/papers/4d-gaussian-splatting/), [Street Gaussians](/posts/papers/street-gaussians-modeling-dynamic-urban-scenes/), [OmniRe](/posts/papers/omnire-omni-urban-scene-reconstruction/), [HUGSIM](/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

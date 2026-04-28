@@ -208,3 +208,8 @@ DriveDreamer는 실제 주행 데이터에서 구축된 최초의 자율주행 W
 - **자율주행 합성 데이터 생성 관점**: HDMap·3D Box를 구조 조건으로 활용하는 접근법은 실제 도로 레이아웃을 반영한 시나리오 생성에 직접 응용 가능하다.
 - **엔드-투-엔드 학습**: World Model 기반 플래닝은 Open-loop 평가에서 L2 0.29m를 달성하며, 향후 클로즈드 루프 자율주행으로 확장 가능성을 열어준다.
 - **한계**: 현재는 단일 카메라(전방) 위주이며, 클로즈드 루프 평가는 미포함. 생성 품질이 높아도 실제 배포에는 안전성 검증이 추가로 필요하다.
+
+
+---
+
+*관련 논문: [LDM](/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models/), [DDPM](/posts/papers/denoising-diffusion-probabilistic-models/), [GAIA-1](/posts/papers/GAIA-1/), [MagicDrive](/posts/papers/magicdrive-street-view-generation-3d-geometry-control/), [DriveArena](/posts/papers/DriveArena/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

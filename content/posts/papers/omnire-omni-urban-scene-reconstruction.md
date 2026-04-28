@@ -192,3 +192,8 @@ OmniRe는 기존 방법들이 차량에만 집중하던 한계를 깨고, 도심
 - 조명 효과를 명시적으로 모델링하지 않아 다른 조건의 요소를 합성 시 시각적 불일치 가능
 - 훈련 궤적에서 카메라가 크게 벗어난 Novel View에서의 품질 저하
 - 향후 데이터 기반 생성 모델(비디오 생성 등)과의 결합으로 개선 가능
+
+
+---
+
+*관련 논문: [3D Gaussian Splatting](/posts/papers/3d-gaussian-splatting/), [Street Gaussians](/posts/papers/street-gaussians-modeling-dynamic-urban-scenes/), [DrivingGaussian](/posts/papers/driving-gaussian-composite-gaussian-splatting/), [EmerNeRF](/posts/papers/EmerNeRF/), [HUGSIM](/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator/)*

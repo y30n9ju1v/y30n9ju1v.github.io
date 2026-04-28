@@ -359,3 +359,8 @@ $$\tilde{\rho}_c(\mathbf{x}) = \tilde{\rho}(\mathbf{x})(0.5 + 0.5\cos(\psi \Sigm
 - BVH 재구성 비용 최소화
 - 글로벌 조명 및 포토리얼리스틱 렌더링
 - 더 효율적인 파티클 커널 설계
+
+
+---
+
+*관련 논문: [3D Gaussian Splatting](/posts/papers/3d-gaussian-splatting/), [3DGUT](/posts/papers/3dgut-enabling-distorted-cameras-and-secondary-rays-in-gaussian-splatting/), [Street Gaussians](/posts/papers/street-gaussians-modeling-dynamic-urban-scenes/)*

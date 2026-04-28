@@ -263,3 +263,8 @@ $$\hat{Q}_t = \sqrt{\hat{Y}_t \cdot \hat{I}_t}$$
 - LiDAR 전용 — 카메라 전용 또는 카메라+LiDAR 융합 탐지에는 직접 적용 불가
 - PointPillars 백본 사용 시 보행자처럼 1픽셀 크기의 객체에서 2단계 정제 효과 제한적 (양자화 한계)
 - velocity 예측이 비선형 기동(급회전 등)에서는 부정확할 수 있음
+
+
+---
+
+*관련 논문: [PointNet](/posts/papers/pointnet-deep-learning-on-point-sets-for-3d-classification-and-segmentation/), [PointPillars](/posts/papers/pointpillars-fast-encoders-object-detection-point-clouds/), [BEVFusion](/posts/papers/bevfusion-multi-task-multi-sensor-fusion/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/), [Waymo Open Dataset](/posts/papers/waymo-open-dataset/)*

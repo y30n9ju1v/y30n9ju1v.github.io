@@ -449,3 +449,8 @@ $$\mathcal{L}_{total} = (1-\lambda) \cdot L_1(\hat{C}, C) + \lambda \cdot L_{SSI
 - [공식 프로젝트 페이지](https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/)
 - [CUDA 구현](https://github.com/graphdeco-inria/gaussian-splatting)
 - [WebGL 데모](https://huggingface.co/spaces/dylanebert/3dgaussiansplats)
+
+
+---
+
+*관련 논문: [NeRF](/posts/papers/nerf-representing-scenes-as-neural-radiance-fields-for-view-synthesis/), [Instant-NGP](/posts/papers/instant-ngp-multiresolution-hash-encoding/), [Mip-NeRF 360](/posts/papers/mip-nerf-360/), [4D Gaussian Splatting](/posts/papers/4d-gaussian-splatting/), [3D Gaussian Ray Tracing](/posts/papers/3d-gaussian-ray-tracing/), [3DGUT](/posts/papers/3dgut-enabling-distorted-cameras-and-secondary-rays-in-gaussian-splatting/), [Street Gaussians](/posts/papers/street-gaussians-modeling-dynamic-urban-scenes/), [DrivingGaussian](/posts/papers/driving-gaussian-composite-gaussian-splatting/), [OmniRe](/posts/papers/omnire-omni-urban-scene-reconstruction/), [HUGSIM](/posts/papers/hugsim-real-time-photorealistic-closed-loop-simulator/)*

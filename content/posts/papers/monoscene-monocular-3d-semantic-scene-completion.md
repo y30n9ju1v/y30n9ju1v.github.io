@@ -246,3 +246,8 @@ $$\mathcal{L}_{total} = \mathcal{L}_{ce} + \mathcal{L}_{rel} + \mathcal{L}_{scal
 - "깊이 센서 없이 3D 이해 가능하다"는 패러다임을 처음 정립
 - EmerNeRF의 자기지도 동적 장면 분해와 달리, 정적 장면 완성에 집중
 - HUGS, UniSim 등 후속 Neural Simulation 연구들이 필요로 하는 "카메라 전용 3D 씬 이해"의 이론적 기반 제공
+
+
+---
+
+*관련 논문: [TPVFormer](/posts/papers/tpvformer-tri-perspective-view-3d-semantic-occupancy/), [SurroundOcc](/posts/papers/SurroundOcc/), [Occ3D](/posts/papers/occ3d-large-scale-3d-occupancy-prediction-benchmark/), [BEVFormer](/posts/papers/BEVFormer/), [GaussianWorld](/posts/papers/gaussianworld-gaussian-world-model-for-streaming-3d-occupancy-prediction/)*

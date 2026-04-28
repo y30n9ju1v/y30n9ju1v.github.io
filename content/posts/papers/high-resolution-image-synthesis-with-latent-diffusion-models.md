@@ -218,3 +218,8 @@ LDM은 Diffusion Model의 고질적 문제였던 **계산 비용**을 두 단계
 - DriveDreamer·MagicDrive·DriveArena 등 자율주행 도메인의 조건부 비디오/이미지 생성 모델이 모두 LDM의 아키텍처(Latent Space + Cross-Attention Conditioning)를 직접 계승
 - 특히 **MagicDrive**는 BEV 맵·3D 바운딩박스·카메라 포즈를 $\tau_\theta$로 인코딩해 Cross-Attention으로 통합하는 방식이 LDM Section 3.3을 그대로 적용한 것
 - LDM의 "잠재 공간에서의 효율적 생성"은 실시간 또는 대규모 합성 데이터 생성 파이프라인 구축에 핵심적인 설계 원칙
+
+
+---
+
+*관련 논문: [DDPM](/posts/papers/denoising-diffusion-probabilistic-models/), [MagicDrive](/posts/papers/magicdrive-street-view-generation-3d-geometry-control/), [DriveDreamer](/posts/papers/DriveDreamer/), [DriveArena](/posts/papers/DriveArena/), [DIFIX3D+](/posts/papers/difix3d-plus/)*

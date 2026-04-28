@@ -236,3 +236,8 @@ TransFuser는 카메라와 LiDAR의 전역적 융합을 Transformer self-attenti
 - 카메라-LiDAR 좌표 불일치로 LiDAR 범위 조절이 직관적이지 않은 결과를 낳기도 함
 
 **실무적 시사점**: TransFuser는 CARLA 기반 E2E 자율주행의 새로운 baseline으로 자리잡았다. NAVSIM, Longestè6 등 여러 벤치마크에서 꾸준히 강력한 성능을 보이며, 간단하고 재현 가능한 코드베이스를 공개하여 후속 연구의 출발점으로 널리 사용된다.
+
+
+---
+
+*관련 논문: [Attention Is All You Need](/posts/papers/attention-is-all-you-need/), [CARLA](/posts/papers/CARLA-An-Open-Urban-Driving-Simulator/), [UniAD](/posts/papers/uniad-planning-oriented-autonomous-driving/), [NAVSIM](/posts/papers/NAVSIM/), [Bench2Drive](/posts/papers/bench2drive-multi-ability-benchmarking-e2e-autonomous-driving/)*

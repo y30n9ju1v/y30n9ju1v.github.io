@@ -292,3 +292,8 @@ VectorMapNet은 HD 맵 학습을 **래스터 세그멘테이션 문제**에서 *
 - 탐지 + 생성 두 단계 분리는 각 모듈의 역할을 명확히 하고 디버깅을 용이하게 함
 - 향후 시계열 입력(multi-frame fusion)과 단일 스테이지 통합을 통한 개선 여지 존재
 - MapTR, BeMapNet 등 후속 연구의 발판이 되는 핵심 기초 논문
+
+
+---
+
+*관련 논문: [DETR](/posts/papers/detr-end-to-end-object-detection-with-transformers/), [MapTR](/posts/papers/maptr-structured-modeling-online-vectorized-hd-map-construction/), [StreamMapNet](/posts/papers/streammapnet-streaming-mapping-network-vectorized-online-hd-map-construction/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

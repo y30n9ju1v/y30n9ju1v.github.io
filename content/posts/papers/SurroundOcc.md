@@ -238,3 +238,8 @@ nuScenes와 SemanticKITTI 벤치마크에서 기존 방법 대비 큰 폭의 성
 - **자율주행 인식 스택**: occupancy 기반 표현은 detection box보다 임의 형태 객체(공사 구간, 이상 물체)에 강인하여 안전 마진 계산에 유리
 - **합성 데이터 생성**: 밀집 GT 생성 파이프라인(멀티프레임 스티칭 + Poisson Reconstruction)은 annotation 비용 없이 고품질 3D 레이블을 생성하는 실용적 방법으로, 회귀 테스트용 합성 데이터 생성에도 응용 가능
 - **한계**: 단일 프레임 입력만 처리하므로 시간적 연속성(occupancy flow)이 없어 motion prediction에 직접 활용 어려움. 향후 멀티프레임 입력으로 확장 예정
+
+
+---
+
+*관련 논문: [MonoScene](/posts/papers/monoscene-monocular-3d-semantic-scene-completion/), [TPVFormer](/posts/papers/tpvformer-tri-perspective-view-3d-semantic-occupancy/), [Occ3D](/posts/papers/occ3d-large-scale-3d-occupancy-prediction-benchmark/), [BEVFormer](/posts/papers/BEVFormer/), [GaussianWorld](/posts/papers/gaussianworld-gaussian-world-model-for-streaming-3d-occupancy-prediction/)*

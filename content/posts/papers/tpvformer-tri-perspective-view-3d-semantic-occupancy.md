@@ -259,3 +259,8 @@ TPVFormer는 BEV와 Voxel 표현의 장점을 결합한 TPV 표현을 통해, **
 - 합성 데이터로 3D 점유 레이블을 생성할 때, TPV 해상도를 테스트 시 자유롭게 조정할 수 있는 특성이 유용하다
 - 카메라 전용 파이프라인으로 LiDAR 없는 회귀 테스트 시나리오에서 3D 장면 이해가 가능해진다
 - BEVFormer 인프라를 그대로 재사용할 수 있어 기존 BEV 기반 시스템에 통합하기 쉽다
+
+
+---
+
+*관련 논문: [MonoScene](/posts/papers/monoscene-monocular-3d-semantic-scene-completion/), [BEVFormer](/posts/papers/BEVFormer/), [SurroundOcc](/posts/papers/SurroundOcc/), [Occ3D](/posts/papers/occ3d-large-scale-3d-occupancy-prediction-benchmark/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

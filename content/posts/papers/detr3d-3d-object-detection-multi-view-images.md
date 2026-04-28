@@ -232,3 +232,8 @@ DETR3D는 depth 추정과 NMS라는 두 가지 병목을 동시에 제거한 멀
 **후속 연구로의 연결**:
 - **BEVFormer**: 명시적 BEV 특징 맵을 만들어 DETR3D의 sparse query 방식을 dense로 확장
 - **PETR**: position embedding으로 3D 위치 정보를 특징에 인코딩해 query 표현력 강화
+
+
+---
+
+*관련 논문: [DETR](/posts/papers/detr-end-to-end-object-detection-with-transformers/), [Attention Is All You Need](/posts/papers/attention-is-all-you-need/), [BEVFormer](/posts/papers/BEVFormer/), [Lift Splat Shoot](/posts/papers/lift-splat-shoot/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

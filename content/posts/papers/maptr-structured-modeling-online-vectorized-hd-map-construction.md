@@ -278,3 +278,8 @@ MapTR은 HD 맵 구축에서 두 가지 핵심 혁신을 달성했습니다:
 - 플래닝·모션 예측에 바로 사용 가능한 벡터 표현 — 다운스트림 태스크와 직접 연동
 - 카메라만으로 LiDAR 수준 맵 품질 달성 — 저비용 센서 구성에서도 활용 가능
 - MapTR 이후 MapTRv2 등으로 발전하며 온라인 맵 구축의 표준 프레임워크로 자리잡음
+
+
+---
+
+*관련 논문: [VectorMapNet](/posts/papers/vectormapnet-end-to-end-vectorized-hd-map-learning/), [DETR](/posts/papers/detr-end-to-end-object-detection-with-transformers/), [BEVFormer](/posts/papers/BEVFormer/), [StreamMapNet](/posts/papers/streammapnet-streaming-mapping-network-vectorized-online-hd-map-construction/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

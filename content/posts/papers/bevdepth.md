@@ -296,3 +296,8 @@ BEVDepth는 nuScenes 리더보드에서 카메라 전용 방법 중 1위(60.9% N
 2. **카메라 파라미터 모델링**: 다양한 FOV를 가진 멀티카메라 시스템에서는 카메라 파라미터를 깊이 추정 네트워크에 명시적으로 통합하는 것이 필수적입니다.
 3. **효율성**: Efficient Voxel Pooling으로 실용적인 훈련 속도를 달성하며, Multi-frame Fusion으로 추가 센서 없이 속도 추정이 가능합니다.
 4. **BEVDepth는 베이스라인**: 이후 BEVStereo, BEVFusion 등 많은 후속 연구의 기반이 되는 강력한 베이스라인을 제공합니다.
+
+
+---
+
+*관련 논문: [Lift Splat Shoot](/posts/papers/lift-splat-shoot/), [BEVFormer](/posts/papers/BEVFormer/), [BEVFusion](/posts/papers/bevfusion-multi-task-multi-sensor-fusion/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

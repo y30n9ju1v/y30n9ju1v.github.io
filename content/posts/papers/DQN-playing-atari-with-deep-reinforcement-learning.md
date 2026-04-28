@@ -276,3 +276,8 @@ DQN은 **"raw 픽셀 → 직접 제어"** 라는 end-to-end 딥 강화학습의 
 - **장기 전략의 한계**: Q*bert, Seaquest처럼 수천 타임스텝 이상의 장기 계획이 필요한 게임에서 인간에 크게 못 미침
 - **보상 클리핑**: 보상의 크기 정보 손실 → 미묘한 보상 차이 구별 불가
 - **이론적 수렴 보장 없음**: 비선형 함수 근사 + 오프폴리시 학습이지만 실험적으로 안정성 확인
+
+
+---
+
+*관련 논문: [PPO](/posts/papers/proximal-policy-optimization/), [CARLA](/posts/papers/CARLA-An-Open-Urban-Driving-Simulator/)*

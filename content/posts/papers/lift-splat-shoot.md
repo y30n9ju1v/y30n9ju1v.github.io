@@ -215,3 +215,8 @@ Lidar 기반보다 낮지만, 카메라만으로 교차로 정지, 차선 유지
 2. **Camera rig 확장성**: 카메라 수와 위치가 바뀌어도 재학습 없이 zero-shot 전이가 가능합니다. 실제 자율주행 차량 개발에서 카메라 배치 변경 시 유용합니다.
 3. **End-to-end 모션 플래닝**: 인식과 플래닝을 통합 학습하여, 플래너의 피드백이 인식 모듈 학습에 반영됩니다.
 4. **한계 및 향후 과제**: 야간이나 장거리에서 LiDAR 대비 성능 격차 존재. 단일 타임스텝 처리의 한계로, 다중 타임스텝의 temporal 정보 활용이 향후 과제로 남아 있습니다. (이 과제는 이후 BEVDet4D, BEVFormer 등이 해결합니다.)
+
+
+---
+
+*관련 논문: [BEVDepth](/posts/papers/bevdepth/), [BEVFormer](/posts/papers/BEVFormer/), [BEVFusion](/posts/papers/bevfusion-multi-task-multi-sensor-fusion/), [DETR3D](/posts/papers/detr3d-3d-object-detection-multi-view-images/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

@@ -269,3 +269,8 @@ DDPM은 확산 모델이 GAN, VAE, Flow 등 기존 생성 모델과 경쟁하거
 3. **샘플링 속도 한계**: T=1000번의 신경망 호출이 필요해 속도가 느림 → DDIM, DPM-Solver 등 후속 연구의 동기
 4. **확장성**: 텍스트 조건부 생성, 영상, 음성 등 다양한 모달리티로 확장 가능
 5. **데이터 압축**: Progressive lossy coding으로 데이터 압축에도 응용 가능
+
+
+---
+
+*관련 논문: [LDM](/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models/), [MagicDrive](/posts/papers/magicdrive-street-view-generation-3d-geometry-control/), [DriveDreamer](/posts/papers/DriveDreamer/), [DriveArena](/posts/papers/DriveArena/), [GAIA-1](/posts/papers/GAIA-1/)*

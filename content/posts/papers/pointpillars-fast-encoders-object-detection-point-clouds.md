@@ -257,3 +257,8 @@ TensorRT 적용 시: 45.5% 추가 가속 → **105Hz** 달성 가능
 - Pillar 단위 처리로 z축 정보(높이)가 MaxPool로 집약 → 세밀한 수직 구조 표현 불가
 - 보행자·자전거 탐지 성능이 차량보다 낮음 (작은 객체, 희소 포인트)
 - 카메라와의 융합을 고려하지 않은 LiDAR 전용 설계
+
+
+---
+
+*관련 논문: [PointNet](/posts/papers/pointnet-deep-learning-on-point-sets-for-3d-classification-and-segmentation/), [CenterPoint](/posts/papers/centerpoint-center-based-3d-object-detection-and-tracking/), [BEVFusion](/posts/papers/bevfusion-multi-task-multi-sensor-fusion/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

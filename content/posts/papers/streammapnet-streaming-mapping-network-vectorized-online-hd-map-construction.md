@@ -306,3 +306,8 @@ StreamMapNet은 온라인 HD 맵 구성에 **시간 정보**를 효율적으로 
 - **회귀 테스트**: 기존 nuScenes 공식 split을 사용한 벤치마크 결과는 과적합 가능성이 높음. 지리적 겹침 없는 새 split으로 평가해야 실제 성능 측정 가능
 - **VectorMapNet 대비**: VectorMapNet의 두 가지 핵심 한계(시간 정보 없음, 좁은 범위)를 모두 해결. HD Map 연구의 실질적 진보
 - 향후 연구 방향: LiDAR 센서 통합, 더 긴 시간 범위의 메모리, 맵 요소 간 위상(topology) 모델링
+
+
+---
+
+*관련 논문: [VectorMapNet](/posts/papers/vectormapnet-end-to-end-vectorized-hd-map-learning/), [MapTR](/posts/papers/maptr-structured-modeling-online-vectorized-hd-map-construction/), [BEVFormer](/posts/papers/BEVFormer/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

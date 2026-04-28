@@ -241,3 +241,8 @@ GaussianWorld는 3D Gaussian의 명시적·연속적 장면 표현 특성을 활
 **로드맵 위치**: 이 논문은 **GaussianFormer**(3DGS 기반 occupancy 표현)의 직접적 확장이며, **3DGS → occupancy prediction** 계보와 **World Model(GAIA-1 등)** 계보가 만나는 교차점입니다. 자율주행 합성 데이터 생성 관점에서는, 3D Gaussian으로 장면을 명시적으로 진화시키는 이 패러다임이 향후 클로즈드루프 센서 시뮬레이터의 장면 상태 관리에 직접 응용될 가능성이 있습니다.
 
 **한계**: 동적 요소와 정적 요소의 분리가 완전하지 않아 정적 장면의 크로스 프레임 일관성을 완벽히 보장하지 못함.
+
+
+---
+
+*관련 논문: [3D Gaussian Splatting](/posts/papers/3d-gaussian-splatting/), [MonoScene](/posts/papers/monoscene-monocular-3d-semantic-scene-completion/), [TPVFormer](/posts/papers/tpvformer-tri-perspective-view-3d-semantic-occupancy/), [SurroundOcc](/posts/papers/SurroundOcc/), [GAIA-1](/posts/papers/GAIA-1/), [nuScenes](/posts/papers/nuscenes-multimodal-dataset-autonomous-driving/)*

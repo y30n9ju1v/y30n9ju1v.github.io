@@ -243,3 +243,8 @@ DIFIX3D+는 단일 단계 확산 모델(DIFIX)을 핵심으로 한 새로운 3D 
 - 자율주행, AR/VR 등 실시간 3D 렌더링이 필요한 응용에서 활용 가능
 - 기존 NeRF/3DGS 파이프라인에 플러그인 형태로 손쉽게 통합 가능
 - 인터넷 규모 데이터로 학습된 생성 모델의 사전 지식이 3D 재구성에 효과적으로 전이됨을 입증
+
+
+---
+
+*관련 논문: [NeRF](/posts/papers/nerf-representing-scenes-as-neural-radiance-fields-for-view-synthesis/), [3D Gaussian Splatting](/posts/papers/3d-gaussian-splatting/), [LDM](/posts/papers/high-resolution-image-synthesis-with-latent-diffusion-models/)*

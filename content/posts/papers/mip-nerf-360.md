@@ -266,3 +266,8 @@ mip-NeRF 360은 NeRF의 실용적 한계를 크게 허무는 연구입니다.
 **실무적 시사점**
 - 드론 촬영, 자율주행 씬 재구성, 문화재 디지털화 등 360도 자유 카메라가 필요한 애플리케이션에 직접 적용 가능합니다.
 - 학습 시간(수 시간)과 하드웨어(A100) 요구사항은 여전히 실시간 응용의 장벽이며, 이를 해결하는 방향(Instant-NGP, 3DGS)이 후속 연구의 주요 흐름이 되었습니다.
+
+
+---
+
+*관련 논문: [NeRF](/posts/papers/nerf-representing-scenes-as-neural-radiance-fields-for-view-synthesis/), [Instant-NGP](/posts/papers/instant-ngp-multiresolution-hash-encoding/), [3D Gaussian Splatting](/posts/papers/3d-gaussian-splatting/), [EmerNeRF](/posts/papers/EmerNeRF/)*

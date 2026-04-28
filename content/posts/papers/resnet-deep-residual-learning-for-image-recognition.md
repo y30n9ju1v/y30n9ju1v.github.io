@@ -202,3 +202,8 @@ ResNet은 **잔차 학습**이라는 단순한 아이디어로 극도로 깊은 
 - Identity shortcut은 파라미터·연산 비용 없이 최적화를 돕는 효과적인 설계 원칙
 - ResNet은 이후 DenseNet, EfficientNet, Vision Transformer 등 수많은 후속 아키텍처의 기반이 됨
 - 자율주행의 특징 추출 backbone, 물체 검출 네트워크(Faster R-CNN + ResNet) 등에 광범위하게 활용
+
+
+---
+
+*관련 논문: [Attention Is All You Need](/posts/papers/attention-is-all-you-need/), [ViT](/posts/papers/vit-an-image-is-worth-16x16-words/), [DETR](/posts/papers/detr-end-to-end-object-detection-with-transformers/)*
