@@ -51,7 +51,7 @@ description: "액션/계산/데이터 구분부터 파서 컴비네이터와 비
 
 ### 입문
 
-#### [모나드로 배우는 함수형 에러 처리](/posts/programming/monad-intro-error-handling/)
+#### [모나드로 배우는 함수형 에러 처리](/posts/programming/functional-monad-error-handling/)
 
 > `try-catch` 없이 에러를 다루는 함수형 방식을 처음부터 설명합니다.
 
@@ -127,7 +127,7 @@ description: "액션/계산/데이터 구분부터 파서 컴비네이터와 비
 - **읽고 나면**: 이터레이터 체인이 내부에서 어떻게 작동하는지 이해하고, 나만의 어댑터를 만들 수 있습니다
 - **선행 글**: 2번 (함수 컴포지션)
 
-#### [함수형으로 상태 기계 만들기: enum과 패턴 매칭](/posts/programming/rust-state-machine/)
+#### [함수형으로 상태 기계 만들기: enum과 패턴 매칭](/posts/programming/functional-state-machine/)
 
 > `enum`으로 상태를, 순수 함수로 전이를 표현하면 컴파일러가 빠뜨린 상태를 잡아줍니다.
 
@@ -135,7 +135,7 @@ description: "액션/계산/데이터 구분부터 파서 컴비네이터와 비
 - **읽고 나면**: 잘못된 상태 전이를 컴파일 타임에 막는 설계를 할 수 있습니다
 - **선행 글**: 1번 (액션/계산/데이터), 3번 (계층형 설계)
 
-#### [파서 컴비네이터: 컴포지션 철학의 극적인 응용](/posts/programming/rust-parser-combinator/)
+#### [파서 컴비네이터: 컴포지션 철학의 극적인 응용](/posts/programming/functional-parser-combinator/)
 
 > 작은 파서들을 조합해 복잡한 문법을 처리합니다. 함수 컴포지션, 계층형 설계, 모나드가 한꺼번에 드러나는 패턴입니다.
 

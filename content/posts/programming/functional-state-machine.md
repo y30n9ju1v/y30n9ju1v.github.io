@@ -2,7 +2,7 @@
 title: "함수형으로 상태 기계 만들기: enum과 패턴 매칭"
 date: 2026-04-28T18:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "Rust", "설계", "상태 기계"]
+tags: ["함수형 프로그래밍", "Rust", "설계", "상태 기계", "Grokking Simplicity"]
 categories: ["프로그래밍"]
 description: "enum과 패턴 매칭으로 상태 전이를 표현하면, 컴파일러가 빠뜨린 상태를 잡아주는 안전한 상태 기계가 됩니다."
 ---
