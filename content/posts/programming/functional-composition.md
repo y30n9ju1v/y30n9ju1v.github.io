@@ -461,4 +461,6 @@ Result<f64> → Result<f64>    모나딕 컴포지션  (실패 전파)
 
 ---
 
+*관련 글: [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [계층형 설계](/posts/programming/functional-stratified-design/), [모나드로 배우는 함수형 에러 처리](/posts/programming/functional-monad-error-handling/), [Iterator 트레잇 직접 구현하기](/posts/programming/rust-iterator-trait/), [파서 컴비네이터](/posts/programming/functional-parser-combinator/)*
+
 *참고: Eric Normand, [Grokking Simplicity](https://www.manning.com/books/grokking-simplicity), Manning Publications, 2021*

@@ -278,4 +278,4 @@ mod tests {
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional-stratified-design/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [계층형 설계](/posts/programming/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/)*

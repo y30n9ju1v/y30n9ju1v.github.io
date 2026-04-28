@@ -265,4 +265,4 @@ fn total_after_discount(prices: &[f64], rate: f64) -> f64 {
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [함수 컴포지션](/posts/programming/functional-composition/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [함수 컴포지션](/posts/programming/functional-composition/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/)*

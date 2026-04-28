@@ -318,4 +318,6 @@ fn process(order_id: u32) {
 
 ---
 
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [async/await와 타임라인](/posts/programming/rust-async-timeline/)*
+
 *참고: Eric Normand, [Grokking Simplicity](https://www.manning.com/books/grokking-simplicity), Manning Publications, 2021*

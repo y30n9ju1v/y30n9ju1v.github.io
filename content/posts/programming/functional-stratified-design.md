@@ -339,4 +339,6 @@ mod tests {
 
 ---
 
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional-composition/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [중복 제거와 추상화의 기준](/posts/programming/functional-abstraction-barrier/), [함수형으로 상태 기계 만들기](/posts/programming/functional-state-machine/)*
+
 *참고: Eric Normand, [Grokking Simplicity](https://www.manning.com/books/grokking-simplicity), Manning Publications, 2021*

@@ -643,3 +643,7 @@ join m   =  m >>= id
 - **Category Theory for Programmers — Bartosz Milewski**
   - [4장: Kleisli Categories](https://bartoszmilewski.com/2014/12/23/kleisli-categories/) — Writer 모나드를 통한 Kleisli 범주 동기 부여, fish 연산자 `>=>` 도입
   - [20장: Monads — Programmer's Definition](https://bartoszmilewski.com/2016/11/21/monads-programmers-definition/) — 모나드의 세 가지 동등한 정의(`>=>` / `>>=` / `join+return`), `do` 표기법 desugaring
+
+---
+
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional-composition/), [파서 컴비네이터](/posts/programming/functional-parser-combinator/)*

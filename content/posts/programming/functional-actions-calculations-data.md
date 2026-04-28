@@ -312,4 +312,6 @@ fn log_event(msg: &str) {
 
 ---
 
+*관련 글: [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [함수 컴포지션](/posts/programming/functional-composition/), [계층형 설계](/posts/programming/functional-stratified-design/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/)*
+
 *참고: Eric Normand, [Grokking Simplicity](https://www.manning.com/books/grokking-simplicity), Manning Publications, 2021*

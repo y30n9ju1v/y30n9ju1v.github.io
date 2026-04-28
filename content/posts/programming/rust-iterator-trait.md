@@ -307,4 +307,4 @@ for n in 1..=1000 {
 
 ---
 
-*관련 글: [함수 컴포지션](/posts/programming/functional-composition/), [Rust 소유권을 함수형 관점으로 읽기](/posts/programming/rust-ownership-functional/)*
+*관련 글: [함수 컴포지션](/posts/programming/functional-composition/), [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [함수형 DI](/posts/programming/functional-dependency-injection/)*

@@ -293,4 +293,4 @@ fn calculate_total(price: f64, stock: u32, discount: f64) -> f64 {
 
 ---
 
-*관련 글: [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/)*
+*관련 글: [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/)*
