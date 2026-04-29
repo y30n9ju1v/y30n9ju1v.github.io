@@ -2,7 +2,7 @@
 title: "자율주행 모드 전이를 타입으로 만들기: 상태 기계 패턴"
 date: 2026-04-29T10:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "Rust", "설계", "자율주행", "상태 기계", "타입스테이트"]
+tags: ["함수형 프로그래밍", "Rust", "설계", "자율주행", "로봇", "상태 기계", "타입스테이트"]
 categories: ["프로그래밍", "자율주행"]
 description: "자율주행 차량의 운행 모드 전이를 enum과 타입스테이트 패턴으로 표현하면, 잘못된 모드 전환을 컴파일러가 원천 차단합니다."
 ---
@@ -323,4 +323,4 @@ fn replay(events: &[ModeEvent]) -> Result<DrivingMode, String> {
 
 ---
 
-*관련 글: [함수형으로 상태 기계 만들기](/posts/programming/functional-state-machine/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/), [자율주행 센서 퓨전 파이프라인](/posts/programming/autonomous-sensor-fusion/)*
+*관련 글: [함수형으로 상태 기계 만들기](/posts/programming/functional-state-machine/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/), [함수형 센서 퓨전](/posts/programming/autonomous-sensor-fusion/), [함수형 PID 제어기](/posts/programming/autonomous-pid-controller/), [시뮬레이션 회귀 테스트 설계](/posts/programming/autonomous-simulation-regression/)*

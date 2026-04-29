@@ -2,7 +2,7 @@
 title: "함수형 센서 퓨전: 컴포지션과 추상화 장벽으로 GPS·IMU·카메라 합치기"
 date: 2026-04-29T11:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "Rust", "설계", "자율주행", "센서 퓨전", "컴포지션", "추상화 장벽"]
+tags: ["함수형 프로그래밍", "Rust", "설계", "자율주행", "로봇", "센서 퓨전", "컴포지션", "추상화 장벽"]
 categories: ["프로그래밍", "자율주행"]
 description: "GPS, IMU, 카메라를 합치는 센서 퓨전 파이프라인을 함수 컴포지션과 추상화 장벽으로 설계하면, 각 센서를 독립적으로 교체하고 테스트할 수 있습니다."
 ---
@@ -338,4 +338,4 @@ fuse_estimates(&[gps_estimate, imu_estimate, camera_estimate, lidar_estimate])
 
 ---
 
-*관련 글: [함수 컴포지션](/posts/programming/functional-composition/), [추상화 장벽](/posts/programming/functional-abstraction-barrier/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/), [자율주행 경로 계획](/posts/programming/autonomous-path-planning/)*
+*관련 글: [함수 컴포지션](/posts/programming/functional-composition/), [추상화 장벽](/posts/programming/functional-abstraction-barrier/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/), [자율주행 경로 계획](/posts/programming/autonomous-path-planning/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/)*

@@ -278,4 +278,4 @@ mod tests {
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [계층형 설계](/posts/programming/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [자율주행 모드 전이를 타입으로 만들기](/posts/programming/autonomous-state-machine/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [계층형 설계](/posts/programming/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [자율주행 모드 전이를 타입으로 만들기](/posts/programming/autonomous-state-machine/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/), [시뮬레이션 회귀 테스트 설계](/posts/programming/autonomous-simulation-regression/)*

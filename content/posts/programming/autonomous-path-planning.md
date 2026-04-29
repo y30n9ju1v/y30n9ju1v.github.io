@@ -345,4 +345,4 @@ mod tests {
 
 ---
 
-*관련 글: [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [함수 컴포지션](/posts/programming/functional-composition/), [자율주행 센서 퓨전](/posts/programming/autonomous-sensor-fusion/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/)*
+*관련 글: [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [함수 컴포지션](/posts/programming/functional-composition/), [자율주행 센서 퓨전](/posts/programming/autonomous-sensor-fusion/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/), [함수형 PID 제어기](/posts/programming/autonomous-pid-controller/), [시뮬레이션 회귀 테스트 설계](/posts/programming/autonomous-simulation-regression/)*

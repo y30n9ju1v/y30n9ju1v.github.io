@@ -391,4 +391,4 @@ mod orchestration_tests {
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional-stratified-design/), [함수형 DI](/posts/programming/functional-dependency-injection/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional-stratified-design/), [함수형 DI](/posts/programming/functional-dependency-injection/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/)*

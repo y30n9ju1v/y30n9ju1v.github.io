@@ -2,7 +2,7 @@
 title: "자율주행 센서 파이프라인: 액션/계산/데이터로 설계하기"
 date: 2026-04-29T09:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "Rust", "설계", "자율주행", "센서", "액션/계산/데이터"]
+tags: ["함수형 프로그래밍", "Rust", "설계", "자율주행", "로봇", "센서", "액션/계산/데이터"]
 categories: ["프로그래밍", "자율주행"]
 description: "LiDAR와 카메라 데이터를 처리하는 자율주행 파이프라인을 액션/계산/데이터로 나누면 테스트와 시뮬레이션이 얼마나 쉬워지는지 설명합니다."
 ---
@@ -305,4 +305,4 @@ fn run_pipeline_generic(source: &dyn LidarSource, desired_velocity: f32) -> Cont
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional-composition/), [자율주행 모드 전이를 타입으로 만들기](/posts/programming/autonomous-state-machine/), [함수형 센서 퓨전](/posts/programming/autonomous-sensor-fusion/), [로봇 경로 계획과 불변 데이터](/posts/programming/autonomous-path-planning/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional-composition/), [자율주행 모드 전이를 타입으로 만들기](/posts/programming/autonomous-state-machine/), [함수형 센서 퓨전](/posts/programming/autonomous-sensor-fusion/), [로봇 경로 계획과 불변 데이터](/posts/programming/autonomous-path-planning/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/), [시뮬레이션 회귀 테스트 설계](/posts/programming/autonomous-simulation-regression/)*
