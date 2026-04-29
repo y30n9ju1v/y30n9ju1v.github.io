@@ -12,6 +12,7 @@ description: "GPS, IMU, 카메라를 합치는 센서 퓨전 파이프라인을 
 - 센서 퓨전을 함수 컴포지션으로 표현하는 방법을 이해합니다.
 - 추상화 장벽이 센서 레이어 간 의존을 어떻게 차단하는지 봅니다.
 - GPS가 끊겨도, 카메라가 바뀌어도 퓨전 로직을 건드리지 않는 설계를 볼 수 있습니다.
+- 센서마다 동작 주파수가 달라도 비동기 업데이트로 자연스럽게 처리하는 방법을 이해합니다.
 
 이전 글 [함수 컴포지션](/posts/programming/functional-composition/)과 [추상화 장벽](/posts/programming/functional-abstraction-barrier/)을 먼저 읽으면 더 자연스럽게 이어집니다.
 
@@ -172,7 +173,7 @@ fn estimate_from_camera(
 
 ---
 
-## 레이어 3: 퓨전 (Calculation)
+## 레이어 3: 퓨전 (Fusion)
 
 여러 추정치를 합칩니다. 어떤 센서가 없어도 동작합니다.
 
@@ -293,8 +294,9 @@ mod tests {
             confidence: 0.9,
         };
         let est = estimate_from_camera(&prev, &lane).unwrap();
-        // 오른쪽으로 치우쳤으니 왼쪽으로 보정 → x가 감소
-        assert!(est.x < 0.0 || est.y != 0.0 || est.confidence > 0.0); // 보정됨
+        // heading=0 기준: lateral_correction = (1.0 - 2.5) / 2.0 = -0.75
+        // x += -0.75 * sin(0) = 0, y += -0.75 * cos(0) = -0.75
+        assert!((est.y - (-0.75f64)).abs() < 1e-3);
     }
 }
 ```
@@ -326,6 +328,108 @@ fuse_estimates(&[gps_estimate, imu_estimate, camera_estimate, lidar_estimate])
 
 ---
 
+## 센서마다 동작 주파수가 다르다면
+
+실제 자율주행 환경에서 센서는 동시에 업데이트되지 않습니다.
+
+- **카메라**: 30Hz
+- **LiDAR**: 10Hz
+- **GPS**: 1Hz
+
+위 `localize` 함수는 모든 센서가 같은 시점에 도착한다고 가정합니다. 하지만 GPS는 1000ms마다 한 번 오고, 그 사이에도 IMU는 30번 업데이트됩니다. 이 불일치를 그냥 무시하면 오래된 GPS 값과 최신 IMU 값이 뒤섞입니다.
+
+### 비동기 업데이트 (Asynchronous Kalman Filter)
+
+핵심 아이디어는 **prediction과 correction을 분리**하는 것입니다.
+
+- **predict**: 매 프레임(고주파) IMU로 상태를 전진
+- **correct**: 센서가 도착할 때마다 해당 센서만 보정
+
+```rust
+struct FusionState {
+    pose: PoseEstimate,
+    last_update_ms: u64,
+}
+
+impl FusionState {
+    // IMU가 올 때마다 호출 (30Hz)
+    fn predict(&self, imu: &ImuMeasurement) -> FusionState {
+        let dt_s = (imu.timestamp_ms - self.last_update_ms) as f32 / 1000.0;
+        FusionState {
+            pose: estimate_from_imu(&self.pose, imu, dt_s),
+            last_update_ms: imu.timestamp_ms,
+        }
+    }
+
+    // GPS가 도착했을 때만 호출 (1Hz)
+    fn correct_with_gps(&self, gps: &GpsMeasurement, origin: &GpsMeasurement) -> FusionState {
+        let corrected = fuse_estimates(&[
+            Some(self.pose.clone()),
+            estimate_from_gps(gps, origin),
+        ]);
+        FusionState {
+            pose: corrected.unwrap_or_else(|| self.pose.clone()),
+            last_update_ms: self.last_update_ms, // 시간 기준은 IMU가 관리, GPS correction은 건드리지 않음
+        }
+    }
+
+    // 카메라가 도착했을 때만 호출 (30Hz, 하지만 처리 지연 있음)
+    fn correct_with_camera(&self, lane: &CameraLaneDetection) -> FusionState {
+        let corrected = estimate_from_camera(&self.pose, lane);
+        FusionState {
+            pose: corrected.unwrap_or_else(|| self.pose.clone()),
+            last_update_ms: self.last_update_ms, // 동일: correction은 시간 기준을 바꾸지 않음
+        }
+    }
+}
+```
+
+이벤트 루프에서는 각 센서를 독립적으로 처리합니다.
+
+```rust
+enum SensorEvent {
+    Imu(ImuMeasurement),
+    Gps(GpsMeasurement),
+    Camera(CameraLaneDetection),
+}
+
+fn process_event(state: FusionState, event: SensorEvent, origin: &GpsMeasurement) -> FusionState {
+    match event {
+        SensorEvent::Imu(imu)      => state.predict(&imu),
+        SensorEvent::Gps(gps)      => state.correct_with_gps(&gps, origin),
+        SensorEvent::Camera(lane)  => state.correct_with_camera(&lane),
+    }
+}
+```
+
+데이터 흐름이 이렇게 바뀝니다.
+
+```
+t=0ms   IMU  → predict  → pose(t=0)
+t=33ms  IMU  → predict  → pose(t=33)
+t=66ms  IMU  → predict  → pose(t=66)  ← 카메라도 도착
+        CAM  → correct  → pose(t=66) 보정
+t=99ms  IMU  → predict  → pose(t=99)
+...
+t=1000ms GPS → correct  → pose(t=1000) 보정  ← GPS는 여기서만 개입
+```
+
+IMU가 상태를 고주파로 전진시키고, GPS와 카메라는 각자 도착할 때 독립적으로 보정합니다. 느린 센서를 기다리느라 빠른 센서 정보를 낭비하지 않습니다.
+
+### 함수형 관점에서
+
+`predict`와 `correct_*`는 모두 `FusionState → FusionState` 형태의 순수 변환입니다. 이벤트 스트림을 `fold`로 처리할 수 있습니다.
+
+```rust
+let final_state = events.iter().fold(initial_state, |state, event| {
+    process_event(state, event.clone(), &origin)
+});
+```
+
+추상화 장벽은 그대로 유지됩니다. `predict`는 IMU 레이어만, `correct_with_gps`는 GPS 레이어만 알고, `FusionState`는 어떤 센서가 몇 Hz로 오는지 모릅니다.
+
+---
+
 ## 정리
 
 | 레이어 | 내용 | 특징 |
@@ -333,6 +437,7 @@ fuse_estimates(&[gps_estimate, imu_estimate, camera_estimate, lidar_estimate])
 | 원시 데이터 | `GpsMeasurement`, `ImuMeasurement`, `CameraLaneDetection` | 센서별로 독립, 파싱 없음 |
 | 추정 함수 | `estimate_from_gps`, `estimate_from_imu`, `estimate_from_camera` | 순수 계산, 센서 교체 시 이 함수만 수정 |
 | 퓨전 | `fuse_estimates`, `localize` | 센서 종류 무관, 새 센서 추가 시 무수정 |
+| 비동기 업데이트 | `FusionState::predict`, `correct_with_gps`, `correct_with_camera` | 센서별 주파수 독립, 이벤트 도착 시점마다 처리 |
 
 추상화 장벽이 레이어 사이를 자르고, 컴포지션이 레이어를 잇습니다. 어떤 센서가 추가·교체·제거되어도 다른 레이어는 영향을 받지 않습니다.
 
