@@ -3,7 +3,7 @@ title: "Iterator 트레잇 직접 구현하기: 지연 평가와 컴포지션의
 date: 2026-04-28T17:00:00+09:00
 draft: false
 tags: ["함수형 프로그래밍", "Rust", "설계", "이터레이터", "Grokking Simplicity"]
-categories: ["프로그래밍"]
+categories: ["프로그래밍", "함수형 프로그래밍"]
 description: "map, filter, take가 왜 느리지 않은지, 이터레이터를 직접 구현하며 지연 평가와 zero-cost abstraction의 원리를 이해합니다."
 ---
 

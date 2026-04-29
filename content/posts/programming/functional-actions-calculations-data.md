@@ -2,8 +2,8 @@
 title: "코드를 세 가지로 나누면 복잡성이 사라진다: 액션, 계산, 데이터"
 date: 2026-04-28T06:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "Rust", "설계", "액션 계산 데이터", "Grokking Simplicity"]
-categories: ["프로그래밍"]
+tags: ["함수형 프로그래밍", "Rust", "설계", "액션/계산/데이터", "Grokking Simplicity"]
+categories: ["프로그래밍", "함수형 프로그래밍"]
 description: "에릭 노먼드의 'Grokking Simplicity'에서 소개한 액션/계산/데이터 구분법을 Rust 예제로 이해합니다."
 ---
 
@@ -312,6 +312,6 @@ fn log_event(msg: &str) {
 
 ---
 
-*관련 글: [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [함수 컴포지션](/posts/programming/functional-composition/), [계층형 설계](/posts/programming/functional-stratified-design/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/)*
+*관련 글: [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [함수 컴포지션](/posts/programming/functional-composition/), [계층형 설계](/posts/programming/functional-stratified-design/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/)*
 
 *참고: Eric Normand, [Grokking Simplicity](https://www.manning.com/books/grokking-simplicity), Manning Publications, 2021*

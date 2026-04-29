@@ -3,7 +3,7 @@ title: "함수형 DI: 모킹 없이 테스트 가능한 코드 만들기"
 date: 2026-04-28T14:00:00+09:00
 draft: false
 tags: ["함수형 프로그래밍", "Rust", "설계", "의존성 주입", "Grokking Simplicity"]
-categories: ["프로그래밍"]
+categories: ["프로그래밍", "함수형 프로그래밍"]
 description: "인터페이스도, 모킹 프레임워크도 없이 액션을 함수 인자로 넘기면 테스트하기 쉬운 코드가 됩니다."
 ---
 
@@ -278,4 +278,4 @@ mod tests {
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [계층형 설계](/posts/programming/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [계층형 설계](/posts/programming/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [자율주행 모드 전이를 타입으로 만들기](/posts/programming/autonomous-state-machine/)*

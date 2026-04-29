@@ -3,7 +3,7 @@ title: "일급 함수와 클로저: 함수를 값처럼 다루기"
 date: 2026-04-28T21:00:00+09:00
 draft: false
 tags: ["함수형 프로그래밍", "Rust", "설계", "클로저", "Grokking Simplicity"]
-categories: ["프로그래밍"]
+categories: ["프로그래밍", "함수형 프로그래밍"]
 description: "함수를 값처럼 저장하고, 넘기고, 반환할 수 있으면 코드가 어떻게 달라지는지 Rust 예제로 설명합니다."
 ---
 

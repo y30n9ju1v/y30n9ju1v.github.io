@@ -2,8 +2,8 @@
 title: "함수형으로 상태 기계 만들기: enum과 패턴 매칭"
 date: 2026-04-28T18:00:00+09:00
 draft: false
-tags: ["함수형 프로그래밍", "Rust", "설계", "상태 기계", "Grokking Simplicity"]
-categories: ["프로그래밍"]
+tags: ["함수형 프로그래밍", "Rust", "설계", "상태 기계", "타입스테이트", "Grokking Simplicity"]
+categories: ["프로그래밍", "함수형 프로그래밍"]
 description: "enum과 패턴 매칭으로 상태 전이를 표현하면, 컴파일러가 빠뜨린 상태를 잡아주는 안전한 상태 기계가 됩니다."
 ---
 
@@ -312,4 +312,4 @@ fn main() {
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional-stratified-design/), [함수형 DI](/posts/programming/functional-dependency-injection/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional-stratified-design/), [함수형 DI](/posts/programming/functional-dependency-injection/), [자율주행 모드 전이를 타입으로 만들기](/posts/programming/autonomous-state-machine/)*

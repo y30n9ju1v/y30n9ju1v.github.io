@@ -3,7 +3,7 @@ title: "파서 컴비네이터: 컴포지션 철학의 극적인 응용"
 date: 2026-04-28T19:00:00+09:00
 draft: false
 tags: ["함수형 프로그래밍", "Rust", "설계", "파서", "Grokking Simplicity"]
-categories: ["프로그래밍"]
+categories: ["프로그래밍", "함수형 프로그래밍"]
 description: "작은 파서들을 조합해 복잡한 문법을 처리합니다. 함수 컴포지션 철학이 가장 극적으로 드러나는 패턴입니다."
 ---
 

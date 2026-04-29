@@ -3,7 +3,7 @@ title: "async/await와 타임라인: 비동기 액션의 순서 문제"
 date: 2026-04-28T20:00:00+09:00
 draft: false
 tags: ["함수형 프로그래밍", "Rust", "설계", "비동기", "Grokking Simplicity"]
-categories: ["프로그래밍"]
+categories: ["프로그래밍", "함수형 프로그래밍"]
 description: "동기 코드에서 다룬 타임라인 문제가 async/await에서 어떻게 달라지는지, 그리고 어떻게 다뤄야 하는지 설명합니다."
 ---
 

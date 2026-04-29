@@ -3,7 +3,7 @@ title: "계층형 설계: 어떤 함수가 어떤 함수 위에 쌓여야 하는
 date: 2026-04-28T08:00:00+09:00
 draft: false
 tags: ["함수형 프로그래밍", "Rust", "설계", "계층형 설계", "Grokking Simplicity"]
-categories: ["프로그래밍"]
+categories: ["프로그래밍", "함수형 프로그래밍"]
 description: "함수들 사이의 의존 방향을 정리하면 변경에 강한 코드가 됩니다. 계층형 설계의 원칙을 Rust 예제로 설명합니다."
 ---
 
