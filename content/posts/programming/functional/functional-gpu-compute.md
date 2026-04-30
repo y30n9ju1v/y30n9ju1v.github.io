@@ -14,7 +14,7 @@ description: "GPU 연산(Compute) 셰이더를 액션/계산/데이터로 분리
 - CPU 레퍼런스 구현으로 GPU 커널을 검증하는 방법을 이해합니다.
 - 포인트 클라우드 처리, 이미지 필터, 행렬 연산을 예제로 다룹니다.
 
-이전 글 [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수형 셰이더 파이프라인](/posts/programming/functional-shader-pipeline/), [함수형 렌더 그래프](/posts/programming/functional-render-graph/)를 먼저 읽으면 더 자연스럽게 이어집니다.
+이전 글 [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수형 셰이더 파이프라인](/posts/programming/functional/functional-shader-pipeline/), [함수형 렌더 그래프](/posts/programming/functional/functional-render-graph/)를 먼저 읽으면 더 자연스럽게 이어집니다.
 
 ---
 
@@ -29,7 +29,7 @@ description: "GPU 연산(Compute) 셰이더를 액션/계산/데이터로 분리
 - **DNN 추론 지원**: 피처맵 연산, 앵커 생성, NMS(Non-Maximum Suppression)
 - **행렬 연산**: 칼만 필터 공분산 업데이트, 좌표 변환 배치 처리
 
-Compute 셰이더는 [함수형 셰이더 파이프라인](/posts/programming/functional-shader-pipeline/) 글에서 말한 것처럼 구조적으로 순수 함수입니다. **입력 버퍼 → 커널 연산 → 출력 버퍼**, 전역 상태가 없습니다.
+Compute 셰이더는 [함수형 셰이더 파이프라인](/posts/programming/functional/functional-shader-pipeline/) 글에서 말한 것처럼 구조적으로 순수 함수입니다. **입력 버퍼 → 커널 연산 → 출력 버퍼**, 전역 상태가 없습니다.
 
 ---
 
@@ -368,13 +368,13 @@ impl<'a> PointCloudProcessor for GpuProcessor<'a> {
 }
 ```
 
-`PointCloudProcessor` 트레잇을 받는 코드는 CPU인지 GPU인지 모릅니다. [함수형 DI](/posts/programming/functional-dependency-injection/) 패턴입니다.
+`PointCloudProcessor` 트레잇을 받는 코드는 CPU인지 GPU인지 모릅니다. [함수형 DI](/posts/programming/functional/functional-dependency-injection/) 패턴입니다.
 
 ---
 
 ## 자율주행 파이프라인에서의 위치
 
-[함수형 포인트 클라우드 처리](/posts/programming/functional-point-cloud/) 글은 CPU에서 LiDAR 파이프라인을 순수 함수로 만드는 내용이었습니다. 이 글은 그 연산을 GPU로 옮기는 방법입니다.
+[함수형 포인트 클라우드 처리](/posts/programming/functional/functional-point-cloud/) 글은 CPU에서 LiDAR 파이프라인을 순수 함수로 만드는 내용이었습니다. 이 글은 그 연산을 GPU로 옮기는 방법입니다.
 
 ```
 LiDAR 원시 데이터 (액션: 읽기)
@@ -494,7 +494,7 @@ GPU 없이 `voxel_downsample_cpu`, `point_to_voxel_index`, `gaussian_kernel_5x5`
 
 ## 렌더 그래프와의 관계
 
-[함수형 렌더 그래프](/posts/programming/functional-render-graph/) 글은 렌더링 패스 스케줄링이 주제였습니다. Compute 패스도 렌더 그래프에 포함시킬 수 있습니다.
+[함수형 렌더 그래프](/posts/programming/functional/functional-render-graph/) 글은 렌더링 패스 스케줄링이 주제였습니다. Compute 패스도 렌더 그래프에 포함시킬 수 있습니다.
 
 ```rust
 // 렌더 그래프에 Compute 패스 추가
@@ -522,4 +522,4 @@ GPU 프로그래밍의 어려움 중 많은 부분은 디버깅 도구 부족에
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수형 셰이더 파이프라인](/posts/programming/functional-shader-pipeline/), [함수형 렌더 그래프](/posts/programming/functional-render-graph/), [함수형 포인트 클라우드 처리](/posts/programming/functional-point-cloud/), [함수형 DI](/posts/programming/functional-dependency-injection/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수형 셰이더 파이프라인](/posts/programming/functional/functional-shader-pipeline/), [함수형 렌더 그래프](/posts/programming/functional/functional-render-graph/), [함수형 포인트 클라우드 처리](/posts/programming/functional/functional-point-cloud/), [함수형 DI](/posts/programming/functional/functional-dependency-injection/)*

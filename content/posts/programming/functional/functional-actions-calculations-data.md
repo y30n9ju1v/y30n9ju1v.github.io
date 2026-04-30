@@ -312,6 +312,6 @@ fn log_event(msg: &str) {
 
 ---
 
-*관련 글: [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [함수 컴포지션](/posts/programming/functional-composition/), [계층형 설계](/posts/programming/functional-stratified-design/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/), [시뮬레이션 회귀 테스트 설계](/posts/programming/autonomous-simulation-regression/), [함수형 PID 제어기](/posts/programming/autonomous-pid-controller/)*
+*관련 글: [일급 함수와 클로저](/posts/programming/functional/functional-first-class-functions/), [함수 컴포지션](/posts/programming/functional/functional-composition/), [계층형 설계](/posts/programming/functional/functional-stratified-design/), [타임라인 다이어그램](/posts/programming/functional/functional-timeline-diagram/), [불변 데이터와 구조적 공유](/posts/programming/functional/functional-immutable-data/), [온어니언 아키텍처](/posts/programming/functional/functional-onion-architecture/), [자율주행 센서 파이프라인](/posts/programming/functional/autonomous-sensor-pipeline/), [ROS2 콜백을 함수형으로](/posts/programming/functional/autonomous-ros2-functional/), [시뮬레이션 회귀 테스트 설계](/posts/programming/functional/autonomous-simulation-regression/), [함수형 PID 제어기](/posts/programming/functional/autonomous-pid-controller/)*
 
 *참고: Eric Normand, [Grokking Simplicity](https://www.manning.com/books/grokking-simplicity), Manning Publications, 2021*

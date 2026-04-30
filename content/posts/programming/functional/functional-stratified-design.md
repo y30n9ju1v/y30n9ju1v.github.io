@@ -13,7 +13,7 @@ description: "함수들 사이의 의존 방향을 정리하면 변경에 강한
 - 어떤 함수가 어떤 함수를 호출해야 하는지 판단할 수 있습니다.
 - 변경이 생겼을 때 영향 범위를 예측할 수 있습니다.
 
-이 글은 [액션/계산/데이터 구분](/posts/programming/functional-actions-calculations-data/)과 [함수 컴포지션](/posts/programming/functional-composition/)에 이어지는 세 번째 글입니다.
+이 글은 [액션/계산/데이터 구분](/posts/programming/functional/functional-actions-calculations-data/)과 [함수 컴포지션](/posts/programming/functional/functional-composition/)에 이어지는 세 번째 글입니다.
 
 ---
 
@@ -331,14 +331,14 @@ mod tests {
 
 세 편의 글에 걸쳐 에릭 노먼드의 설계 원칙을 따라왔습니다.
 
-1. [액션/계산/데이터 구분](/posts/programming/functional-actions-calculations-data/) — 코드를 세 가지로 나누기
-2. [함수 컴포지션](/posts/programming/functional-composition/) — 계산들을 파이프라인으로 연결하기
+1. [액션/계산/데이터 구분](/posts/programming/functional/functional-actions-calculations-data/) — 코드를 세 가지로 나누기
+2. [함수 컴포지션](/posts/programming/functional/functional-composition/) — 계산들을 파이프라인으로 연결하기
 3. **계층형 설계** (이 글) — 파이프라인들을 계층으로 쌓기
 
 이 세 가지가 함께 작동할 때, 코드는 작고 신뢰할 수 있는 조각들로 이루어진 구조가 됩니다.
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional-composition/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [중복 제거와 추상화의 기준](/posts/programming/functional-abstraction-barrier/), [함수형으로 상태 기계 만들기](/posts/programming/functional-state-machine/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional/functional-composition/), [온어니언 아키텍처](/posts/programming/functional/functional-onion-architecture/), [중복 제거와 추상화의 기준](/posts/programming/functional/functional-abstraction-barrier/), [함수형으로 상태 기계 만들기](/posts/programming/functional/functional-state-machine/)*
 
 *참고: Eric Normand, [Grokking Simplicity](https://www.manning.com/books/grokking-simplicity), Manning Publications, 2021*

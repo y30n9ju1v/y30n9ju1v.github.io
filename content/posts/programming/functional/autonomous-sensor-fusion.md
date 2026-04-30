@@ -14,7 +14,7 @@ description: "GPS, IMU, 카메라를 합치는 센서 퓨전 파이프라인을 
 - GPS가 끊겨도, 카메라가 바뀌어도 퓨전 로직을 건드리지 않는 설계를 볼 수 있습니다.
 - 센서마다 동작 주파수가 달라도 비동기 업데이트로 자연스럽게 처리하는 방법을 이해합니다.
 
-이전 글 [함수 컴포지션](/posts/programming/functional-composition/)과 [추상화 장벽](/posts/programming/functional-abstraction-barrier/)을 먼저 읽으면 더 자연스럽게 이어집니다.
+이전 글 [함수 컴포지션](/posts/programming/functional/functional-composition/)과 [추상화 장벽](/posts/programming/functional/functional-abstraction-barrier/)을 먼저 읽으면 더 자연스럽게 이어집니다.
 
 ---
 
@@ -443,4 +443,4 @@ let final_state = events.iter().fold(initial_state, |state, event| {
 
 ---
 
-*관련 글: [함수 컴포지션](/posts/programming/functional-composition/), [추상화 장벽](/posts/programming/functional-abstraction-barrier/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/), [자율주행 경로 계획](/posts/programming/autonomous-path-planning/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/)*
+*관련 글: [함수 컴포지션](/posts/programming/functional/functional-composition/), [추상화 장벽](/posts/programming/functional/functional-abstraction-barrier/), [자율주행 센서 파이프라인](/posts/programming/functional/autonomous-sensor-pipeline/), [자율주행 경로 계획](/posts/programming/functional/autonomous-path-planning/), [ROS2 콜백을 함수형으로](/posts/programming/functional/autonomous-ros2-functional/)*

@@ -13,7 +13,7 @@ description: "모든 중복을 제거하면 오히려 코드가 나빠집니다.
 - 추상화가 가치 있는 경우와 해가 되는 경우를 구분할 수 있습니다.
 - 에릭 노먼드의 추상화 장벽 개념으로 어디에 경계를 그어야 하는지 판단합니다.
 
-이 글은 [계층형 설계](/posts/programming/functional-stratified-design/)와 [온어니언 아키텍처](/posts/programming/functional-onion-architecture/)의 보완입니다. 계층을 어디서 나눌지, 무엇을 함수로 묶을지 결정할 때 쓰는 기준을 다룹니다.
+이 글은 [계층형 설계](/posts/programming/functional/functional-stratified-design/)와 [온어니언 아키텍처](/posts/programming/functional/functional-onion-architecture/)의 보완입니다. 계층을 어디서 나눌지, 무엇을 함수로 묶을지 결정할 때 쓰는 기준을 다룹니다.
 
 ---
 
@@ -223,7 +223,7 @@ let result: Vec<_> = items.into_iter()
 
 ## 계층형 설계와의 연결
 
-[계층형 설계](/posts/programming/functional-stratified-design/) 글에서 함수들을 변경 빈도에 따라 계층으로 나눴습니다. 추상화 장벽은 그 계층 사이의 경계입니다.
+[계층형 설계](/posts/programming/functional/functional-stratified-design/) 글에서 함수들을 변경 빈도에 따라 계층으로 나눴습니다. 추상화 장벽은 그 계층 사이의 경계입니다.
 
 ```
 [비즈니스 규칙]  ← 자주 바뀜
@@ -262,4 +262,4 @@ let result: Vec<_> = items.into_iter()
 
 ---
 
-*관련 글: [계층형 설계](/posts/programming/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수형 센서 퓨전](/posts/programming/autonomous-sensor-fusion/)*
+*관련 글: [계층형 설계](/posts/programming/functional/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional/functional-onion-architecture/), [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수형 센서 퓨전](/posts/programming/functional/autonomous-sensor-fusion/)*

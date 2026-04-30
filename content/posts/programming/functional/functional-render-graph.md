@@ -13,7 +13,7 @@ description: "어떤 렌더 패스를 어떤 순서로 실행할지 결정하는
 - 패스 의존 관계 분석과 실행 순서 결정이 왜 순수 계산인지 봅니다.
 - GPU 없이 렌더 그래프 로직을 테스트하는 방법을 이해합니다.
 
-이전 글 [함수형 셰이더 파이프라인](/posts/programming/functional-shader-pipeline/)을 먼저 읽으면 더 자연스럽게 이어집니다.
+이전 글 [함수형 셰이더 파이프라인](/posts/programming/functional/functional-shader-pipeline/)을 먼저 읽으면 더 자연스럽게 이어집니다.
 
 ---
 
@@ -503,4 +503,4 @@ PassDesc {
 
 ---
 
-*관련 글: [액션, 계산, 데이터](/posts/programming/functional-actions-calculations-data/), [함수형 셰이더 파이프라인](/posts/programming/functional-shader-pipeline/), [함수형 포인트 클라우드 처리](/posts/programming/functional-point-cloud/)*
+*관련 글: [액션, 계산, 데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수형 셰이더 파이프라인](/posts/programming/functional/functional-shader-pipeline/), [함수형 포인트 클라우드 처리](/posts/programming/functional/functional-point-cloud/)*

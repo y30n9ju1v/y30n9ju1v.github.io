@@ -13,7 +13,7 @@ description: "액션을 시스템 바깥쪽에, 계산을 안쪽에 배치하면
 - 액션과 계산을 어떻게 물리적으로 분리하는지 봅니다.
 - 실무 수준의 예제로 전체 구조를 조립하는 방법을 익힙니다.
 
-이 글은 [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional-stratified-design/), [함수형 DI](/posts/programming/functional-dependency-injection/)를 토대로 합니다. 세 글의 원칙들이 하나의 아키텍처로 합쳐지는 지점입니다.
+이 글은 [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional/functional-stratified-design/), [함수형 DI](/posts/programming/functional/functional-dependency-injection/)를 토대로 합니다. 세 글의 원칙들이 하나의 아키텍처로 합쳐지는 지점입니다.
 
 ---
 
@@ -273,7 +273,7 @@ fn main() {
 바깥층(액션)  →  통합 테스트 — 실제 DB/네트워크 필요, 수 적게
 ```
 
-중간층 조율 함수를 테스트할 때는 [함수형 DI](/posts/programming/functional-dependency-injection/) 패턴으로 infra를 교체합니다.
+중간층 조율 함수를 테스트할 때는 [함수형 DI](/posts/programming/functional/functional-dependency-injection/) 패턴으로 infra를 교체합니다.
 
 ```rust
 fn process_order_with<FO, FS, FD, FE, FSave>(
@@ -371,8 +371,8 @@ mod orchestration_tests {
 
 온어니언 아키텍처는 이 원칙의 아키텍처 수준 표현입니다.
 
-- [ACD 구분](/posts/programming/functional-actions-calculations-data/)은 코드 한 줄 단위의 원칙
-- [계층형 설계](/posts/programming/functional-stratified-design/)는 함수 단위의 원칙
+- [ACD 구분](/posts/programming/functional/functional-actions-calculations-data/)은 코드 한 줄 단위의 원칙
+- [계층형 설계](/posts/programming/functional/functional-stratified-design/)는 함수 단위의 원칙
 - **온어니언 아키텍처**는 시스템 전체 단위의 원칙
 
 세 원칙이 같은 방향을 가리킵니다: **계산을 중심에, 액션을 가장자리에.**
@@ -391,4 +391,4 @@ mod orchestration_tests {
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional-stratified-design/), [함수형 DI](/posts/programming/functional-dependency-injection/), [타임라인 다이어그램](/posts/programming/functional-timeline-diagram/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [계층형 설계](/posts/programming/functional/functional-stratified-design/), [함수형 DI](/posts/programming/functional/functional-dependency-injection/), [타임라인 다이어그램](/posts/programming/functional/functional-timeline-diagram/), [ROS2 콜백을 함수형으로](/posts/programming/functional/autonomous-ros2-functional/)*

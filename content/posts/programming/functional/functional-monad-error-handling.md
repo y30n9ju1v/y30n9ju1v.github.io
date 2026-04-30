@@ -646,4 +646,4 @@ join m   =  m >>= id
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional-composition/), [파서 컴비네이터](/posts/programming/functional-parser-combinator/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional/functional-composition/), [파서 컴비네이터](/posts/programming/functional/functional-parser-combinator/)*

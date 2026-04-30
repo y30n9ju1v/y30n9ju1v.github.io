@@ -13,7 +13,7 @@ description: "인터페이스도, 모킹 프레임워크도 없이 액션을 함
 - 액션을 함수 인자로 넘기는 것만으로 테스트 가능성이 어떻게 달라지는지 봅니다.
 - 전통적인 DI(의존성 주입)와 함수형 DI의 차이를 압니다.
 
-이 글은 [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/) 시리즈와 이어집니다.
+이 글은 [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/) 시리즈와 이어집니다.
 
 ---
 
@@ -278,4 +278,4 @@ mod tests {
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [일급 함수와 클로저](/posts/programming/functional-first-class-functions/), [계층형 설계](/posts/programming/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [자율주행 모드 전이를 타입으로 만들기](/posts/programming/autonomous-state-machine/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/), [시뮬레이션 회귀 테스트 설계](/posts/programming/autonomous-simulation-regression/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [일급 함수와 클로저](/posts/programming/functional/functional-first-class-functions/), [계층형 설계](/posts/programming/functional/functional-stratified-design/), [온어니언 아키텍처](/posts/programming/functional/functional-onion-architecture/), [자율주행 모드 전이를 타입으로 만들기](/posts/programming/functional/autonomous-state-machine/), [ROS2 콜백을 함수형으로](/posts/programming/functional/autonomous-ros2-functional/), [시뮬레이션 회귀 테스트 설계](/posts/programming/functional/autonomous-simulation-regression/)*

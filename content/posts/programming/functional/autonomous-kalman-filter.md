@@ -14,7 +14,7 @@ description: "칼만 필터의 predict/update를 불변 값 전달 순수 함수
 - 다중 물체 추적(MOT)에서 여러 트래커를 독립적으로 운용하는 방법을 봅니다.
 - 하드웨어 없이 추적 로직을 단위 테스트하고 로그로 재현하는 방법을 압니다.
 
-이전 글 [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [함수형 센서 퓨전](/posts/programming/autonomous-sensor-fusion/)을 먼저 읽으면 더 자연스럽게 이어집니다.
+이전 글 [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [불변 데이터와 구조적 공유](/posts/programming/functional/functional-immutable-data/), [함수형 센서 퓨전](/posts/programming/functional/autonomous-sensor-fusion/)을 먼저 읽으면 더 자연스럽게 이어집니다.
 
 ---
 
@@ -471,7 +471,7 @@ fn replay_tracking(
 
 ## 센서 퓨전 글과의 차이
 
-[함수형 센서 퓨전](/posts/programming/autonomous-sensor-fusion/) 글은 같은 시점의 여러 센서를 합치는 문제였습니다. 이 글의 칼만 필터는 시간축 위에서 이전 상태와 현재 측정을 합치는 문제입니다.
+[함수형 센서 퓨전](/posts/programming/functional/autonomous-sensor-fusion/) 글은 같은 시점의 여러 센서를 합치는 문제였습니다. 이 글의 칼만 필터는 시간축 위에서 이전 상태와 현재 측정을 합치는 문제입니다.
 
 | | 센서 퓨전 | 칼만 필터 |
 |---|---|---|
@@ -496,4 +496,4 @@ fn replay_tracking(
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [함수형 센서 퓨전](/posts/programming/autonomous-sensor-fusion/), [함수형 PID 제어기](/posts/programming/autonomous-pid-controller/), [함수형 포인트 클라우드 처리](/posts/programming/functional-point-cloud/), [시뮬레이션 회귀 테스트 설계](/posts/programming/autonomous-simulation-regression/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [불변 데이터와 구조적 공유](/posts/programming/functional/functional-immutable-data/), [함수형 센서 퓨전](/posts/programming/functional/autonomous-sensor-fusion/), [함수형 PID 제어기](/posts/programming/functional/autonomous-pid-controller/), [함수형 포인트 클라우드 처리](/posts/programming/functional/functional-point-cloud/), [시뮬레이션 회귀 테스트 설계](/posts/programming/functional/autonomous-simulation-regression/)*

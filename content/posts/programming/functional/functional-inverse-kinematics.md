@@ -13,7 +13,7 @@ description: "로봇 팔의 역기구학을 액션/계산/데이터로 분리하
 - 액션/계산/데이터 분리가 시뮬레이터와 실기기 코드를 어떻게 통합하는지 봅니다.
 - 하드웨어 없이도 IK 로직을 완전히 테스트하는 방법을 이해합니다.
 
-이전 글 [액션, 계산, 데이터](/posts/programming/functional-actions-calculations-data/)를 먼저 읽으면 더 자연스럽게 이어집니다.
+이전 글 [액션, 계산, 데이터](/posts/programming/functional/functional-actions-calculations-data/)를 먼저 읽으면 더 자연스럽게 이어집니다.
 
 ---
 
@@ -305,4 +305,4 @@ mod tests {
 
 ---
 
-*관련 글: [액션, 계산, 데이터](/posts/programming/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional-composition/), [함수형 센서 퓨전](/posts/programming/autonomous-sensor-fusion/), [함수형 셰이더 파이프라인](/posts/programming/functional-shader-pipeline/)*
+*관련 글: [액션, 계산, 데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional/functional-composition/), [함수형 센서 퓨전](/posts/programming/functional/autonomous-sensor-fusion/), [함수형 셰이더 파이프라인](/posts/programming/functional/functional-shader-pipeline/)*

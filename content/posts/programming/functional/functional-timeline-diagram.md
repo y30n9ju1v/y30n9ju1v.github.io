@@ -13,7 +13,7 @@ description: "액션들이 언제, 어떤 순서로 실행되는지 시각화하
 - 액션들의 실행 순서에서 생기는 버그를 코드 전에 발견할 수 있습니다.
 - 타임라인을 단순하게 만드는 설계 원칙을 압니다.
 
-이 글은 [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional-composition/), [계층형 설계](/posts/programming/functional-stratified-design/)에 이어지는 네 번째 글입니다.
+이 글은 [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수 컴포지션](/posts/programming/functional/functional-composition/), [계층형 설계](/posts/programming/functional/functional-stratified-design/)에 이어지는 네 번째 글입니다.
 
 ---
 
@@ -309,15 +309,15 @@ fn process(order_id: u32) {
 
 | 글 | 핵심 질문 | 도구 |
 |---|---|---|
-| [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/) | 이 코드는 무엇인가? | 분류 |
-| [함수 컴포지션](/posts/programming/functional-composition/) | 어떻게 연결하는가? | 파이프라인, 모나드 |
-| [계층형 설계](/posts/programming/functional-stratified-design/) | 어디에 놓는가? | 의존 방향 |
+| [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/) | 이 코드는 무엇인가? | 분류 |
+| [함수 컴포지션](/posts/programming/functional/functional-composition/) | 어떻게 연결하는가? | 파이프라인, 모나드 |
+| [계층형 설계](/posts/programming/functional/functional-stratified-design/) | 어디에 놓는가? | 의존 방향 |
 | **타임라인 다이어그램** (이 글) | 언제 실행되는가? | 시각화, 직렬화 |
 
 네 가지 질문이 함께 작동할 때, 코드는 이해하기 쉽고 변경에 강하며 버그가 적어집니다.
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [불변 데이터와 구조적 공유](/posts/programming/functional-immutable-data/), [온어니언 아키텍처](/posts/programming/functional-onion-architecture/), [async/await와 타임라인](/posts/programming/rust-async-timeline/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [불변 데이터와 구조적 공유](/posts/programming/functional/functional-immutable-data/), [온어니언 아키텍처](/posts/programming/functional/functional-onion-architecture/), [async/await와 타임라인](/posts/programming/functional/rust-async-timeline/)*
 
 *참고: Eric Normand, [Grokking Simplicity](https://www.manning.com/books/grokking-simplicity), Manning Publications, 2021*

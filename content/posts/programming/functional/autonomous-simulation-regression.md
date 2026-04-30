@@ -13,7 +13,7 @@ description: "주행 시나리오를 데이터로, 판단 파이프라인을 순
 - 판단 파이프라인을 순수 계산으로 만들어 시나리오만 추가하면 테스트가 늘어나는 구조를 봅니다.
 - 실차 주행 로그를 회귀 테스트 케이스로 자동 변환하는 패턴을 이해합니다.
 
-이전 글 [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/)와 [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/)을 먼저 읽으면 더 자연스럽게 이어집니다.
+이전 글 [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/)와 [자율주행 센서 파이프라인](/posts/programming/functional/autonomous-sensor-pipeline/)을 먼저 읽으면 더 자연스럽게 이어집니다.
 
 ---
 
@@ -464,4 +464,4 @@ PipelineOutput 구조체 (데이터)
 
 ---
 
-*관련 글: [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [자율주행 센서 파이프라인](/posts/programming/autonomous-sensor-pipeline/), [함수형 PID 제어기](/posts/programming/autonomous-pid-controller/), [ROS2 콜백을 함수형으로](/posts/programming/autonomous-ros2-functional/)*
+*관련 글: [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [자율주행 센서 파이프라인](/posts/programming/functional/autonomous-sensor-pipeline/), [함수형 PID 제어기](/posts/programming/functional/autonomous-pid-controller/), [ROS2 콜백을 함수형으로](/posts/programming/functional/autonomous-ros2-functional/)*

@@ -14,13 +14,13 @@ description: "ONNX/TensorRT 추론 파이프라인을 액션/계산/데이터로
 - GPU 없이 파이프라인 구성 로직과 전처리·후처리를 테스트하는 방법을 봅니다.
 - 자율주행 카메라·LiDAR 추론에 이 구조가 어떻게 적용되는지 확인합니다.
 
-이전 글 [액션/계산/데이터](/posts/programming/functional-actions-calculations-data/), [함수형 렌더 그래프](/posts/programming/functional-render-graph/), [GPU Compute 셰이더를 함수형으로](/posts/programming/functional-gpu-compute/)를 먼저 읽으면 더 자연스럽게 이어집니다.
+이전 글 [액션/계산/데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수형 렌더 그래프](/posts/programming/functional/functional-render-graph/), [GPU Compute 셰이더를 함수형으로](/posts/programming/functional/functional-gpu-compute/)를 먼저 읽으면 더 자연스럽게 이어집니다.
 
 ---
 
 ## DNN 추론이 렌더 그래프와 닮은 이유
 
-[함수형 렌더 그래프](/posts/programming/functional-render-graph/) 글에서 렌더 패스를 **선언(데이터) → 의존 분석(계산) → GPU 실행(액션)** 세 단계로 나눴습니다. DNN 추론 파이프라인도 구조가 같습니다.
+[함수형 렌더 그래프](/posts/programming/functional/functional-render-graph/) 글에서 렌더 패스를 **선언(데이터) → 의존 분석(계산) → GPU 실행(액션)** 세 단계로 나눴습니다. DNN 추론 파이프라인도 구조가 같습니다.
 
 렌더 그래프에서 "패스가 어떤 텍스처를 읽고 쓰는지"를 선언했다면, 추론 그래프에서는 "레이어가 어떤 텐서를 읽고 쓰는지"를 선언합니다.
 
@@ -536,7 +536,7 @@ fn parse_yolo_output(output: &[f32], num_classes: usize) -> Vec<Detection> {
 }
 ```
 
-`run_detection`은 백엔드 트레잇만 받습니다. `OrtBackend`인지 `CpuRefBackend`인지 모릅니다. [함수형 DI](/posts/programming/functional-dependency-injection/) 패턴입니다.
+`run_detection`은 백엔드 트레잇만 받습니다. `OrtBackend`인지 `CpuRefBackend`인지 모릅니다. [함수형 DI](/posts/programming/functional/functional-dependency-injection/) 패턴입니다.
 
 ---
 
@@ -795,4 +795,4 @@ DNN 추론에서 어려운 부분의 대부분은 전처리·후처리 버그와
 
 ---
 
-*관련 글: [액션, 계산, 데이터](/posts/programming/functional-actions-calculations-data/), [함수형 렌더 그래프](/posts/programming/functional-render-graph/), [GPU Compute 셰이더를 함수형으로](/posts/programming/functional-gpu-compute/), [함수형 DI](/posts/programming/functional-dependency-injection/), [함수형 포인트 클라우드 처리](/posts/programming/functional-point-cloud/)*
+*관련 글: [액션, 계산, 데이터](/posts/programming/functional/functional-actions-calculations-data/), [함수형 렌더 그래프](/posts/programming/functional/functional-render-graph/), [GPU Compute 셰이더를 함수형으로](/posts/programming/functional/functional-gpu-compute/), [함수형 DI](/posts/programming/functional/functional-dependency-injection/), [함수형 포인트 클라우드 처리](/posts/programming/functional/functional-point-cloud/)*
