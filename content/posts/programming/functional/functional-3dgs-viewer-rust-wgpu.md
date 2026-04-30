@@ -1285,37 +1285,9 @@ pub mod action {
 
 ---
 
-## 9. Rust 기반의 장점
+## 9. 함수형 프로그래밍 원칙 정리
 
-### 9.1 메모리 안전성 (소유권 시스템)
-
-```rust
-// Rust의 소유권 시스템이 자동으로 메모리 누수 방지
-pub fn create_gaussian_buffer(gaussians: &[Gaussian]) -> Buffer {
-    let buffer = device.create_buffer_init(&BufferInitDescriptor {
-        contents: bytemuck::cast_slice(gaussians),
-        usage: BufferUsages::STORAGE,
-        label: Some("Gaussian Buffer"),
-    });
-    // buffer는 스코프 벗어날 때 자동으로 해제됨
-    buffer
-}
-```
-
-### 9.2 성능 예상
-
-| 작업 | 성능 | 비고 |
-| :--- | :--- | :--- |
-| **100만 가우시안 로드** | <100ms | 바이너리 파싱 포함 |
-| **프레임 렌더링 (1920x1080)** | 16ms (60fps) | 가우시안 정렬 포함 |
-| **메모리 사용** | 150-200MB | GPU 메모리 |
-| **바이너리 크기** | ~3MB | Release 빌드 |
-
----
-
-## 10. 함수형 프로그래밍 원칙 정리
-
-### 10.1 핵심 원칙 (에릭 노먼드)
+### 9.1 핵심 원칙 (에릭 노먼드)
 
 이 프로젝트의 구조는 세 가지 기본 원칙을 따릅니다:
 
@@ -1325,7 +1297,7 @@ pub fn create_gaussian_buffer(gaussians: &[Gaussian]) -> Buffer {
 | **계산** | 입력→출력, 부작용 없음 | `camera_ops::update_camera_angles()` |
 | **액션** | 부작용, 외부 세계 상호작용 | `io::load_ply_file()`, `render::render_frame()` |
 
-### 10.2 코드 조직화 전략
+### 9.2 코드 조직화 전략
 
 ```
 src/
@@ -1342,7 +1314,7 @@ src/
 - **병렬화**: 순수 함수들은 안전하게 병렬 실행 가능
 - **플랫폼 독립성**: 데이터와 계산 로직이 GPU API에 종속되지 않음
 
-### 10.3 실제 적용 예제
+### 9.3 실제 적용 예제
 
 ```rust
 // ❌ 절차형 (테스트 불가, 부작용 섞임)
@@ -1369,7 +1341,7 @@ if should_render {
 }
 ```
 
-### 10.4 다음 단계 및 확장
+### 9.4 다음 단계 및 확장
 
 **즉시 구현 가능:**
 
