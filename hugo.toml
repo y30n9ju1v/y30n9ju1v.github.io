@@ -10,6 +10,8 @@ home = ["HTML", "RSS", "JSON"]
 
 [markup]
 [markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
 [markup.goldmark.extensions]
 [markup.goldmark.extensions.passthrough]
 enable = true
@@ -28,7 +30,7 @@ disableThemeToggle = false
 # Profile mode
 profileMode.enabled = true
 profileMode.title = "y30n9ju1v"
-profileMode.subtitle = "자율주행 · 프로그래밍 · 기술사 공부 | [ITPE](https://y30n9ju1v.github.io/itpe/) · [Paper](https://y30n9ju1v.github.io/paper/)"
+profileMode.subtitle = "자율주행 · 프로그래밍 · 기술사 공부<br><br>🚗 <a href='https://y30n9ju1v.github.io/paper/'>Paper</a> — 자율주행 논문 스터디<br>📚 <a href='https://y30n9ju1v.github.io/itpe/'>ITPE</a> — 정보관리/컴퓨터시스템응용기술사"
 profileMode.imageUrl = "/images/profile.jpg"
 profileMode.imageTitle = "avatar"
 
@@ -82,11 +84,3 @@ weight = 4
 name = "Search"
 url = "/search"
 weight = 5
-[[menu.main]]
-name = "ITPE"
-url = "https://y30n9ju1v.github.io/itpe/"
-weight = 6
-[[menu.main]]
-name = "Paper"
-url = "https://y30n9ju1v.github.io/paper/"
-weight = 7
