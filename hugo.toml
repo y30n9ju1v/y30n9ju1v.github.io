@@ -30,7 +30,7 @@ disableThemeToggle = false
 # Profile mode
 profileMode.enabled = true
 profileMode.title = "y30n9ju1v"
-profileMode.subtitle = "자율주행 · 프로그래밍 · 기술사 공부<br><br>🚗 <a href='https://y30n9ju1v.github.io/paper/'>Paper</a> — 자율주행 논문 스터디<br>📚 <a href='https://y30n9ju1v.github.io/itpe/'>ITPE</a> — 정보관리/컴퓨터시스템응용기술사"
+profileMode.subtitle = "일상 · 자율주행 · 프로그래밍 · 기술사<br><br>🚗 <a href='https://y30n9ju1v.github.io/paper/'>Paper</a> — 자율주행 논문 스터디<br>📚 <a href='https://y30n9ju1v.github.io/itpe/'>ITPE</a> — 정보관리/컴퓨터시스템응용기술사"
 profileMode.imageUrl = "/images/profile.jpg"
 profileMode.imageTitle = "avatar"
 
