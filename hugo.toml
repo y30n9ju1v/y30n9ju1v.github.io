@@ -28,7 +28,7 @@ disableThemeToggle = false
 # Profile mode
 profileMode.enabled = true
 profileMode.title = "y30n9ju1v"
-profileMode.subtitle = "Research paper summaries & AI/ML notes"
+profileMode.subtitle = "자율주행 · 프로그래밍 · 기술사 공부 | [ITPE](https://y30n9ju1v.github.io/itpe/) · [Paper](https://y30n9ju1v.github.io/paper/)"
 profileMode.imageUrl = "/images/profile.jpg"
 profileMode.imageTitle = "avatar"
 
@@ -82,3 +82,11 @@ weight = 4
 name = "Search"
 url = "/search"
 weight = 5
+[[menu.main]]
+name = "ITPE"
+url = "https://y30n9ju1v.github.io/itpe/"
+weight = 6
+[[menu.main]]
+name = "Paper"
+url = "https://y30n9ju1v.github.io/paper/"
+weight = 7
