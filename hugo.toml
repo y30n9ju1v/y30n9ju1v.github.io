@@ -30,9 +30,21 @@ disableThemeToggle = false
 # Profile mode
 profileMode.enabled = true
 profileMode.title = "y30n9ju1v"
-profileMode.subtitle = "일상 · 자율주행 · 프로그래밍 · 기술사<br><br>🚗 <a href='https://y30n9ju1v.github.io/paper/'>Paper</a> — 자율주행 논문 스터디<br>💻 <a href='https://y30n9ju1v.github.io/develop/'>Develop</a> — 개발 &amp; 프로그래밍 노트<br>📚 <a href='https://y30n9ju1v.github.io/itpe/'>ITPE</a> — 정보관리/컴퓨터시스템응용기술사"
+profileMode.subtitle = "일상 · 자율주행 · 프로그래밍 · 기술사"
 profileMode.imageUrl = "/images/profile.jpg"
 profileMode.imageTitle = "avatar"
+
+[[params.profileMode.buttons]]
+name = "🚗 Paper — 자율주행 논문 스터디"
+url = "https://y30n9ju1v.github.io/paper/"
+
+[[params.profileMode.buttons]]
+name = "💻 Develop — 개발 & 프로그래밍 노트"
+url = "https://y30n9ju1v.github.io/develop/"
+
+[[params.profileMode.buttons]]
+name = "📚 ITPE — 정보관리/컴퓨터시스템응용기술사"
+url = "https://y30n9ju1v.github.io/itpe/"
 
 # Home info mode (alternative to profile mode)
 homeInfoParams.Title = "y30n9ju1v's Blog"
