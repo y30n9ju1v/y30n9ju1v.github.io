@@ -68,6 +68,9 @@ params.fuseOpts.threshold = 0.4
 params.fuseOpts.minMatchCharLength = 0
 params.fuseOpts.keys = ["title", "permalink", "summary", "content"]
 
+# Main sections
+mainSections = ["posts"]
+
 # Math
 math = true
 
