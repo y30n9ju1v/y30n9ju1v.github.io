@@ -22,17 +22,23 @@ AI 에이전트가 개발자를 대체할 것이라는 말이 나올 때, 시니
 
 ## 비즈니스가 두려워하는 것은 불확실성이다
 
+![](/posts/why-senior-developers-fail-to-communicate/INS_0.webp)
+
 회사의 첫 번째 루프 — 마케팅, 영업, 제품, 경영진 — 는 시장에서 빠르게 피드백을 얻는 것을 최우선으로 한다. 이들이 사냥하는 괴물은 **불확실성**이다. "이게 팔릴까?", "고객이 원할까?"라는 질문에 빨리 답을 얻고 싶다.
 
 그래서 이들은 속도를 원한다.
 
 ## 시니어 개발자가 지키는 것은 안정성이다
 
+![](/posts/why-senior-developers-fail-to-communicate/INS_1.webp)
+
 두 번째 루프 — 실제 고객을 서비스하는 시스템 — 에서 시니어 개발자는 지속성과 안정성을 관리한다. 복잡성이 쌓일수록 시스템은 예측 불가능해지고, 장애가 생기고, 유지보수가 어려워진다.
 
 그래서 이들은 단순함을 원한다.
 
 ## 왜 소통이 실패하는가
+
+![](/posts/why-senior-developers-fail-to-communicate/INS_3.webp)
 
 여기서 핵심 통찰이 나온다.
 
@@ -57,6 +63,8 @@ AI는 개발 속도를 높인다. 하지만 이해 가능성과 안정성을 동
 ## 두 버전 모델
 
 저자가 제안하는 실용적인 프레임은 이렇다.
+
+![](/posts/why-senior-developers-fail-to-communicate/INS_8.webp)
 
 | | Speed 버전 | Scale 버전 |
 |---|---|---|
